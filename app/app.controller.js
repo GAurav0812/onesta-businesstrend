@@ -1,0 +1,1875 @@
+ableApp.controller('globalController', function ($scope, $timeout, $state) {
+    $scope.$state = $state;
+    $scope.windowWidth = $(window);
+    $scope.init = function () {
+
+        angular.element('.loader-bar').animate({width: $scope.windowWidth.width()}, 2000);
+        $timeout(function () {
+            while (angular.element('.loader-bar').width() == $scope.windowWidth.width()) {
+                removeloader();
+                break;
+            }
+        }, 2500);
+        angular.element('.loader-bg').fadeOut('slow');
+    };
+
+    /*chatbar js start*/
+    /*chat box scroll*/
+    var a = $scope.windowWidth.height() - 50;
+    $scope.friendListScroll = {
+        height: a,
+        allowPageScroll: false,
+        wheelStep: 1,
+        color: '#1b8bf9'
+    };
+
+    // search
+    angular.element("#search-friends").on("keyup", function () {
+        $scope.g = $(this).val().toLowerCase();
+        angular.element(".friendlist-box .media-body .friend-header").each(function () {
+
+            $scope.s = $(this).text().toLowerCase();
+            $(this).closest('.friendlist-box')[$scope.s.indexOf($scope.g) !== -1 ? 'show' : 'hide']();
+        });
+    });
+
+    // open chat box
+    $scope.displayChatBox = function () {
+        $scope.options = {
+            direction: 'right'
+        };
+        angular.element('.showChat').toggle('slide', $scope.options, 500);
+    };
+    //open friend chat
+    $scope.friendListBox = function () {
+        $scope.options = {
+            direction: 'right'
+        };
+        angular.element('.showChat_inner').toggle('slide', $scope.options, 500);
+    };
+    //back to main chatbar
+    $scope.backChatBox = function () {
+        $scope.options = {
+            direction: 'right'
+        };
+        angular.element('.showChat_inner').toggle('slide', $scope.options, 500);
+        angular.element('.showChat').css('display', 'block');
+    };
+    /*chatbar js ends*/
+
+    //sidebar dropdown open
+    $scope.designation = function () {
+        angular.element(".extra-profile-list").slideToggle();
+    };
+
+    // toggle full screen
+    $scope.toggleFullScreen = function () {
+        if (!document.fullscreenElement && // alternative standard method
+            !document.mozFullScreenElement && !document.webkitFullscreenElement) { // current working methods
+            if (document.documentElement.requestFullscreen) {
+                document.documentElement.requestFullscreen();
+            } else if (document.documentElement.mozRequestFullScreen) {
+                document.documentElement.mozRequestFullScreen();
+            } else if (document.documentElement.webkitRequestFullscreen) {
+                document.documentElement.webkitRequestFullscreen(Element.ALLOW_KEYBOARD_INPUT);
+            }
+        } else {
+            if (document.cancelFullScreen) {
+                document.cancelFullScreen();
+            } else if (document.mozCancelFullScreen) {
+                document.mozCancelFullScreen();
+            } else if (document.webkitCancelFullScreen) {
+                document.webkitCancelFullScreen();
+            }
+        }
+    }
+    /*
+    // chat-sidebar
+    var ost = 0;
+    $(window).scroll(function() {
+        var windowHeight = $scope.windowWidth.innerHeight();
+        if ($scope.windowWidth.width() <= 767) {
+            var cOst = $(this).scrollTop();
+            if (cOst == 0) {
+                angular.element('.showChat').removeClass('top-showChat').addClass('fix-showChat');
+            } else if (cOst > ost) {
+                angular.element('.showChat').removeClass('fix-showChat').addClass('top-showChat');
+            }
+            ost = cOst;
+        }
+    });
+
+    // Start [ Menu-bottom ]
+        angular.element(".dropup-mega, .dropup").hover(function() {
+            var dropdownMenu = $(this).children(".dropdown-menu");
+            $(this).toggleClass("open");
+        });
+    // End [ Menu ]*/
+
+    //element js 
+    angular.element(".md-form-control").each(function () {
+        $(this).parent().append('<span class="md-line"></span>');
+    });
+    angular.element(".md-form-control").change(function () {
+        if ($(this).val() == "") {
+            $(this).removeClass("md-valid");
+        } else {
+            $(this).addClass("md-valid");
+        }
+    });
+});
+
+
+ableApp.controller('menuController', function ($scope, $location, $window, $document) {
+    /*    //$controller('globalController', { $scope: $scope, $log: $log, $timeout: $timeout, $state: $state });*/
+    /*chat box scroll*/
+    angular.element('aside.main-sidebar').height($('body').height() - 50);
+
+    $scope.abc = function () {
+
+        debugger;
+        var $window = $(window);
+        if ($window.width() < 767) {
+            $scope.setMenu();
+        } else {
+            if (angular.element("body").hasClass("sidebar-collapse") == true) {
+
+                $scope.sidebar = {
+                    destroy: true
+                };
+
+                if (angular.element("body").hasClass("box-layout") == true) {
+                    angular.element("body").removeClass("fixed");
+                } else {
+                    angular.element("body").addClass("fixed");
+                    angular.element("body").addClass("header-fixed");
+                }
+                angular.element(".sidebar").css('overflow', 'visible');
+                angular.element(".sidebar-menu").css('overflow', 'visible');
+                angular.element(".sidebar-menu").css('height', 'auto');
+            } else {
+                var a = $(window).height() - 70;
+                angular.element('#sidebar-scroll').height($(window).height() - 70);
+                $scope.sidebar = {
+                    height: a,
+                    allowPageScroll: false,
+                    wheelStep: 5,
+                    color: '#000'
+                };
+
+                angular.element("body").removeClass("header-fixed");
+                if (angular.element("body").hasClass("box-layout") == true) {
+                    angular.element("body").removeClass("fixed");
+                } else {
+                    angular.element("body").addClass("fixed");
+                }
+                angular.element("#sidebar-scroll").css('width', '100%');
+                angular.element(".sidebar").css('overflow', 'inherit');
+                angular.element(".sidebar-menu").css('overflow', 'inherit');
+            }
+        }
+    };
+
+    //for menu
+    var w = angular.element($window);
+
+    w.bind('resize', function () {
+        $scope.setMenu();
+    });
+    $scope.setMenu = function () {
+
+        var $window = $(window);
+        if ($window.width() < 1024 && $window.width() >= 767) {
+            if (angular.element("body").hasClass("container") == true) {
+                angular.element("body").addClass("container");
+            }
+            $scope.sidebar = {destroy: true};
+            angular.element("body").removeClass("fixed");
+            angular.element("body").addClass("sidebar-collapse");
+            angular.element(".sidebar").css('overflow', 'visible');
+            angular.element(".sidebar-menu").css('overflow', 'visible');
+            angular.element(".sidebar-menu").css('height', 'auto');
+        } else if ($window.width() < 540 && $window.width() < 767) {
+            if (angular.element("body").hasClass("box-layout") == true) {
+                angular.element("body").removeClass("container");
+            }
+            angular.element(".main-header").css('margin-top', '50px');
+            $scope.sidebar = {destroy: true};
+            angular.element("body").removeClass("fixed");
+            angular.element("body").addClass("sidebar-collapse");
+            angular.element(".sidebar").css('overflow', 'visible');
+            angular.element(".sidebar-menu").css('overflow', 'visible');
+            angular.element(".sidebar-menu").css('height', 'auto');
+        } else if ($window.width() > 540 && $window.width() < 767) {
+            if (angular.element("body").hasClass("box-layout") == true) {
+                angular.element("body").removeClass("container");
+            }
+            angular.element(".main-header").css('margin-top', '0px');
+            $scope.sidebar = {destroy: true};
+            angular.element("body").removeClass("fixed");
+            angular.element("body").addClass("sidebar-collapse");
+            angular.element(".sidebar").css('overflow', 'visible');
+            angular.element(".sidebar-menu").css('overflow', 'visible');
+            angular.element(".sidebar-menu").css('height', 'auto');
+        } else if ($window.width() >= 1024) {
+            var a = $(window).height() - 70;
+            $('#sidebar-scroll').height($(window).height() - 70);
+            $scope.sidebar = {
+                height: a,
+                allowPageScroll: false,
+                wheelStep: 5,
+                color: '#000'
+            };
+            angular.element(".main-header").css('margin-top', '0px');
+            if (angular.element("body").hasClass("box-layout") == true) {
+                angular.element("body").removeClass("fixed");
+                angular.element("body").addClass("container");
+            } else {
+                angular.element("body").addClass("fixed");
+            }
+            angular.element("body").removeClass("sidebar-collapse");
+            angular.element("#sidebar-scroll").css('width', '100%');
+            angular.element(".sidebar").css('overflow', 'inherit');
+            angular.element(".sidebar-menu").css('overflow', 'inherit');
+        } else {
+
+            angular.element("body").removeClass("sidebar-collapse");
+            if (angular.element("body").hasClass("box-layout") == true) {
+                angular.element("body").removeClass("fixed");
+                angular.element("body").addClass("container");
+            } else {
+                angular.element("body").addClass("fixed");
+            }
+        }
+    };
+    $scope.tree = function (menu) {
+
+        var _this = this;
+        var animationSpeed = 200;
+        $scope.openTree = function (event) {
+
+            //Get the clicked link and the next element
+            var $this = $(event.currentTarget);
+            var checkElement = $(event.currentTarget).children()[1];
+
+            //Check if the next element is a menu and is visible
+            if ((checkElement.className == "treeview-menu") && (checkElement.className == ":visible")) {
+                //Close the menu
+                $(checkElement).slideUp(animationSpeed, function () {
+                    checkElement.removeClass('menu-open');
+                    //Fix the layout in case the sidebar stretches over the height of the window
+                    //_this.layout.fix();
+                });
+                checkElement.parent("li").removeClass("active-tree");
+            }
+            //If the menu is not visible
+            else if ((checkElement.className == "treeview-menu") && (checkElement.className != ":visible")) {
+                //Get the parent menu
+                var parent = $this.parents('ul').first();
+                //Close all open menus within the parent
+                var ul = parent.find('ul:visible').slideUp(animationSpeed);
+                //Remove the menu-open class from the parent
+                ul.removeClass('menu-open');
+                //Get the parent li
+                var parent_li = $this.parent("li");
+
+                //Open the target menu and add the menu-open class
+                $(checkElement).slideDown(animationSpeed, function () {
+                    //Add the class active to the parent li
+                    $(checkElement).addClass('menu-open');
+                    parent.find('li.active-tree').removeClass('active-tree');
+                    parent_li.addClass('active-tree');
+                });
+            }
+            //if this isn't a link, prevent the page from being redirected
+            if (checkElement.className == "treeview-menu") {
+
+            }
+        };
+    };
+    // Activate sidenav treemenu
+    /* $.tree('.sidebar');*/
+    $scope.tree('.sidebar');
+});
+
+ableApp.controller('megaMenuController', function ($scope, $location, $window) {
+    //$controller('globalController', { $scope: $scope, $log: $log, $timeout: $timeout, $state: $state });
+    /*chat box scroll*/
+    angular.element('aside.main-sidebar').height($('body').height() - 50);
+
+    angular.element('.sidebar-toggle').on('click', function () {
+        var $window = $(window);
+        if ($window.width() < 767) {
+            $scope.setMenu();
+        } else {
+            if (angular.element("body").hasClass("sidebar-collapse") == true) {
+
+                angular.element("#sidebar-scroll").slimScroll({destroy: true});
+
+                if (angular.element("body").hasClass("box-layout") == true) {
+                    angular.element("body").removeClass("fixed");
+                } else {
+                    angular.element("body").addClass("fixed");
+                    angular.element("body").addClass("header-fixed");
+                }
+                angular.element(".sidebar").css('overflow', 'visible');
+                angular.element(".sidebar-menu").css('overflow', 'visible');
+                angular.element(".sidebar-menu").css('height', 'auto');
+            } else {
+                var a = $(window).height() - 70;
+                angular.element('#sidebar-scroll').height($(window).height() - 70);
+                $scope.sidebar = {
+                    height: a,
+                    allowPageScroll: false,
+                    wheelStep: 5,
+                    color: '#000'
+                };
+
+                angular.element("body").removeClass("header-fixed");
+                if (angular.element("body").hasClass("box-layout") == true) {
+                    angular.element("body").removeClass("fixed");
+                } else {
+                    angular.element("body").addClass("fixed");
+                }
+                angular.element("#sidebar-scroll").css('width', '100%');
+                angular.element(".sidebar").css('overflow', 'inherit');
+                angular.element(".sidebar-menu").css('overflow', 'inherit');
+            }
+        }
+    });
+
+    //for menu
+    var w = angular.element($window);
+
+    w.bind('resize', function () {
+        $scope.setMenu();
+    });
+    $scope.setMenu = function () {
+
+        var $window = $(window);
+        if ($(window).width() > 767) {
+
+            angular.element("body").addClass('fixed');
+        } else if ($window.width() < 540 && $window.width() < 767) {
+            angular.element(".main-header").css('margin-top', '50px');
+            angular.element("body").removeClass("fixed");
+        } else if ($window.width() > 540 && $window.width() < 767) {
+            angular.element(".main-header").css('margin-top', '0px');
+            angular.element("body").removeClass("fixed");
+        }
+    };
+
+});
+
+ableApp.controller('menuFooterFixedController', function ($scope, $location, $window) {
+    //$controller('globalController', { $scope: $scope, $log: $log, $timeout: $timeout, $state: $state });
+    /*chat box scroll*/
+    angular.element('aside.main-sidebar').height($('body').height() - 50);
+
+    angular.element('.sidebar-toggle').on('click', function () {
+        var $window = $(window);
+        if ($window.width() < 767) {
+            $scope.setMenu();
+        } else {
+            if (angular.element("body").hasClass("sidebar-collapse") == true) {
+
+                $scope.sidebar = {destroy: true};
+
+                if (angular.element("body").hasClass("box-layout") == true) {
+                    angular.element("body").removeClass("fixed");
+                } else {
+                    angular.element("body").addClass("fixed");
+                    angular.element("body").addClass("header-fixed");
+                }
+                angular.element(".sidebar").css('overflow', 'visible');
+                angular.element(".sidebar-menu").css('overflow', 'visible');
+                angular.element(".sidebar-menu").css('height', 'auto');
+            } else {
+                var a = $(window).height() - 70;
+                angular.element('#sidebar-scroll').height($(window).height() - 70);
+                $scope.sidebar = {
+                    height: a,
+                    allowPageScroll: false,
+                    wheelStep: 5,
+                    color: '#000'
+                };
+
+                angular.element("body").removeClass("header-fixed");
+                if (angular.element("body").hasClass("box-layout") == true) {
+                    angular.element("body").removeClass("fixed");
+                } else {
+                    angular.element("body").addClass("fixed");
+                }
+                angular.element("#sidebar-scroll").css('width', '100%');
+                angular.element(".sidebar").css('overflow', 'inherit');
+                angular.element(".sidebar-menu").css('overflow', 'inherit');
+            }
+        }
+    });
+
+    var w = angular.element($window);
+    w.bind('resize', function () {
+        $scope.setMenu();
+    });
+    $scope.setMenu = function () {
+
+        if ($(window).height() > $('body').height())
+            angular.element('.footer-bg').css('position', 'fixed');
+        else
+            angular.element('.footer-bg').css('position', 'absolute');
+    };
+
+});
+
+ableApp.controller('menuHeaderFixedController', function ($scope, $location, $window) {
+    //$controller('globalController', { $scope: $scope, $log: $log, $timeout: $timeout, $state: $state });
+    /*chat box scroll*/
+    angular.element('aside.main-sidebar').height($('body').height() - 50);
+
+    angular.element('.sidebar-toggle').on('click', function () {
+        var $window = $(window);
+        if ($window.width() < 767) {
+            $scope.setMenu();
+        } else {
+            if (angular.element("body").hasClass("sidebar-collapse") == true) {
+
+                $scope.sidebar = {destroy: true};
+
+                if (angular.element("body").hasClass("box-layout") == true) {
+                    angular.element("body").removeClass("fixed");
+                } else {
+                    angular.element("body").addClass("fixed");
+                    angular.element("body").addClass("header-fixed");
+                }
+                angular.element(".sidebar").css('overflow', 'visible');
+                angular.element(".sidebar-menu").css('overflow', 'visible');
+                angular.element(".sidebar-menu").css('height', 'auto');
+            } else {
+                var a = $(window).height() - 70;
+                angular.element('#sidebar-scroll').height($(window).height() - 70);
+                $scope.sidebar = {
+                    height: a,
+                    allowPageScroll: false,
+                    wheelStep: 5,
+                    color: '#000'
+                };
+
+                angular.element("body").removeClass("header-fixed");
+                if (angular.element("body").hasClass("box-layout") == true) {
+                    angular.element("body").removeClass("fixed");
+                } else {
+                    angular.element("body").addClass("fixed");
+                }
+                angular.element("#sidebar-scroll").css('width', '100%');
+                angular.element(".sidebar").css('overflow', 'inherit');
+                angular.element(".sidebar-menu").css('overflow', 'inherit');
+            }
+        }
+    });
+
+    var w = angular.element($window);
+    w.bind('resize', function () {
+        $scope.setMenu();
+    });
+    $scope.setMenu = function () {
+
+        var $window = $(window);
+        if ($window.width() < 1024 && $window.width() >= 767) {
+            angular.element("body").addClass("sidebar-collapse");
+            angular.element("body").removeClass("fixed");
+            angular.element("#sidebar-scroll").css('width', '100%');
+            $scope.sidebar = {
+                destroy: true
+            };
+            angular.element(".sidebar").css('overflow', 'visible');
+            angular.element(".sidebar-menu").css('overflow', 'visible');
+        } else if ($window.width() >= 1024) {
+            angular.element("#sidebar-scroll").css('width', '100%');
+            $scope.sidebar = {
+                destroy: true
+            };
+            angular.element(".sidebar").css('overflow', 'visible');
+            angular.element(".sidebar-menu").css('overflow', 'visible');
+            angular.element("body").removeClass("fixed");
+        } else if ($window.width() < 767) {
+
+            angular.element("body").addClass("sidebar-collapse");
+            angular.element("body").removeClass("fixed");
+            angular.element("#sidebar-scroll").css('width', '100%');
+            $scope.sidebar = {
+                destroy: true
+            };
+            angular.element(".sidebar").css('overflow', 'visible');
+            angular.element(".sidebar-menu").css('overflow', 'visible');
+        } else {
+            angular.element("body").removeClass("sidebar-collapse");
+            angular.element("body").addClass("fixed");
+            var a = $(window).height() - 70;
+            angular.element('#sidebar-scroll').height($(window).height() - 70);
+            $scope.sidebar = {
+                height: a,
+                allowPageScroll: false,
+                wheelStep: 5,
+                color: '#000'
+            };
+            angular.element("#sidebar-scroll").css('width', '100%');
+            angular.element(".sidebar").css('overflow', 'inherit');
+            angular.element(".sidebar-menu").css('overflow', 'inherit');
+        }
+    };
+
+});
+
+ableApp.controller('menuHorizontalController', function ($scope, $location, $window) {
+
+
+    angular.element("body").addClass("horizontal-fixed");
+    angular.element('.sidebar-toggle').on('click', function () {
+        var $window = $(window);
+        if ($window.width() < 767) {
+            if (angular.element("body").hasClass("sidebar-open") == true) {
+                angular.element("body").removeClass("sidebar-open");
+            } else {
+                angular.element("body").addClass("sidebar-open");
+            }
+        }
+    });
+    angular.element('.sidebar-menu ').on('click', function () {
+        var $window = $(window);
+        if ($window.width() < 767) {
+            if (angular.element("body").hasClass("sidebar-open") == true) {
+                angular.element("body").removeClass("sidebar-open");
+            }
+        }
+    });
+
+
+});
+
+ableApp.controller('menuHorizontalIconFixedController', function ($scope, $location, $window) {
+    $(window).scroll(function () {
+        if ($(window).width() > 767) {
+            var sidbar_top = 50 - $(window).scrollTop();
+            if ($(window).scrollTop() > 50) {
+                angular.element('.main-sidebar').css('position', 'fixed');
+                angular.element('.main-sidebar').css('top', '0');
+                angular.element('.main-sidebar').css('padding-top', '0');
+            }
+            else {
+                angular.element('.main-sidebar').css('position', 'absolute');
+                angular.element('.main-sidebar').css('padding-top', '50px');
+            }
+        }
+        else {
+            angular.element('.main-sidebar').css('position', 'absolute');
+            angular.element('.main-sidebar').css('padding-top', '100px');
+        }
+    });
+});
+
+ableApp.controller('menuSidebarStickyController', function ($scope, $location, $window) {
+    //$controller('globalController', { $scope: $scope, $log: $log, $timeout: $timeout, $state: $state });
+    /*chat box scroll*/
+    angular.element('aside.main-sidebar').height($('body').height() - 50);
+
+    angular.element('.sidebar-toggle').on('click', function () {
+        var $window = $(window);
+        if ($window.width() < 767) {
+            $scope.setMenu();
+        } else {
+            if (angular.element("body").hasClass("sidebar-collapse") == true) {
+
+                $scope.sidebar = {destroy: true};
+
+                if (angular.element("body").hasClass("box-layout") == true) {
+                    angular.element("body").removeClass("fixed");
+                } else {
+                    angular.element("body").addClass("fixed");
+                    angular.element("body").addClass("header-fixed");
+                }
+                angular.element(".sidebar").css('overflow', 'visible');
+                angular.element(".sidebar-menu").css('overflow', 'visible');
+                angular.element(".sidebar-menu").css('height', 'auto');
+            } else {
+                var a = $(window).height() - 70;
+                angular.element('#sidebar-scroll').height($(window).height() - 70);
+                $scope.sidebar = {
+                    height: a,
+                    allowPageScroll: false,
+                    wheelStep: 5,
+                    color: '#000'
+                };
+
+                angular.element("body").removeClass("header-fixed");
+                if (angular.element("body").hasClass("box-layout") == true) {
+                    angular.element("body").removeClass("fixed");
+                } else {
+                    angular.element("body").addClass("fixed");
+                }
+                angular.element("#sidebar-scroll").css('width', '100%');
+                angular.element(".sidebar").css('overflow', 'inherit');
+                angular.element(".sidebar-menu").css('overflow', 'inherit');
+            }
+        }
+    });
+
+    $(window).scroll(function () {
+        if ($("body").hasClass("sidebar-collapse") == false) {
+            if ($(window).width() < 767)
+                var sidbar_top = 100 - $(window).scrollTop();
+            else
+                var sidbar_top = 50 - $(window).scrollTop();
+            setMenuscroll(sidbar_top);
+        } else {
+            $('.main-sidebar').css('position', 'absolute');
+        }
+    });
+
+    function setMenuscroll(sidbar_top) {
+        if (sidbar_top > 0) {
+            $('.main-sidebar').css('padding-top', sidbar_top);
+            $('.main-sidebar').css('top', '0');
+            $('.main-sidebar').css('position', 'fixed');
+        } else {
+            $('.main-sidebar').css('padding-top', '0');
+            $('.main-sidebar').css('top', '0');
+            $('.main-sidebar').css('position', 'fixed');
+        }
+    }
+
+    $('.sidebar-toggle').on('click', function () {
+        var $window = $(window);
+        if ($window.width() < 767) {
+            setMenu();
+        } else {
+            if ($("body").hasClass("sidebar-collapse") == true) {
+                $("#sidebar-scroll").slimScroll({destroy: true});
+                $("body").removeClass("fixed");
+                $("body").addClass("header-fixed");
+                $(".sidebar").css('overflow', 'visible');
+                $(".sidebar-menu").css('overflow', 'visible');
+                $(".sidebar-menu").css('height', 'auto');
+            } else {
+                var a = $(window).height() - 70;
+                $('#sidebar-scroll').height($(window).height() - 70);
+                $("#sidebar-scroll").slimScroll({
+                    height: a,
+                    allowPageScroll: false,
+                    wheelStep: 5,
+                    color: '#fff'
+                });
+                $("body").removeClass("header-fixed");
+                $("body").addClass("fixed");
+                $("#sidebar-scroll").css('width', '100%');
+                $(".sidebar").css('overflow', 'inherit');
+                $(".sidebar-menu").css('overflow', 'inherit');
+            }
+        }
+    });
+
+    var w = angular.element($window);
+    w.bind('resize', function () {
+        $scope.setMenu();
+    });
+    $scope.setMenu = function () {
+
+        var $window = $(window);
+        if ($window.width() < 1024 && $window.width() >= 767) {
+            $scope.sidebar = {destroy: true};
+            $("body").removeClass("fixed");
+            $("body").addClass("sidebar-collapse");
+            $(".sidebar").css('overflow', 'visible');
+            $(".sidebar-menu").css('overflow', 'visible');
+            $(".sidebar-menu").css('height', 'auto');
+            var sidbar_top = 50 - $(window).scrollTop();
+            setMenuscroll(sidbar_top);
+        } else if ($window.width() < 767) {
+
+            $scope.sidebar = {destroy: true};
+            $("body").removeClass("fixed");
+            $("body").addClass("sidebar-collapse");
+            $(".sidebar").css('overflow', 'visible');
+            $(".sidebar-menu").css('overflow', 'visible');
+            $(".sidebar-menu").css('height', 'auto');
+
+        } else if ($window.width() >= 1024) {
+
+            var a = $(window).height() - 70;
+            $('#sidebar-scroll').height($(window).height() - 70);
+            $scope.sidebar = {
+                height: a,
+                allowPageScroll: false,
+                wheelStep: 5,
+                color: '#000'
+            };
+            $("body").addClass("fixed");
+            $("body").removeClass("sidebar-collapse");
+            $("#sidebar-scroll").css('width', '100%');
+            $(".sidebar").css('overflow', 'inherit');
+            $(".sidebar-menu").css('overflow', 'inherit');
+            var sidbar_top = 50 - $(window).scrollTop();
+            setMenuscroll(sidbar_top);
+        } else {
+            $("body").removeClass("sidebar-collapse");
+            $("body").addClass("fixed");
+            var sidbar_top = 100 - $(window).scrollTop();
+            setMenuscroll(sidbar_top);
+        }
+    };
+
+});
+
+ableApp.controller('menuStaticController', function ($scope, $location, $window) {
+    //$controller('globalController', { $scope: $scope, $log: $log, $timeout: $timeout, $state: $state });
+    /*chat box scroll*/
+    angular.element('aside.main-sidebar').height($('body').height() - 50);
+
+    angular.element('.sidebar-toggle').on('click', function () {
+        var $window = $(window);
+        if ($window.width() < 767) {
+            $scope.setMenu();
+        } else {
+
+            if (angular.element("body").hasClass("sidebar-collapse") == true) {
+
+                $scope.sidebar = {destroy: true};
+
+                if (angular.element("body").hasClass("box-layout") == true) {
+                    angular.element("body").removeClass("fixed");
+                } else {
+                    angular.element("body").addClass("fixed");
+                    angular.element("body").addClass("header-fixed");
+                }
+                angular.element(".sidebar").css('overflow', 'visible');
+                angular.element(".sidebar-menu").css('overflow', 'visible');
+                angular.element(".sidebar-menu").css('height', 'auto');
+            } else {
+
+                var a = $(window).height() - 70;
+                angular.element('#sidebar-scroll').height($(window).height() - 70);
+                $scope.sidebar = {
+                    height: a,
+                    allowPageScroll: false,
+                    wheelStep: 5,
+                    color: '#000'
+                };
+
+                angular.element("body").removeClass("header-fixed");
+                if (angular.element("body").hasClass("box-layout") == true) {
+                    angular.element("body").removeClass("fixed");
+                } else {
+                    angular.element("body").addClass("fixed");
+                }
+                angular.element("#sidebar-scroll").css('width', '100%');
+                angular.element(".sidebar").css('overflow', 'inherit');
+                angular.element(".sidebar-menu").css('overflow', 'inherit');
+            }
+        }
+    });
+
+    //for menu
+    var w = angular.element($window);
+
+    w.bind('resize', function () {
+        $scope.setMenu();
+    });
+    $scope.setMenu = function () {
+        debugger;
+        var $window = $(window);
+        if ($window.width() < 1024 && $window.width() >= 767) {
+            $("body").addClass("sidebar-collapse");
+            $("body").removeClass("fixed");
+        } else if ($window.width() >= 1024) {
+            $("#sidebar-scroll").css('width', '100%');
+            $scope.sidebar = {destroy: true};
+            $(".sidebar").css('overflow', 'visible');
+            $(".sidebar-menu").css('overflow', 'visible');
+            $("body").removeClass("fixed");
+        } else if ($window.width() < 767) {
+            $("body").addClass("sidebar-collapse");
+            $("body").removeClass("fixed");
+        } else {
+            debugger;
+            $("body").removeClass("sidebar-collapse");
+            $("body").addClass("fixed");
+            var a = $(window).height() - 70;
+            $('#sidebar-scroll').height($(window).height() - 70);
+            $("#sidebar-scroll").slimScroll({
+                height: a,
+                allowPageScroll: false,
+                wheelStep: 5,
+                color: '#000'
+            });
+            $("#sidebar-scroll").css('width', '100%');
+            $(".sidebar").css('overflow', 'inherit');
+            $(".sidebar-menu").css('overflow', 'inherit');
+        }
+    };
+
+});
+
+
+ableApp.controller("accordionController", function ($scope) {
+    //$controller('globalController', { $scope: $scope, $timeout: $timeout, $state: $state });
+
+    // Accordion 
+    $scope.oneAtATime = false;
+    $scope.status = {
+        multiple1Open: true,
+        multiplelclose: false,
+        multiple2close: false,
+        single1Open: true,
+        singlelclose: false,
+        single2close: false,
+        scale1Open: true,
+        scalelclose: false,
+        scale2close: false,
+        color1Open: true,
+        colorlclose: false,
+        color2close: false
+    };
+});
+
+ableApp.controller('commonController', function ($scope) {
+
+
+    angular.element(".md-form-control").each(function () {
+        $(this).parent().append('<span class="md-line"></span>');
+    });
+    angular.element(".md-form-control").change(function () {
+        if ($(this).val() == "") {
+            $(this).removeClass("md-valid");
+        } else {
+            $(this).addClass("md-valid");
+        }
+    });
+});
+
+ableApp.controller('aceEditorController', function ($scope) {
+    //$controller('globalController', { $scope: $scope, $timeout: $timeout, $state: $state });
+    $scope.editor = ace.edit("editor");
+    $scope.editor.setTheme("ace/theme/xcode");
+    $scope.editor.session.setMode("ace/mode/javascript");
+    $scope.editor.getSession().on('change', function (e) {
+        $scope.update(a);
+    });
+    $scope.update = function (a) {
+        $scope.editor.session.setMode(a);
+    };
+    angular.element("#mode").on('change', function (event) {
+        $scope.currentMode = this.value;
+        var a = "ace/mode/" + $scope.currentMode;
+        $scope.editor.session.setMode(a);
+        $scope.update(a);
+    });
+});
+
+ableApp.controller('animationController', function ($scope) {
+    //$controller('globalController', { $scope: $scope, $timeout: $timeout, $state: $state });
+    $scope.transitions = "bounce";
+    $scope.init = function () {
+        $scope.a = $scope.transitions;
+        $scope.name = angular.element(".item").addClass("animated " + $scope.a);
+        $(".item").one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function () {
+            angular.element(".item").removeClass("animated " + $scope.a);
+        });
+    }
+
+    $scope.animate = function (t) {
+
+        $scope.a = $scope.transitions;
+        $scope.name = angular.element(".item").addClass("animated " + $scope.a);
+        $(".item").one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function () {
+            angular.element(".item").removeClass("animated " + $scope.a);
+        });
+    };
+    $scope.Clickanimate = function () {
+
+        $scope.a = $scope.transitions;
+        $scope.name = angular.element(".item").addClass("animated " + $scope.a);
+        $(".item").one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function () {
+            angular.element(".item").removeClass("animated " + $scope.a);
+        });
+    };
+});
+
+ableApp.controller('buttonFabController', function ($scope) {
+    //$controller('globalController', { $scope: $scope, $timeout: $timeout, $state: $state });
+    // toolbar button
+    angular.element(".fab-icon").click(function () {
+        angular.element(".fab-icon i").toggleClass("toolbar-active");
+    });
+
+    // SPEED DIAL button
+    angular.element(".jfab_main_btn").click(function () {
+        angular.element(".jfab_btns_wrapper").removeClass("speed-btn");
+        angular.element(".jfab_btns_wrapper").toggleClass("speed-dial-btn");
+
+    });
+
+    // Radial button
+    angular.element('.fab').click(function () {
+        angular.element('.radial').toggleClass('open');
+    });
+
+    /*floating action button*/
+    angular.element(".popout .btn").click(function () {
+
+        angular.element(this).toggleClass("active");
+        angular.element(this).closest(".popout").find(".panel").toggleClass("active");
+    });
+    angular.element(document).click(function () {
+        angular.element(".popout .panel").removeClass("active");
+        angular.element(".popout .btn").removeClass("active");
+    });
+    angular.element(".popout .panel").click(function (event) {
+
+        event.stopPropagation();
+    });
+    angular.element(".popout .btn").click(function (event) {
+        event.stopPropagation();
+    });
+
+    // FAB-EXPAND-ANIMATION
+    $scope.fab = $('#fab-expand');
+    $scope.isExpanded = false;
+
+    $scope.fab.on('click', function () {
+
+        if (!$scope.isExpanded) {
+            $scope.fab.addClass('is-expanding');
+
+            setTimeout(function () {
+                $scope.fab.find('.icofont').removeClass('icofont-plus').addClass('icofont-ui-close expand-close');
+                $scope.fab.removeClass('is-expanding').addClass('expanded');
+                $scope.isExpanded = true;
+                $scope.fab.trigger('expanded');
+            }, 500);
+        }
+    });
+
+    $scope.fab.on('click', '.expand-close', function (e) {
+
+        $scope.close = $(this);
+        e.stopPropagation();
+        $scope.fab.find('.inner-content').remove();
+        $scope.fab.removeClass('expanded').addClass('is-closing');
+
+        setTimeout(function () {
+            $scope.close.removeClass('icofont-ui-close pull-right expand-close').addClass('icofont-plus');
+            $scope.fab.removeClass('is-closing');
+            $scope.isExpanded = false;
+        }, 500);
+    });
+
+    $scope.fab.on('expanded', function () {
+        $scope.fab.append('<h1 class="inner-content">Content<h1/>');
+    });
+});
+
+
+ableApp.controller('ckEditorController', function ($scope) {
+    //$controller('globalController', { $scope: $scope, $timeout: $timeout, $state: $state });
+    // setup editor options
+    $scope.editorOptions = {
+        language: 'en',
+        uiColor: '#ffffff'
+    };
+    $scope.modelName = '<figure class="image image-illustration" style="float:left"> <img alt="" height="266" src="http://c.cksource.com/a/1/img/demo/brownie.jpg" width="400" /> <figcaption>Bon App&eacute;tit!</figcaption> </figure> <h2>Brownies</h2> <h3>Ingredients:</h3> <ul> <li>½ cup flour</li> <li>1 cup sugar</li> <li>½ cup butter, melted</li> <li>2 eggs</li> <li>1/3 cup cocoa powder</li> </ul> <p>Preheat the oven to <strong>350°F</strong> and grease the baking pan. Combine the flour, sugar and cocoa powder in a medium bowl. In another small bowl, whisk together the butter and eggs. Stir the two mixtures until just combined. Bake the brownies for 25 to 35 minutes. Remove from the oven and let it cool for 5 minutes. </p>';
+    $scope.modelName1 = '<h1 style="text-align:center"><span style="font-family:Georgia,serif"><span style="color:#006699">Recognition of Achievement</span></span></h1> <p style="text-align:justify"><span style="font-family:Georgia,serif">This letter acknowledges the invaluable input <strong>you</strong>, as a member of our <em>Innovation Team</em>,&nbsp;have provided in the &ldquo;Implement Rich Text Editor&rdquo;&nbsp;project. The Management would like to hereby thank you for this great accomplishment that was delivered in a timely fashion, up to the highest company standards, and with great results:</span></p> <table border="1" bordercolor="#ccc" cellpadding="5" cellspacing="0" style="border-collapse:collapse;width:100%" summary="Project Schedule"> <thead> <tr> <th scope="col" style="background-color:#cccccc"><span style="font-family:Georgia,serif">Project Phase</span></th> <th scope="col" style="background-color:#cccccc"><span style="font-family:Georgia,serif">Deadline</span></th> <th scope="col" style="background-color:#cccccc"><span style="font-family:Georgia,serif">Status</span></th> </tr> </thead> <tbody> <tr> <td><span style="font-family:Georgia,serif">Phase 1: Market research</span></td> <td style="text-align:center"><span style="font-family:Georgia,serif">2016-10-15</span></td> <td style="text-align:center"><span style="font-family:Georgia,serif"><span style="color:#19b159">✓</span></span></td> </tr> <tr> <td style="background-color:#eeeeee"><span style="font-family:Georgia,serif">Phase 2: Editor implementation</span></td> <td style="background-color:#eeeeee; text-align:center"><span style="font-family:Georgia,serif">2016-10-20</span></td> <td style="background-color:#eeeeee; text-align:center"><span style="font-family:Georgia,serif"><span style="color:#19b159">✓</span></span></td> </tr> <tr> <td><span style="font-family:Georgia,serif">Phase 3: Rollout to Production</span></td> <td style="text-align:center"><span style="font-family:Georgia,serif">2016-10-22</span></td> <td style="text-align:center"><span style="font-family:Georgia,serif"><span style="color:#19b159">✓</span></span></td> </tr> </tbody> </table> <p style="text-align:justify"><span style="font-family:Georgia,serif">The project that you participated in is of utmost importance to the future success of our platform. &nbsp;We are very proud to share that&nbsp;the&nbsp;CKEditor implementation was a huge success and brought congratulations from both the key Stakeholders and the Customers:</span></p> <blockquote> <p style="text-align:center">This new editor has totally changed our content creation experience!</p> <p style="text-align:center">&mdash; John F. Smith, CEO, The New Web</p> </blockquote> <p style="text-align:justify"><span style="font-family:Georgia,serif">This letter recognizes that much of our success is directly attributable to your efforts.&nbsp;You deserve to be proud of your achievement. May your future efforts be equally successful and rewarding.</span></p> <p style="text-align:justify"><span style="font-family:Georgia,serif">I am sure we will be seeing and hearing a great deal more about your accomplishments in the future. Keep up the good work!</span></p> <p>&nbsp;</p> <p><span style="font-family:Georgia,serif">Best regards,</span></p> <p><span style="font-family:Georgia,serif"><em>The Management</em></span></p>';
+});
+
+ableApp.controller('dataTableController', function ($scope, DTOptionsBuilder) {
+    //$controller('globalController', { $scope: $scope, $timeout: $timeout, $state: $state });
+    $scope.dtOptions = DTOptionsBuilder.newOptions()
+        .withPaginationType('full_numbers')
+        .withBootstrap()
+        .withOption('bLengthChange', false)
+        .withButtons([
+            'copy', 'excel', 'csv', 'pdf', 'print'
+        ]);
+});
+
+
+ableApp.filter('checkIsEmptyData', function () {
+    return function (obj) {
+        if (obj.Category !== "" && angular.isDefined(obj.Category)) {
+            return obj.Value;
+        }
+        {
+            return null
+        }
+    }
+});
+ableApp.filter('checkIsEmptyCat', function () {
+    return function (value) {
+        if (value !== "" && angular.isDefined(value)) {
+            return value;
+        }
+        {
+            return ""
+        }
+    }
+});
+
+ableApp.controller('dashboardController', function ($scope, HttpService, $location, $rootScope, $filter, CriteriaFilter, $state) {
+
+    $scope.countFrom = 0;
+    $scope.summaryDataObj = {
+        "MTDCovers": 0,
+        "MTDSale": 0,
+        "TotalOutlet": 0,
+        "YTDCovers": 0,
+        "YTDSale": 0,
+        "DayCovers": 0,
+        "DaySale": 0
+    };
+    $scope.todaySaleData = {"Sale": 0, "Cover": 0, "Outlets": 0, "LastUpdatedOn": "-"}
+    $scope.hierarchyMaster = {"City": [], "Cluster": [], "Outlet": [], "Region": []};
+    $scope.selectedFilter = {
+        "City": "",
+        "Cluster": "",
+        "Outlet": "",
+        "Region": "",
+        "Session": ""
+    };
+    $scope.corelationFilter = 'D';
+    $scope.subCriteriaFilter = 'MTD_Sale';
+
+    $scope.criteriaOptions = [
+        {name: CriteriaFilter.STORE, ticked: false},
+        {name: CriteriaFilter.BUILDING, ticked: false},
+        {name: CriteriaFilter.CITY, ticked: false},
+        {name: CriteriaFilter.CLUSTER, ticked: false},
+        {name: CriteriaFilter.MODEL, ticked: false},
+        {name: CriteriaFilter.REGION, ticked: true},
+        {name: CriteriaFilter.TIER, ticked: false},
+        {name: CriteriaFilter.TRADEAREA, ticked: false},
+        {name: CriteriaFilter.VINTAGE, ticked: false},
+        {name: CriteriaFilter.LIQUOR, ticked: false}
+    ];
+    $scope.criteriaFilter = $scope.criteriaOptions[5];
+
+
+    $scope.foodcostoptions = {
+        chart: {
+            type: 'discreteBarChart',
+            height: 250,
+            margin: {
+                top: 20,
+                right: 20,
+                bottom: 60,
+                left: 35
+            },
+            x: function (d) {
+                return d.FYName;
+            },
+            y: function (d) {
+                return d.Cost;
+            },
+            showValues: true,
+            valueFormat: function (d) {
+                return d3.format(',.2f')(d);
+            },
+            transitionDuration: 500,
+            xAxis: {
+                axisLabel: ''
+            },
+            yAxis: {
+                axisLabel: 'Perc',
+                axisLabelDistance: 30
+            },
+            tooltip: {
+
+                contentGenerator: function (d) {
+                    var str = '<table>' +
+                        '<thead>' +
+                        '<tr><td class="legend-color-guide"><strong>' + d.data.FYName + '</strong></td></tr>' +
+                        '<tr><td class="legend-color-guide">Perc: <strong>' + d.data.Perc + '</strong></td></tr>' +
+                        '<tr><td class="legend-color-guide">Cost: <strong>' + d.data.Cost + '</strong></td></tr>' +
+                        '<tr><td class="legend-color-guide">Sale: <strong>' + d.data.Sale + '</strong></td></tr>' +
+                        '</thead>';
+
+                    str = str + '</table>';
+                    return str;
+                }
+            }
+        }
+    };
+    $scope.foodcostMonthlyoptions = {
+        chart: {
+            type: 'discreteBarChart',
+            height: 250,
+            margin: {
+                top: 20,
+                right: 20,
+                bottom: 60,
+                left: 35
+            },
+            color: (['#e07a21', '#e07a21']),
+            x: function (d) {
+                return d.FYName;
+            },
+            y: function (d) {
+                return d.Cost;
+            },
+            showValues: true,
+            valueFormat: function (d) {
+                return d3.format(',.2f')(d);
+            },
+            transitionDuration: 500,
+            xAxis: {
+                axisLabel: 'Months'
+            },
+            yAxis: {
+                axisLabel: 'Perc',
+                axisLabelDistance: 30
+            },
+            tooltip: {
+                contentGenerator: function (d) {
+                    var str = '<table>' +
+                        '<thead>' +
+                        '<tr><td class="legend-color-guide"><strong>' + d.data.FYName + '</strong></td></tr>' +
+                        '<tr><td class="legend-color-guide">Perc: <strong>' + d.data.Perc + '</strong></td></tr>' +
+                        '<tr><td class="legend-color-guide">Cost: <strong>' + d.data.Cost + '</strong></td></tr>' +
+                        '<tr><td class="legend-color-guide">Sale: <strong>' + d.data.Sale + '</strong></td></tr>' +
+                        '</thead>';
+
+                    str = str + '</table>';
+                    return str;
+                }
+            }
+        }
+    };
+    $scope.foodcostXSMonthlyoptions = {
+        chart: {
+            type: 'multiBarHorizontalChart',
+            height: 650,
+            margin: {
+                top: 20,
+                right: 20,
+                bottom: 70,
+                left: 50
+            },
+            color: (['#e07a21', '#e07a21']),
+            x: function (d) {
+                return d.FYName;
+            },
+            y: function (d) {
+                return d.Cost;
+            },
+            showValues: true,
+            valueFormat: function (d) {
+                return d3.format(',.2f')(d);
+            },
+            transitionDuration: 500,
+            xAxis: {
+                axisLabel: ''
+            },
+            yAxis: {
+                axisLabel: 'Perc',
+                axisLabelDistance: 0
+            },
+            tooltip: {
+                contentGenerator: function (d) {
+                    var str = '<table>' +
+                        '<thead>' +
+                        '<tr><td class="legend-color-guide"><strong>' + d.data.FYName + '</strong></td></tr>' +
+                        '<tr><td class="legend-color-guide">Perc: <strong>' + d.data.Perc + '</strong></td></tr>' +
+                        '<tr><td class="legend-color-guide">Cost: <strong>' + d.data.Cost + '</strong></td></tr>' +
+                        '<tr><td class="legend-color-guide">Sale: <strong>' + d.data.Sale + '</strong></td></tr>' +
+                        '</thead>';
+
+                    str = str + '</table>';
+                    return str;
+                }
+            }/*,
+            callback : function (chart) {
+                d3.selectAll('.nv-y .nv-axis').style('display', 'none')
+            }*/
+        }
+    };
+
+    $scope.sessionOptions = [
+        {label: "Lunch", value: "L"},
+        {label: "Dinner", value: "D"}
+    ];
+
+
+    $scope.selectedFilter.curDate = getDateNow(-1);
+    var fromdt = new Date();
+    $scope.selectedFilter.fromDate = fromdt.getFullYear() + "-" + (fromdt.getMonth() + 1) + "-01";
+    $scope.selectedDSRFilter = {
+        curDate: getDateNow(-1),
+        dsrCriteria: "RR"
+    };
+    $scope.selectedFCFilter = {
+        Type: "CM",
+        RType: "OA"
+    };
+
+    var td = new Date();
+    var yt = new Date(td);
+    yt.setDate(td.getDate() - 1);
+
+    angular.element('#date, #date2, #dsrdate1, #dsrdate2').bootstrapMaterialDatePicker({
+        time: false,
+        format: "YYYY-MM-DD",
+        clearButton: false,
+        maxDate: yt
+    });
+
+
+    var hierarchyData = new HttpService("Hierarchy");
+    var postData = {
+        "CurrentDate": getDateNow(),
+        "UserId": $rootScope.globals.currentUser.Userinfo.UserId
+    };
+    hierarchyData.post("", postData).then(function (data) {
+        $scope.hierarchyMaster = data;
+        $scope.onFilterChange();
+    }, function (e) {
+        console.info("Error fetching hierarchy data...", e);
+    });
+
+    /* getDaySale();
+
+     function getDaySale() {
+         var todayData = new HttpService("TodaySale");
+         var postData = {
+             "UserId": parseInt($rootScope.globals.currentUser.Userinfo.UserId)
+         };
+         todayData.post("", postData).then(function (data) {
+             $scope.todaySaleData = data;
+         }, function (e) {
+             console.info("Error fetching day sale...", e);
+         });
+     };*/
+
+    /*if ($state.current.name == "dashboard") {
+        getDSRSummary();
+    }
+
+
+    function getDSRSummary() {
+        var dsrSummary = new HttpService("DailySaleReportSummary");
+        var postData = {
+            "CurrentDate": getDateNow(-1),
+            "RType": "HH",
+            "Outlets": getOutletArr(),
+            "UserId": parseInt($rootScope.globals.currentUser.Userinfo.UserId)
+        };
+        dsrSummary.post("", postData).then(function (data) {
+            $scope.dsrSummaryData = data;
+        }, function (e) {
+            console.info("Error fetching day sale...", e);
+        });
+    }*/
+
+    $scope.getRegionDaySale = function () {
+        $scope.todayRegionSaleData = undefined;
+        var todayData = new HttpService("TodayRegionSale");
+        var postData = {
+            "Outlets": getOutletArr(true),
+            "Session": "",
+            "UserId": parseInt($rootScope.globals.currentUser.Userinfo.UserId)
+        };
+        todayData.post("", postData).then(function (data) {
+            $scope.todayRegionSaleData = data;
+        }, function (e) {
+            console.info("Error fetching day sale...", e);
+        });
+    };
+
+
+    $scope.onFilterChange = function (filterControl) {
+        switch (filterControl) {
+            case 'Cluster':
+                if ($scope.selectedFilter.Cluster) {
+                    $scope.selectedFilter.City = "";
+                }
+                $scope.selectedFilter.Outlet = "";
+                break;
+            case 'City':
+                if ($scope.selectedFilter.City) {
+                    $scope.selectedFilter.Cluster = "";
+                }
+                $scope.selectedFilter.Outlet = "";
+                break;
+        }
+        $scope.filteredOutlets = $filter('filter')($scope.hierarchyMaster.Outlet, {
+            RegionName: ($scope.selectedFilter.Region ? $scope.selectedFilter.Region : ''),
+            CityName: ($scope.selectedFilter.City ? $scope.selectedFilter.City : ''),
+            ClusterName: $scope.selectedFilter.Cluster ? $scope.selectedFilter.Cluster : ''
+        });
+        if ($state.current.name == "dsrReports") {
+            $scope.filterDSRReports();
+        } else if ($state.current.name == "foodCost") {
+            $scope.getFoodSummary(filterControl);
+        }
+    };
+
+    $scope.filteredText = function (type) {
+
+        if (!$scope.selectedFilter[type]) {
+            return "All " + type;
+        } else {
+            if (type == "Session") {
+                return $filter('filter')($scope.sessionOptions, {value: $scope.selectedFilter.Session})[0].label;
+            } else if (type == "Outlet") {
+                return $filter('filter')($scope.hierarchyMaster.Outlet, {OutletCode: $scope.selectedFilter.Outlet})[0].OutletName;
+            }
+            return $scope.selectedFilter[type] + " " + type;
+        }
+
+    };
+
+
+    $scope.itsCriteriaGridView = false;
+
+    $scope.setCriteriaGridView = function () {
+        if ($scope.itsCriteriaGridView) {
+            $scope.itsCriteriaGridView = false;
+        } else {
+            $scope.itsCriteriaGridView = true;
+        }
+    };
+
+
+    $scope.selection = {
+        type: "DAY",
+        type2: "DATE",
+        type3: "DAY"
+    };
+
+
+    $scope.monthMasterArr = [
+        {text: "Jan", value: 01, ticked: false},
+        {text: "Feb", value: 02, ticked: false},
+        {text: "Mar", value: 03, ticked: false},
+        {text: "Apr", value: 04, ticked: false},
+        {text: "May", value: 05, ticked: false},
+        {text: "Jun", value: 06, ticked: false},
+        {text: "Jul", value: 07, ticked: false},
+        {text: "Aug", value: 08, ticked: false},
+        {text: "Sep", value: 09, ticked: false},
+        {text: "Oct", value: 10, ticked: false},
+        {text: "Nov", value: 11, ticked: false},
+        {text: "Dec", value: 12, ticked: false}
+    ];
+
+    var tempMonths = [].concat($scope.monthMasterArr);
+    $scope.yearArr = [];
+
+    for (var d = 0; d < 5; d++) {
+        var yrArrObj = {};
+        var dt = new Date();
+        var currYr = dt.getFullYear();
+        var yr = dt.getFullYear() - d;
+        yrArrObj.text = yr;
+        if (yr == currYr) {
+            yrArrObj.ticked = true;
+        } else {
+            yrArrObj.ticked = false;
+        }
+        $scope.yearArr.push(yrArrObj)
+    }
+
+    $scope.selectedMonthObj = [];
+    $scope.selectedYearObj = [];
+    $scope.selectedYearObj.push($scope.yearArr[0]);
+    $scope.GsiReportHeading = "MTD Comparison";
+    onYearChange($scope.selectedYearObj[0].text);
+
+    function onYearChange(year) {
+        var dd = new Date();
+        var yy = dd.getFullYear();
+        var mm = dd.getMonth();
+        var newMonthArr = [];
+        if (yy == year) {
+            var tempMonthArr = $scope.monthMasterArr;
+            for (var i = 0; i <= mm; i++) {
+                if (tempMonthArr[i].value - 1 == mm) {
+                    tempMonthArr[i].ticked = true;
+                    $scope.selectedMonthObj.push(tempMonthArr[i]);
+                }
+                newMonthArr.push(tempMonthArr[i]);
+            }
+            $scope.monthArr = newMonthArr;
+        } else {
+            for (var i = 0; i < $scope.monthMasterArr.length; i++) {
+                $scope.monthMasterArr[i].ticked = false;
+            }
+            $scope.monthMasterArr[mm].ticked = true;
+            $scope.monthArr = $scope.monthMasterArr;
+            $scope.selectedMonthObj.push($scope.monthArr[mm]);
+        }
+    }
+
+
+    function ifLastDate(selectedDate) {
+        $scope.ifItsLastDate = false;
+        var dateArr = selectedDate.split("-");
+        var dateStr = dateArr[0] + "-" + dateArr[1] + "-" + dateArr[1];
+        var date = new Date(dateStr);
+        var lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0);
+        var mm = (lastDay.getMonth() + 1) < 10 ? '0' + (lastDay.getMonth() + 1) : (lastDay.getMonth() + 1);
+        var lastDayWithSlashes = lastDay.getFullYear() + '-' + mm + '-' + (lastDay.getDate());
+        if (selectedDate == lastDayWithSlashes) {
+            $scope.ifItsLastDate = true;
+            $scope.selection.type = "DATE";
+        }
+    };
+
+    $scope.filterDSRReports = function () {
+        ifLastDate($scope.selectedDSRFilter.curDate);
+        $scope.dsrData = null;
+        var reportsData = new HttpService("DailySaleReport");
+        var postData = {
+            "CurrentDate": $scope.selectedDSRFilter.curDate,
+            "Outlets": getOutletArr(),
+            "RType": $scope.selectedDSRFilter.dsrCriteria,
+            "UserId": parseInt($rootScope.globals.currentUser.Userinfo.UserId),
+            "SelectionType": $scope.selection.type
+        };
+        reportsData.post("", postData).then(function (data) {
+            $scope.dsrData = data;
+
+        }, function (e) {
+            console.info("Error fetching filtered data...", e);
+        });
+    };
+
+    function filterSalesSummary() {
+
+        var paramType = 'CM';
+        if ($scope.selectedFilter.Region != "" && $scope.selectedFilter.Outlet == "") {
+            paramType = 'RG';
+            if ($scope.selectedFilter.Cluster != "" || $scope.selectedFilter.City != "") {
+                paramType = 'CL';
+                if ($scope.selectedFilter.Outlet != "" || $scope.selectedFilter.Session != "") {
+                    paramType = 'ST';
+                }
+            }
+        } else if ($scope.selectedFilter.Outlet != "") {
+            paramType = 'ST';
+        } else {
+            paramType = 'CM';
+        }
+
+        var summaryData = new HttpService("SummaryReport");
+        var dailySaleSummaryData = new HttpService("DailySaleReportSummary");
+        var filterSession = "";
+        if ($scope.selectedFilter.Session == 'L') {
+            filterSession = 1;
+        } else if ($scope.selectedFilter.Session == 'D') {
+            filterSession = 2;
+        }
+
+        var postData = {
+            "CurrentDate": $scope.selectedFilter.curDate,
+            "Outlets": getOutletArr(),
+            "Session": filterSession,
+            "ParamType": paramType,
+            "UserId": parseInt($rootScope.globals.currentUser.Userinfo.UserId)
+        };
+        var dsrPostData = {
+            "CurrentDate": getDateNow(-1),
+            "RType": "HH",
+            "Outlets": getOutletArr(),
+            "UserId": parseInt($rootScope.globals.currentUser.Userinfo.UserId)
+        };
+        dailySaleSummaryData.post("", dsrPostData).then(function (data) {
+            $scope.dsrSummaryData = data;
+        }, function (e) {
+            console.info("Error fetching day sale...", e);
+        });
+
+        summaryData.post("", postData).then(function (data) {
+            $scope.summaryDataObj = data;
+        }, function (e) {
+            console.info("Error fetching filtered data...", e);
+        });
+
+    };
+
+    function filterActualvsTarget() {
+        var monthlySummary = new HttpService("MonthlySummary");
+        var postData = {
+            "CurrentDate": $scope.selectedFilter.curDate,
+            "Outlets": getOutletArr(),
+            "Session": $scope.selectedFilter.Session,
+            "UserId": parseInt($rootScope.globals.currentUser.Userinfo.UserId)
+        };
+        monthlySummary.post("", postData).then(function (data) {
+            $scope.monthlySummaryData = [];
+            if (data.MonthList.length > 0) {
+                var saleData = [];
+
+                var targetData = [];
+
+                for (var i = 0; i < data.MonthList.length; i++) {
+                    saleData.push({x: i, z: data.MonthList[i].MTD_Name, y: data.MonthList[i].MTD_Sale});
+                    targetData.push({x: i, z: data.MonthList[i].MTD_Name, y: data.MonthList[i].MTD_Target});
+                }
+                //$scope.monthlySummaryData = [saleData, targetData];
+                $scope.monthlySummaryData = getLineChart(saleData, targetData);
+            }
+        }, function (e) {
+            console.info("Error fetching filtered data...", e);
+        });
+    };
+    $scope.foodCostData = "";
+    $scope.getFoodSummary = function (filterOption) {
+        switch (filterOption) {
+            case 'Year':
+                $scope.selectedMonthObj = [];
+                onYearChange($scope.selectedYearObj[0].text);
+                break;
+        }
+        if($scope.selectedFCFilter.Type == "CM"){
+            $scope.selectedCriteria="Company"
+        }else if($scope.selectedFCFilter.Type == "RG"){
+            $scope.selectedCriteria="Region"
+        }else if($scope.selectedFCFilter.Type == "CT"){
+            $scope.selectedCriteria="City"
+        }else if($scope.selectedFCFilter.Type == "ST"){
+            $scope.selectedCriteria="Store"
+        }
+        $scope.foodCostData = "";
+        $scope.selectedYear = $scope.selectedYearObj[0].text;
+        $scope.selectedMonth = $scope.selectedMonthObj[0].text;
+
+        var foodCostSummary = new HttpService("FoodCost");
+        $scope.gsiReportTypeFilter = 'YTD';
+        var postData = {
+            "Year": $scope.selectedYearObj[0].text,
+            "Month": $scope.selectedMonthObj[0].value,
+            "Type": $scope.selectedFCFilter.Type,
+            "RType": $scope.selectedFCFilter.RType,
+            "Outlets": getOutletArr(),
+            "UserId": parseInt($rootScope.globals.currentUser.Userinfo.UserId)
+        };
+        foodCostSummary.post("", postData).then(function (data) {
+            $scope.foodCostData = data;
+            /*      var mdataObj = {
+                      key: "MTD",
+                      values: data.MTD.map(function (d) {
+                          return {
+                              FYName: $scope.selectedMonthObj[0].text + " " + d.FYName,
+                              Perc: d.Perc,
+                              Cost: d.FoodCostAPC,
+                              Sale: d.FoodSaleAPC
+                          }
+                      })
+                  };
+                  $scope.filteredFoodCostMTD = [mdataObj];*/
+
+
+            /*  var ydataObj = {
+                  key: "YTD",
+                  values: data.YTD.map(function (d) {
+                      return {
+                          FYName: "FY " + d.FYName,
+                          Perc: d.Perc,
+                          Cost: d.FoodCostAPC,
+                          Sale: d.FoodSaleAPC
+                      }
+                  })
+              };
+              $scope.filteredFoodCostYTD = [ydataObj];*/
+
+            /*    var mndataObj = {
+                    key: "Months of " + $scope.selectedYear,
+                    values: data.Monthly.map(function (d) {
+                        return {
+                            FYName: d.MonthName,
+                            Perc: d.Perc,
+                            Cost: d.FoodCostAPC,
+                            Sale: d.FoodSaleAPC
+                        }
+                    })
+                };
+                $scope.filteredFoodCostMonthly = [mndataObj];*/
+
+
+        }, function (e) {
+            console.info("Error fetching food sale...", e);
+        });
+        $scope.foodcostXSMonthlyoptions.chart.stacked = false;
+        $scope.foodcostXSMonthlyoptions.chart.showControls = false;
+        $scope.foodcostMonthlyoptions.chart.xAxis.axisLabel = "Months of " + $scope.selectedYear;
+    };
+
+    function getLineChart(arr1, arr2) {
+        //Line chart data should be sent as an array of series objects.
+        return [{
+            values: arr1, //values - represents the array of {x,y} data points
+            key: 'Actual Sales', //key  - the name of the series.
+            color: '#d78157', //color - optional: choose your own line color.
+            area: true
+        }, {
+            values: arr2,
+            key: 'Target Sales',
+            color: '#edd57a',
+            area: true //area - set to true if you want this line to turn into a filled area chart.
+        }];
+    }
+
+    $scope.formatDate = function (strDate, formatStr) {
+        var dt = new Date();
+        if (strDate.indexOf("-") >= 0) {
+            dt = new Date(strDate.split("-")[0] + "/" + strDate.split("-")[1] + "/" + strDate.split("-")[2])
+        } else {
+            dt = new Date(strDate)
+        }
+        return $filter('date')(dt, formatStr);
+    };
+    $scope.filterPercent = function (num, total) {
+        return $filter('number')(((num / total) * 100), 2) + "%";
+    };
+
+    function getOutletArr(allOutlets) {
+        var arr = [];
+        var filteredArr = [];
+
+
+        if ($scope.selectedFilter.Outlet) {
+            return $scope.selectedFilter.Outlet;
+        }
+        filteredArr = $scope.selectedFilter.Region ? $scope.filteredOutlets : [];
+
+
+        for (var i = 0; i < filteredArr.length; i++) {
+            arr.push(filteredArr[i].OutletCode);
+        }
+        return arr.toString();
+    }
+
+    function getDateNow(dayOffset) {
+        var dateMod = (24 * 60 * 60 * 1000) * (dayOffset ? dayOffset : 0); //5 days
+        var myDate = new Date();
+        myDate.setTime(myDate.getTime() + dateMod);
+        return myDate.getFullYear() + "-" + (myDate.getMonth() + 1) + "-" + myDate.getDate();
+    }
+
+    $scope.getCurDate = function (dayOffset) {
+        return getDateNow(dayOffset)
+    };
+
+});
+
+
+ableApp.controller('flagController', function ($scope) {
+    //$controller('globalController', { $scope: $scope, $timeout: $timeout, $state: $state });
+    angular.element('.f-item').click(function () {
+        $scope.font_class = $(this).children().attr('class');
+        $scope.country_name = $(this).parent().children('.content-flag').children(0).html();
+        angular.element('#myModal').modal('show');
+        angular.element('#icon').removeClass();
+        angular.element('#icon').addClass($scope.font_class);
+        angular.element('#icon').addClass('fa-lg');
+        angular.element('#name').val($scope.country_name);
+        angular.element('#code').val('<i class="' + $scope.font_class + '"></i>');
+    });
+});
+
+
+ableApp.controller('fontAwesomeController', function ($scope) {
+    //$controller('globalController', { $scope: $scope, $timeout: $timeout, $state: $state });
+    angular.element('.icon-list-demo div').click(function () {
+        $scope.font_class = ($(this).children('.fa').attr('class'));
+        angular.element('#myModal').modal('show');
+        angular.element('#icon').removeClass();
+        angular.element('#icon').addClass($scope.font_class);
+        angular.element('#icon').addClass('fa-lg');
+        angular.element('#name').val($scope.font_class);
+        angular.element('#code').val('<i class="' + $scope.font_class + '"></i>');
+    });
+});
+
+ableApp.controller('fooTableController', function ($scope) {
+    //$controller('globalController', { $scope: $scope, $timeout: $timeout, $state: $state });
+    $scope.clearFilter = function () {
+        $('.filter-status').val('');
+        $('.footable').trigger('footable_clear_filter');
+    };
+
+    $scope.filteringEventHandler = function (e) {
+        var selected = $('.filter-status').find(':selected').text();
+        if (selected && selected.length > 0) {
+            e.filter += (e.filter && e.filter.length > 0) ? ' ' + selected : selected;
+            e.clear = !e.filter;
+        }
+    };
+
+    $scope.filterByStatus = function () {
+        $('.footable').trigger('footable_filter', {
+            filter: $('#filter').val()
+        });
+    };
+
+    $scope.filter = {
+        status: null
+    };
+});
+
+ableApp.controller('footerController', function ($scope, $window) {
+    //$controller('globalController', { $scope: $scope, $timeout: $timeout, $state: $state });
+    var appWindow = angular.element($window);
+
+    appWindow.bind('resize', function () {
+        $scope.setSize();
+    });
+    appWindow.bind('load', function () {
+        $scope.setSize();
+    });
+
+
+    $scope.setSize = function () {
+        if (appWindow.height() > $('body').height()) {
+            $('.footer-bg').css('position', 'fixed');
+        } else {
+            $('.footer-bg').css('position', 'absolute');
+        }
+
+    };
+});
+
+
+ableApp.controller('otherController', function ($scope) {
+    //$controller('globalController', { $scope: $scope, $timeout: $timeout, $state: $state });
+    //other pagination
+    $scope.currentPage = 0;
+    $scope.startPage = 0;
+});
+
+
+ableApp.controller('tooltipsController', function ($scope, $sce) {
+    //$controller('globalController', { $scope: $scope, $timeout: $timeout, $state: $state });
+    //html tooltips
+    $scope.htmlTooltip = $sce.trustAsHtml('<em>Tooltip</em> <u>with</u> <b>HTML</b>');
+
+    //html popover tooltip
+    $scope.htmlPopover = $sce.trustAsHtml('<em>Tooltip</em> <u>with</u> <b>HTML</b>');
+});
+
+ableApp.controller('typIconsController', function ($scope) {
+    //$controller('globalController', { $scope: $scope, $timeout: $timeout, $state: $state });
+    angular.element('.icon-list-demo div').click(function () {
+        $scope.font_class = ($(this).children('.typcn').attr('class'));
+        angular.element('#myModal').modal('show');
+        angular.element('#icon').removeClass();
+        angular.element('#icon').addClass($scope.font_class);
+        angular.element('#icon').addClass('fa-lg');
+        angular.element('#name').val($scope.font_class);
+        angular.element('#code').val('<i class="' + $scope.font_class + '"></i>');
+    });
+});
+
+ableApp.controller('wallController', function ($scope) {
+    //$controller('globalController', { $scope: $scope, $timeout: $timeout, $state: $state });
+    angular.element('#post-new').hide();
+    angular.element('#post-message').keyup(function () {
+        if (($(this).val() != "")) {
+            angular.element('#post-new').show();
+        } else
+            angular.element('#post-new').hide();
+    });
+});
+
+
+ableApp.controller('weatherIconController', function ($scope) {
+    //$controller('globalController', { $scope: $scope, $timeout: $timeout, $state: $state });
+    angular.element('.icon-list-demo div').on('click', function () {
+        $scope.font_class = ($(this).children('.wi').attr('class'));
+        if (!$(this).hasClass('svg-icon')) {
+            angular.element('#myModal').modal('show');
+            angular.element('#icon').removeClass();
+            angular.element('#icon').addClass($scope.font_class);
+            angular.element('#icon').addClass('fa-lg');
+            angular.element('#name').val($scope.font_class);
+            angular.element('#code').val('<i class="' + $scope.font_class + '"></i>');
+        }
+    });
+});
+
+
+ableApp.controller('LoginController',
+    ['$scope', '$rootScope', '$location', 'AuthenticationService',
+        function ($scope, $rootScope, $location, AuthenticationService) {
+
+            $scope.userLoginInfo = {
+                //userName: "admin",
+                //userPassword: "Sayaji*Barbeque"
+                userName: "",
+                userPassword: ""
+            };
+            $scope.loginForm = {};
+            $scope.loginErrorMsg = "";
+
+            $scope.rememberMe = false;
+
+            $scope.loginProcessing = false;
+
+            // reset login status
+            AuthenticationService.clearSession();
+
+            $scope.login = function () {
+                $scope.loginErrorMsg = "";
+                AuthenticationService.login($scope.userLoginInfo.userName, $scope.userLoginInfo.userPassword).then(function (response) {
+                    $scope.loginProcessing = true;
+                    if (response.Validate === "TRUE") {
+                        $location.path('/dsr');
+                        AuthenticationService.setSession($scope.userLoginInfo.userName, $scope.userLoginInfo.userPassword, response, $scope.rememberMe);
+
+                    } else {
+                        $scope.loginProcessing = false;
+                        $scope.loginErrorMsg = response.Message
+                    }
+
+                }, function (error) {
+                    $scope.loginProcessing = false;
+
+                });
+
+            };
+
+        }]);
+
+ableApp.controller('ChangePassController',
+    ['$scope', '$location', 'HttpService', '$rootScope', 'AuthenticationService',
+        function ($scope, $location, HttpService, $rootScope, AuthenticationService) {
+            $scope.changePass = {
+                form: {},
+                info: {}
+            };
+            $scope.changePassSuccessMessage = "";
+            $scope.changePassErrorMsg = "";
+            $scope.changePassword = function () {
+                $scope.changePassProcessing = true;
+                var changePassData = new HttpService("ChangePassword");
+                var postData = {
+                        "UserId": parseInt($rootScope.globals.currentUser.Userinfo.UserId),
+                        "NewPassword": $scope.changePass.info.newPassword,
+                        "OldPassword": $scope.changePass.info.oldPassword
+                    }
+                ;
+                changePassData.post("", postData).then(function (response) {
+                    if (response.Validate === "TRUE") {
+                        $scope.changePassErrorMsg = false;
+                        $scope.changePassSuccessMessage = true;
+                        $scope.changePassSuccessMessage = response.Message;
+                        $location.path('/login');
+                        //AuthenticationService.clearSession();
+
+                    } else {
+                        $scope.changePassProcessing = false;
+                        $scope.changePassErrorMsg = response.Message
+                    }
+                }, function (e) {
+                    $scope.changePassProcessing = false;
+                });
+            };
+
+        }]);

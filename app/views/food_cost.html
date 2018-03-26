@@ -1,0 +1,718 @@
+<div class="horizontal-fixed fixed">
+    <div class="wrapper">
+        <div ng-include="'shared/header.html?v=6'"></div>
+        <div ng-include="'shared/sidebar.html?v=6'"></div>
+        <div ng-include="'shared/headerModal.html?v=6.1'"></div>
+        <div class="content-wrapper">
+            <!-- Container-fluid starts -->
+            <!-- Main content starts -->
+            <div class="container-fluid">
+
+                <h6 class="text-center">
+                    <small>*All sales figures are in <em>Lac(s) <i
+                            class="fa fa-inr"></i></em> unless indicated otherwise
+                    </small>
+                </h6>
+
+
+                <div class="row">
+
+
+                    <div class="col-md-12 xs-no-padding">
+                        <!-- Radial variants start -->
+
+                        <div class="card">
+                            <div class="card-header">
+
+                                <h5 class="card-header-text">Cost Reports &nbsp;
+                                </h5>
+                                <label class="label bg-facebook label-md">
+                                    {{ selectedMonth }} - {{ selectedYear }}</label>
+
+                                <div class="f-right">
+                                      <span class="hidden-md-down">
+                                      <label class="label label-inverse-success" ng-if="!selectedFilter.Region">All
+                                          Region</label>
+                                      <span ng-if="selectedFilter.Region">
+                                          <label class="label label-inverse-success">{{filteredText("Region")}}</label>
+                                          <label class="label label-inverse-success" ng-if="selectedFilter.Cluster">{{filteredText("Cluster")}}</label>
+                                          <label class="label label-inverse-success" ng-if="selectedFilter.City">{{filteredText("City")}}</label>
+                                      </span>
+                                      <label class="label label-inverse-success">{{filteredText('Outlet')}}</label>
+                                      </span>
+
+                                    <a href="javascript:;" class="filter-button"><i class="icofont icofont-filter"></i>
+                                        <span class="hidden-md-down">Filters</span></a>
+
+                                </div>
+
+                                <div class="hidden-md-up text-center text-muted p-t-10 small">
+                                    <strong>Filtered on: </strong>
+                                    <span class="label label-inverse-info" ng-if="!selectedFilter.Region">All
+                                         Region</span>
+                                    <span ng-if="selectedFilter.Region">
+                                         <span class="label label-inverse-info">{{filteredText("Region")}}</span>
+                                         <span class="label label-inverse-info" ng-if="selectedFilter.Cluster">{{filteredText("Cluster")}}</span>
+                                         <span class="label label-inverse-info" ng-if="selectedFilter.City">{{filteredText("City")}}</span>
+                                     </span>
+                                    <span class="label label-inverse-info">{{filteredText('Outlet')}}</span>
+                                </div>
+
+                            </div>
+                            <div class="card-block xs-no-padding">
+                                <div class="row salesFilter row" style="display: none;">
+                                    <form class="form-floating-labels">
+                                        <div class="col-md-3" style="margin: 15px -50px 15px 10px;">
+                                            <div class="d-inline">
+                                                Year:
+                                                <div class="d-inline" helper-elements="none"
+                                                     on-item-click="onFilterChange('Year')" isteven-multi-select
+                                                     input-model="yearArr" output-model="selectedYearObj"
+                                                     button-label="text" item-label="text" tick-property="ticked"
+                                                     selection-mode="single">
+                                                </div>
+                                            </div>
+                                            <div class="d-inline">
+                                                Month:
+                                                <div class="d-inline" helper-elements="none"
+                                                     on-item-click="onFilterChange('Month')" isteven-multi-select
+                                                     input-model="monthArr" output-model="selectedMonthObj"
+                                                     button-label="text" item-label="text" tick-property="ticked"
+                                                     selection-mode="single">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div class="md-input-wrapper">
+                                                <select class="md-form-control" ng-change="onFilterChange('Region')"
+                                                        ng-model="selectedFilter.Region"
+                                                        ng-options="item.RegionName as item.RegionName for item in hierarchyMaster.Region">
+                                                    <option value=""></option>
+                                                </select>
+                                                <label>Select Region</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div class="md-input-wrapper">
+                                                <select class="md-form-control"
+                                                        ng-change="onFilterChange('Cluster')"
+                                                        ng-disabled="!selectedFilter.Region"
+                                                        ng-model="selectedFilter.Cluster"
+                                                        ng-options="item.ClusterName as item.ClusterName for item in hierarchyMaster.Cluster | filter:{RegionName:(selectedFilter.Region? selectedFilter.Region : '')}">
+                                                    <option value=""></option>
+                                                </select>
+                                                <label>Select Cluster</label>
+                                            </div>
+
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div class="md-input-wrapper">
+                                                <select class="md-form-control" ng-change="onFilterChange('City')"
+                                                        ng-disabled="!selectedFilter.Region"
+                                                        ng-model="selectedFilter.City"
+                                                        ng-options="item.CityName as item.CityName for item in hierarchyMaster.City | filter:{RegionName:(selectedFilter.Region? selectedFilter.Region : '')}">
+                                                    <option value=""></option>
+                                                </select>
+                                                <label>Select City</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+
+                                            <div class="md-input-wrapper">
+                                                <select class="md-form-control" ng-change="onFilterChange('Outlet')"
+                                                        ng-model="selectedFilter.Outlet"
+                                                        ng-options="item.OutletCode as item.OutletName for item in filteredOutlets">
+                                                    <option value=""></option>
+                                                </select>
+                                                <label>Select Outlet</label>
+                                            </div>
+                                        </div>
+                                    </form>
+
+                                </div>
+                                <div class="f-right p-b-10 m-r-5 d-inline">
+                                    <div class="dropdown d-inline">
+                                        <button class="btn btn-secondary dropdown-toggle" type="button"
+                                                id="dropdownMenuButton" data-toggle="dropdown"
+                                                aria-haspopup="true" aria-expanded="false">
+                                            <span ng-if="selectedFCFilter.Type == 'CM'">Company</span>
+                                            <span ng-if="selectedFCFilter.Type == 'RG'">Region</span>
+                                            <span ng-if="selectedFCFilter.Type == 'CT'">City</span>
+                                            <span ng-if="selectedFCFilter.Type == 'ST'">Store</span>
+                                        </button>
+                                        <div class="dropdown-menu dropdown-menu-right dropdown-menu-options"
+                                             aria-labelledby="dropdownMenuButton2">
+                                            <div class="btn-group-vertical">
+                                                <label class="btn btn-primary"
+                                                       ng-model="selectedFCFilter.Type"
+                                                       ng-change="getFoodSummary()"
+                                                       uib-btn-radio="'CM'">Company</label>
+                                                <label class="btn btn-primary"
+                                                       ng-model="selectedFCFilter.Type"
+                                                       ng-change="getFoodSummary()"
+                                                       uib-btn-radio="'RG'">Region</label>
+                                                <label class="btn btn-primary"
+                                                       ng-model="selectedFCFilter.Type"
+                                                       ng-change="getFoodSummary()"
+                                                       uib-btn-radio="'CT'">City</label>
+                                                <label class="btn btn-primary"
+                                                       ng-model="selectedFCFilter.Type"
+                                                       ng-change="getFoodSummary()"
+                                                       uib-btn-radio="'ST'">Store</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="dropdown d-inline">
+                                        <button class="btn btn-secondary dropdown-toggle" type="button"
+                                                id="dropdownMenuButton2" data-toggle="dropdown"
+                                                aria-haspopup="true" aria-expanded="false">
+                                            <span ng-if="selectedFCFilter.RType == 'OA'">Overall</span>
+                                            <span ng-if="selectedFCFilter.RType == 'AK'">Alacarte</span>
+                                            <span ng-if="selectedFCFilter.RType == 'BU'">Buffet Unlimited</span>
+                                            <span ng-if="selectedFCFilter.RType == 'PU'">Pizza Unlimited</span>
+                                            <span ng-if="selectedFCFilter.RType == 'CB'">Combo</span>
+                                        </button>
+                                        <div class="dropdown-menu dropdown-menu-right dropdown-menu-options"
+                                             aria-labelledby="dropdownMenuButton2">
+                                            <div class="btn-group-vertical">
+                                                <label class="btn btn-primary"
+                                                       ng-model="selectedFCFilter.RType"
+                                                       ng-change="getFoodSummary()"
+                                                       uib-btn-radio="'OA'">Overall</label>
+                                                <label class="btn btn-primary"
+                                                       ng-model="selectedFCFilter.RType"
+                                                       ng-change="getFoodSummary()"
+                                                       uib-btn-radio="'AK'">Alacarte</label>
+                                                <label class="btn btn-primary"
+                                                       ng-model="selectedFCFilter.RType"
+                                                       ng-change="getFoodSummary()"
+                                                       uib-btn-radio="'BU'">Buffet Unlimited</label>
+                                                <label class="btn btn-primary"
+                                                       ng-model="selectedFCFilter.RType"
+                                                       ng-change="getFoodSummary()"
+                                                       uib-btn-radio="'PU'">Pizza Unlimited</label>
+                                                <label class="btn btn-primary"
+                                                       ng-model="selectedFCFilter.RType"
+                                                       ng-change="getFoodSummary()"
+                                                       uib-btn-radio="'CB'">Combo</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="card-block">
+                                        <div class="text-center" ng-if="!foodCostData">
+                                            <br>
+                                            <br>
+                                            <i class="fa fa-circle-o-notch fa-spin fa-lg"></i> Loading...
+                                        </div>
+                                        <div class="table-responsive">
+                                            <div class="">
+                                                <table class="table text-center hidden-md-down" ng-if="foodCostData">
+                                                    <thead class="table-inverse">
+                                                    <tr>
+                                                        <th colspan="8" style="text-align: left!important;">
+                                                            <p><strong>#</strong></p>
+                                                        </th>
+                                                        <th class="nodata"></th>
+                                                        <th colspan="3">
+                                                            <p><strong>Beverage</strong></p>
+                                                        </th>
+                                                    </tr>
+                                                    <tr class="bg-facebook">
+                                                        <th style="background-color: #eab907" >
+                                                            <p><strong># {{ selectedCriteria}}</strong></p>
+                                                        </th>
+                                                        <th>
+                                                            <p><strong>Type</strong></p>
+                                                        </th>
+                                                        <th>
+                                                            <p><strong>Sale</strong></p>
+                                                        </th>
+                                                        <th>
+                                                            <p><strong>Cost</strong></p>
+                                                        </th>
+                                                        <th>
+                                                            <p><strong>Cost %</strong></p>
+                                                        </th>
+                                                        <th>
+                                                            <p><strong>Pax </strong></p>
+                                                        </th>
+                                                        <th>
+                                                            <p><strong>PP Cost</strong></p>
+                                                        </th>
+                                                        <th>
+                                                            <p><strong>PP QtyConsumed</strong></p>
+                                                        </th>
+                                                        <th></th>
+                                                        <th>
+                                                            <p><strong>Sale</strong></p>
+                                                        </th>
+                                                        <th>
+                                                            <p><strong>Cost</strong></p>
+                                                        </th>
+                                                        <th>
+                                                            <p><strong>Cost %</strong></p>
+                                                        </th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    <tr ng-repeat="item in foodCostData.FCTotalSale"
+                                                        ng-class="{'grey-row':item.RegionDesc=='Total'}">
+                                                        <td>
+                                                            <p class="text-left">
+                                                            <strong>{{item.RegionDesc}}</strong></p>
+                                                        </td>
+                                                        <td>
+                                                            <p class="text-left">
+                                                                <strong>{{item.Type}}</strong></p>
+                                                        </td>
+                                                        <td>
+                                                            <p><strong>{{item.Sale}}</strong></p>
+                                                        </td>
+                                                        <td>
+                                                            <p><strong>{{item.Cost}}</strong></p>
+                                                        </td>
+                                                        <td>
+                                                            <p><strong>{{item.CostPer}}</strong></p>
+                                                        </td>
+                                                        <td>
+                                                            <p><strong>{{item.Pax}}</strong></p>
+                                                        </td>
+                                                        <td>
+                                                            <p><strong>{{item.PerPersonCost}}</strong></p>
+                                                        </td>
+                                                        <td>
+                                                            <p><strong>{{item.PerPersonQtyConsumed}}</strong></p>
+                                                        </td>
+                                                        <td>&nbsp;</td>
+                                                        <td>
+                                                            <p>
+                                                                <strong>{{foodCostData.FCBev[$index].BevSale}}</strong>
+                                                            </p>
+                                                        </td>
+                                                        <td>
+                                                            <p>
+                                                                <strong>{{foodCostData.FCBev[$index].BevCost}}</strong>
+                                                            </p>
+                                                        </td>
+                                                        <td>
+                                                            <p>
+                                                                <strong>{{foodCostData.FCBev[$index].BevCostPer}}</strong>
+                                                            </p>
+                                                        </td>
+                                                    </tr>
+                                                    <tr ng-if="foodCostData.FCTotalSale.length==0 || foodCostData==null"
+                                                        style="background-color: #eae9e9!important;">
+                                                        <td colspan="12">No Data Available</td>
+                                                    </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+
+                                            <div class="">
+                                                <table class="table text-center table-sm hidden-md-up"
+                                                       ng-if="foodCostData">
+                                                    <thead class="table-inverse ">
+                                                    <tr>
+                                                        <th colspan="8" style="text-align: left!important;">
+                                                            <p><strong>#FC Total Sale</strong></p>
+                                                        </th>
+                                                    </tr>
+                                                    <tr class="bg-facebook">
+                                                        <th style="background-color: #eab907">
+                                                            <p><strong>{{ selectedCriteria}}</strong></p>
+                                                        </th>
+                                                        <th>
+                                                            <p><strong>Type</strong></p>
+                                                        </th>
+                                                        <th>
+                                                            <p><strong>Sale</strong></p>
+                                                        </th>
+                                                        <th>
+                                                            <p><strong>Cost</strong></p>
+                                                        </th>
+                                                        <th>
+                                                            <p><strong>Cost %</strong></p>
+                                                        </th>
+                                                        <th>
+                                                            <p><strong>Pax </strong></p>
+                                                        </th>
+                                                        <th>
+                                                            <p><strong>PP Cost</strong></p>
+                                                        </th>
+                                                        <th>
+                                                            <p><strong>PP Qty Cons.</strong></p>
+                                                        </th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    <tr ng-repeat="item in foodCostData.FCTotalSale"
+                                                        ng-class="{'grey-row':item.RegionDesc=='Total'}">
+                                                        <td>
+                                                            <p class="text-left"><strong>{{item.RegionDesc}}</strong></p>
+                                                        </td>
+                                                        <td>
+                                                            <p class="text-left">
+                                                                <strong>{{item.Type}}</strong></p>
+                                                        </td>
+                                                        <td>
+                                                            <p><strong>{{item.Sale}}</strong></p>
+                                                        </td>
+                                                        <td>
+                                                            <p><strong>{{item.Cost}}</strong></p>
+                                                        </td>
+                                                        <td>
+                                                            <p><strong>{{item.CostPer}}</strong></p>
+                                                        </td>
+                                                        <td>
+                                                            <p><strong>{{item.Pax}}</strong></p>
+                                                        </td>
+                                                        <td>
+                                                            <p><strong>{{item.PerPersonCost}}</strong></p>
+                                                        </td>
+                                                        <td>
+                                                            <p><strong>{{item.PerPersonQtyConsumed}}</strong></p>
+                                                        </td>
+                                                    </tr>
+                                                    <tr ng-if="foodCostData.FCTotalSale.length==0 || foodCostData==null"
+                                                        style="background-color: #eae9e9!important;">
+                                                        <td colspan="9">No Data Available</td>
+                                                    </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+
+                                            <div class="">
+                                                <table class="table text-center table-sm hidden-md-up"
+                                                       ng-if="foodCostData">
+                                                    <thead class="table-inverse ">
+                                                    <tr>
+                                                        <th colspan="2" style="text-align: left!important;">
+                                                            <p><strong>#</strong></p>
+                                                        </th>
+                                                        <th class="nodata"></th>
+                                                        <th colspan="3">
+                                                            <p><strong>Beverage</strong></p>
+                                                        </th>
+                                                    </tr>
+                                                    <tr class="bg-facebook">
+                                                        <th style="background-color: #eab907">
+                                                            <p><strong>{{ selectedCriteria}}</strong></p>
+                                                        </th>
+                                                        <th>
+                                                            <p><strong>Type</strong></p>
+                                                        </th>
+                                                        <th></th>
+                                                        <th>
+                                                            <p><strong>Sale</strong></p>
+                                                        </th>
+                                                        <th>
+                                                            <p><strong>Cost</strong></p>
+                                                        </th>
+                                                        <th>
+                                                            <p><strong>Cost %</strong></p>
+                                                        </th>
+                                                    </tr>
+
+
+                                                    </thead>
+                                                    <tbody>
+                                                    <tr ng-repeat="item in foodCostData.FCBev"
+                                                        ng-class="{'grey-row':item.RegionDesc=='Total'}">
+                                                        <td>
+                                                            <p class="text-left"><strong>{{item.RegionDesc}}</strong></p>
+                                                        </td>
+                                                        <td>
+                                                            <p class="text-left">
+                                                                <strong>{{item.Type}}</strong></p>
+                                                        </td>
+                                                        <td>&nbsp;</td>
+                                                        <td>
+                                                            <p><strong>{{item.BevSale}}</strong></p>
+                                                        </td>
+                                                        <td>
+                                                            <p><strong>{{item.BevCost}}</strong></p>
+                                                        </td>
+                                                        <td>
+                                                            <p><strong>{{item.BevCostPer}}</strong></p>
+                                                        </td>
+                                                    </tr>
+                                                    <tr ng-if="foodCostData.FCBev.length==0 || foodCostData==null"
+                                                        style="background-color: #eae9e9!important;">
+                                                        <td colspan="6">No Data Available</td>
+                                                    </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card-block">
+                                        <div class="table-responsive">
+                                            <div class="hidden-md-down">
+                                                <table class="table text-center hidden-md-down" ng-if="foodCostData">
+                                                    <thead class="table-inverse">
+                                                    <tr>
+                                                        <th colspan="8" style="text-align: left!important;">
+                                                            <p><strong>Food</strong></p>
+                                                        </th>
+                                                        <th class="nodata"></th>
+                                                        <th colspan="3">
+                                                            <p><strong>Dessert</strong></p>
+                                                        </th>
+                                                    </tr>
+                                                    <tr class="bg-facebook">
+                                                        <th style="background-color: #eab907">
+                                                            <p><strong># {{ selectedCriteria}}</strong></p>
+                                                        </th>
+                                                        <th>
+                                                            <p><strong>Type</strong></p>
+                                                        </th>
+                                                        <th>
+                                                            <p><strong>Sale</strong></p>
+                                                        </th>
+                                                        <th>
+                                                            <p><strong>Cost</strong></p>
+                                                        </th>
+                                                        <th>
+                                                            <p><strong>Cost %</strong></p>
+                                                        </th>
+                                                        <th>
+                                                            <p><strong>Pax </strong></p>
+                                                        </th>
+                                                        <th>
+                                                            <p><strong>PP Cost</strong></p>
+                                                        </th>
+                                                        <th>
+                                                            <p><strong>PP QtyConsumed</strong></p>
+                                                        </th>
+                                                        <th></th>
+                                                        <th>
+                                                            <p><strong>Sale</strong></p>
+                                                        </th>
+                                                        <th>
+                                                            <p><strong>Cost</strong></p>
+                                                        </th>
+                                                        <th>
+                                                            <p><strong>Cost %</strong></p>
+                                                        </th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    <tr ng-repeat="item in foodCostData.FoodCostList"
+                                                        ng-class="{'grey-row':item.RegionDesc=='Total'}">
+                                                        <td>
+                                                            <p class="text-left"><strong>{{item.RegionDesc}}</strong></p>
+                                                        </td>
+                                                        <td>
+                                                            <p class="text-left">
+                                                                <strong>{{item.Type}}</strong></p>
+                                                        </td>
+                                                        <td>
+                                                            <p><strong>{{item.FoodSale}}</strong></p>
+                                                        </td>
+                                                        <td>
+                                                            <p><strong>{{item.FoodCost}}</strong></p>
+                                                        </td>
+                                                        <td>
+                                                            <p><strong>{{item.FoodCostPer}}</strong></p>
+                                                        </td>
+                                                        <td>
+                                                            <p><strong>{{item.Pax}}</strong></p>
+                                                        </td>
+                                                        <td>
+                                                            <p><strong>{{item.PerPersonCost}}</strong></p>
+                                                        </td>
+                                                        <td>
+                                                            <p><strong>{{item.PerPersonQtyConsumed}}</strong></p>
+                                                        </td>
+                                                        <td>&nbsp;</td>
+                                                        <td>
+                                                            <p>
+                                                                <strong>{{foodCostData.FCDessert[$index].DessertSale}}</strong>
+                                                            </p>
+                                                        </td>
+                                                        <td>
+                                                            <p>
+                                                                <strong>{{foodCostData.FCDessert[$index].DessertCost}}</strong>
+                                                            </p>
+                                                        </td>
+                                                        <td>
+                                                            <p>
+                                                                <strong>{{foodCostData.FCDessert[$index].DessertCostPer}}</strong>
+                                                            </p>
+                                                        </td>
+                                                    </tr>
+                                                    <tr ng-if="foodCostData.FoodCostList.length==0 || foodCostData==null"
+                                                        style="background-color: #eae9e9!important;">
+                                                        <td colspan="12">No Data Available</td>
+                                                    </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+
+                                            <div class="">
+                                                <table class="table text-center  table-sm hidden-md-up"
+                                                       ng-if="foodCostData">
+                                                    <thead class="table-inverse ">
+                                                    <tr>
+                                                        <th colspan="2" style="text-align: left!important;">
+                                                            <p><strong>#</strong></p>
+                                                        </th>
+                                                        <th class="nodata"></th>
+                                                        <th colspan="6">
+                                                            <p><strong>Food</strong></p>
+                                                        </th>
+                                                    </tr>
+                                                    <tr class="bg-facebook">
+                                                        <th style="background-color: #eab907">
+                                                            <p><strong>{{ selectedCriteria}}</strong></p>
+                                                        </th>
+                                                        <th>
+                                                            <p><strong>Type</strong></p>
+                                                        </th>
+                                                        <th></th>
+                                                        <th>
+                                                            <p><strong>Sale</strong></p>
+                                                        </th>
+                                                        <th>
+                                                            <p><strong>Cost</strong></p>
+                                                        </th>
+                                                        <th>
+                                                            <p><strong>Cost %</strong></p>
+                                                        </th>
+                                                        <th>
+                                                            <p><strong>Pax </strong></p>
+                                                        </th>
+                                                        <th>
+                                                            <p><strong>PP Cost</strong></p>
+                                                        </th>
+                                                        <th>
+                                                            <p><strong>PP Qty Cons.</strong></p>
+                                                        </th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    <tr ng-repeat="item in foodCostData.FoodCostList"
+                                                        ng-class="{'grey-row':item.RegionDesc=='Total'}">
+                                                        <td>
+                                                            <p class="text-left"><strong>{{item.RegionDesc}}</strong></p>
+                                                        </td>
+                                                        <td>
+                                                            <p class="text-left">
+                                                                <strong>{{item.Type}}</strong></p>
+                                                        </td>
+                                                        <td>&nbsp;</td>
+                                                        <td>
+                                                            <p><strong>{{item.FoodSale}}</strong></p>
+                                                        </td>
+                                                        <td>
+                                                            <p><strong>{{item.FoodCost}}</strong></p>
+                                                        </td>
+                                                        <td>
+                                                            <p><strong>{{item.FoodCostPer}}</strong></p>
+                                                        </td>
+                                                        <td>
+                                                            <p><strong>{{item.Pax}}</strong></p>
+                                                        </td>
+                                                        <td>
+                                                            <p><strong>{{item.PerPersonCost}}</strong></p>
+                                                        </td>
+                                                        <td>
+                                                            <p><strong>{{item.PerPersonQtyConsumed}}</strong></p>
+                                                        </td>
+                                                    </tr>
+                                                    <tr ng-if="foodCostData.FoodCostList.length==0 || foodCostData==null"
+                                                        style="background-color: #eae9e9!important;">
+                                                        <td colspan="9">No Data Available</td>
+                                                    </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+
+                                            <div class="">
+                                                <table class="table text-center  table-sm hidden-md-up"
+                                                       ng-if="foodCostData">
+                                                    <thead class="table-inverse " >
+                                                    <tr>
+                                                        <th colspan="2" style="text-align: left!important;">
+                                                            <p><strong>#</strong></p>
+                                                        </th>
+                                                        <th class="nodata"></th>
+                                                        <th colspan="3">
+                                                            <p><strong>Dessert</strong></p>
+                                                        </th>
+                                                    </tr>
+                                                    <tr class="bg-facebook">
+                                                        <th style="background-color: #eab907">
+                                                            <p><strong>{{ selectedCriteria}}</strong></p>
+                                                        </th>
+                                                        <th>
+                                                            <p><strong>Type</strong></p>
+                                                        </th>
+                                                        <th></th>
+                                                        <th>
+                                                            <p><strong>Sale</strong></p>
+                                                        </th>
+                                                        <th>
+                                                            <p><strong>Cost</strong></p>
+                                                        </th>
+                                                        <th>
+                                                            <p><strong>Cost %</strong></p>
+                                                        </th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    <tr ng-repeat="item in foodCostData.FCDessert"
+                                                        ng-class="{'grey-row':item.RegionDesc=='Total'}">
+                                                        <td>
+                                                            <p class="text-left"><strong>{{item.RegionDesc}}</strong></p>
+                                                        </td>
+                                                        <td>
+                                                            <p class="text-left">
+                                                                <strong>{{item.Type}}</strong></p>
+                                                        </td>
+                                                        <td>&nbsp;</td>
+                                                        <td>
+                                                            <p><strong>{{item.DessertSale}}</strong></p>
+                                                        </td>
+                                                        <td>
+                                                            <p><strong>{{item.DessertCost}}</strong></p>
+                                                        </td>
+                                                        <td>
+                                                            <p><strong>{{item.DessertCostPer}}</strong></p>
+                                                        </td>
+                                                    </tr>
+                                                    <tr ng-if="foodCostData.FCDessert.length==0 || foodCostData==null"
+                                                        style="background-color: #eae9e9!important;">
+                                                        <td colspan="6">No Data Available</td>
+                                                    </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--<nvd3 class="with-3d-shadow with-transitions hidden-sm-down" options="foodcostMonthlyoptions" data="filteredFoodCostMonthly" ></nvd3>
+                                <nvd3 class="with-3d-shadow with-transitions hidden-md-up" options="foodcostXSMonthlyoptions" data="filteredFoodCostMonthly" ></nvd3>
+
+-->
+                              <!--  <p ng-if="!foodCostData || foodCostData.FCTotalSale.length==0">
+                                    No summary data</p>-->
+
+                            </div>
+                        </div>
+                        <!-- Radial variants end -->
+                    </div>
+
+                </div>
+
+
+                <!-- 2-1 block end -->
+            </div>
+            <!-- Main content ends -->
+            <!-- Container-fluid ends -->
+        </div>
+    </div>
+</div>

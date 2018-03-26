@@ -1,0 +1,60 @@
+.multiSelect label {
+  margin: 10px;
+}
+
+.multiSelect .btn {
+  margin: 10px;
+}
+.pool a{
+  color : black;
+}
+.multiSelect .pool {
+  border: 1px solid #999;
+  border-radius: 4px; 
+  height: 150px;
+  overflow-y: scroll;
+}
+.multiSelect .pool ul li:hover{
+  background-color: rgba(33, 150, 243, 0.69);
+}
+.multiSelect .pool ul {
+  list-style: none;
+  padding-left: 0px;
+}
+
+.multiSelect .pool ul li {
+  width: 100%;
+  padding: 4px 8px 4px 4px;
+  border-bottom: 1px dotted #CFCFCF;
+}
+
+.multiSelect .pool ul li a:hover {
+  text-decoration: none;
+}
+/* group */
+.poolInner a{
+  color : black;
+}
+.multiSelect .poolInner {
+  border: 1px solid #999;
+  border-radius: 4px; 
+  height: 150px;
+  overflow-y: scroll;
+}
+.multiSelect .poolInner ul li:hover ul li:hover{
+  background-color: rgba(33, 150, 243, 0.69);
+}
+.multiSelect .poolInner ul {
+  list-style: none;
+  padding-left: 0px;
+}
+
+.multiSelect .poolInner ul li {
+  width: 100%;
+  padding: 4px 8px 4px 4px;
+ 
+}
+
+.multiSelect .poolInner ul li a:hover {
+  text-decoration: none;
+}

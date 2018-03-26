@@ -1,0 +1,22 @@
+<aside class="main-sidebar hidden-print " data-ng-controller="menuHorizontalController">
+    <section class="sidebar" id="abc">
+        <div class="user-panel">
+            <div class="f-left image"><img src="assets/images/avatar-1.png" alt="User Image" class="img-circle">
+            </div>
+            <div class="f-left info">
+                <p>{{globals.currentUser.Userinfo.UserName}}</p>
+                <p class="designation" data-ng-click="designation()">{{globals.currentUser.Userinfo.Email}}</i>
+                </p>
+            </div>
+        </div>
+        <!-- Sidebar Menu-->
+        <ul class="sidebar-menu">
+
+            <li ng-repeat="menuItem in globals.currentUser.MenuList"><a ui-sref-active="selectedMenu" data-ui-sref="{{menuItem.NavigateUrl}}"><i class="{{menuItem.MenuIcon}}"></i><span> {{menuItem.MenuDesc}}</span></a> </li>
+            <li class="hidden-md-up"><a data-ui-sref="changePassword"><i class="icon-lock"></i> <span>Change Password</span></a> </li>
+            <li class="hidden-md-up"><a data-ui-sref="login"><i class="icon-power"></i> <span>Logout</span></a> </li>
+        </ul>
+    </section>
+</aside>
+
+<!-- Sidebar chat end-->
