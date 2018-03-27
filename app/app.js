@@ -77,7 +77,7 @@ ableApp.config(function ($stateProvider, $urlRouterProvider, $ocLazyLoadProvider
         })*/
         .state('foodCost', {
             url: "/foodCost",
-            templateUrl: "views/food_cost.html?v=57789755",
+            templateUrl: "views/food_cost.html?v=378634544",
             controller: 'dashboardController',
             resolve: {
                 deps: ['$ocLazyLoad', function ($ocLazyLoad) {

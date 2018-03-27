@@ -130,7 +130,7 @@
                                     </form>
 
                                 </div>
-                                <div class="f-right p-b-10 m-r-5 d-inline">
+                                <div class="f-right p-b-10 m-r-5 d-inline hidden-md-down">
                                     <div class="dropdown d-inline">
                                         <button class="btn btn-secondary dropdown-toggle" type="button"
                                                 id="dropdownMenuButton" data-toggle="dropdown"
@@ -165,6 +165,75 @@
                                     <div class="dropdown d-inline">
                                         <button class="btn btn-secondary dropdown-toggle" type="button"
                                                 id="dropdownMenuButton2" data-toggle="dropdown"
+                                                aria-haspopup="true" aria-expanded="false">
+                                            <span ng-if="selectedFCFilter.RType == 'OA'">Overall</span>
+                                            <span ng-if="selectedFCFilter.RType == 'AK'">Alacarte</span>
+                                            <span ng-if="selectedFCFilter.RType == 'BU'">Buffet Unlimited</span>
+                                            <span ng-if="selectedFCFilter.RType == 'PU'">Pizza Unlimited</span>
+                                            <span ng-if="selectedFCFilter.RType == 'CB'">Combo</span>
+                                        </button>
+                                        <div class="dropdown-menu dropdown-menu-right dropdown-menu-options"
+                                             aria-labelledby="dropdownMenuButton2">
+                                            <div class="btn-group-vertical">
+                                                <label class="btn btn-primary"
+                                                       ng-model="selectedFCFilter.RType"
+                                                       ng-change="getFoodSummary()"
+                                                       uib-btn-radio="'OA'">Overall</label>
+                                                <label class="btn btn-primary"
+                                                       ng-model="selectedFCFilter.RType"
+                                                       ng-change="getFoodSummary()"
+                                                       uib-btn-radio="'AK'">Alacarte</label>
+                                                <label class="btn btn-primary"
+                                                       ng-model="selectedFCFilter.RType"
+                                                       ng-change="getFoodSummary()"
+                                                       uib-btn-radio="'BU'">Buffet Unlimited</label>
+                                                <label class="btn btn-primary"
+                                                       ng-model="selectedFCFilter.RType"
+                                                       ng-change="getFoodSummary()"
+                                                       uib-btn-radio="'PU'">Pizza Unlimited</label>
+                                                <label class="btn btn-primary"
+                                                       ng-model="selectedFCFilter.RType"
+                                                       ng-change="getFoodSummary()"
+                                                       uib-btn-radio="'CB'">Combo</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="f-right p-b-5 d-inline hidden-md-up" >
+                                    <div class="dropdown d-inline">
+                                        <button class="btn btn-secondary dropdown-toggle" style="padding: 3px 10px;" type="button"
+                                                id="dropdownMenuButtonXs" data-toggle="dropdown"
+                                                aria-haspopup="true" aria-expanded="false">
+                                            <span ng-if="selectedFCFilter.Type == 'CM'">Company</span>
+                                            <span ng-if="selectedFCFilter.Type == 'RG'">Region</span>
+                                            <span ng-if="selectedFCFilter.Type == 'CT'">City</span>
+                                            <span ng-if="selectedFCFilter.Type == 'ST'">Store</span>
+                                        </button>
+                                        <div class="dropdown-menu dropdown-menu-right dropdown-menu-options"
+                                             aria-labelledby="dropdownMenuButton2">
+                                            <div class="btn-group-vertical">
+                                                <label class="btn btn-primary"
+                                                       ng-model="selectedFCFilter.Type"
+                                                       ng-change="getFoodSummary()"
+                                                       uib-btn-radio="'CM'">Company</label>
+                                                <label class="btn btn-primary"
+                                                       ng-model="selectedFCFilter.Type"
+                                                       ng-change="getFoodSummary()"
+                                                       uib-btn-radio="'RG'">Region</label>
+                                                <label class="btn btn-primary"
+                                                       ng-model="selectedFCFilter.Type"
+                                                       ng-change="getFoodSummary()"
+                                                       uib-btn-radio="'CT'">City</label>
+                                                <label class="btn btn-primary"
+                                                       ng-model="selectedFCFilter.Type"
+                                                       ng-change="getFoodSummary()"
+                                                       uib-btn-radio="'ST'">Store</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="dropdown d-inline">
+                                        <button class="btn btn-secondary dropdown-toggle" style="padding: 3px 10px;" type="button"
+                                                id="dropdownMenuButtonXs2" data-toggle="dropdown"
                                                 aria-haspopup="true" aria-expanded="false">
                                             <span ng-if="selectedFCFilter.RType == 'OA'">Overall</span>
                                             <span ng-if="selectedFCFilter.RType == 'AK'">Alacarte</span>
@@ -321,7 +390,7 @@
                                                         </th>
                                                     </tr>
                                                     <tr class="bg-facebook">
-                                                        <th style="background-color: #eab907">
+                                                        <th style="background-color: #eab907 ; vertical-align: middle!important;" valign="middle">
                                                             <p><strong>{{ selectedCriteria}}</strong></p>
                                                         </th>
                                                         <th>
@@ -566,7 +635,7 @@
                                                         </th>
                                                     </tr>
                                                     <tr class="bg-facebook">
-                                                        <th style="background-color: #eab907">
+                                                        <th style="background-color: #eab907 ; vertical-align: middle!important;">
                                                             <p><strong>{{ selectedCriteria}}</strong></p>
                                                         </th>
                                                         <th>
