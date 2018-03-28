@@ -35,7 +35,7 @@ ableApp.config(function ($stateProvider, $urlRouterProvider, $ocLazyLoadProvider
         })*/
         .state('dsrReports', {
             url: "/dsr",
-            templateUrl: "views/dsr.html?v=1752456752",
+            templateUrl: "views/dsr.html?v=687651354",
             controller: 'dashboardController',
             resolve: {
                 deps: ['$ocLazyLoad', function ($ocLazyLoad) {
