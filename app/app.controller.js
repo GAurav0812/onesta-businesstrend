@@ -1012,6 +1012,16 @@ ableApp.filter('checkIsEmptyCat', function () {
     }
 });
 
+ableApp.filter('negativeGrowthCheck', function () {
+    return function (value) {
+        if (value != null && angular.isDefined(value) && value < 0) {
+            return Math.abs(value);
+        } else {
+            return value
+        }
+    }
+});
+
 ableApp.controller('dashboardController', function ($scope, HttpService, $location, $rootScope, $filter, CriteriaFilter, $state) {
 
     $scope.countFrom = 0;
@@ -1049,8 +1059,234 @@ ableApp.controller('dashboardController', function ($scope, HttpService, $locati
         {name: CriteriaFilter.LIQUOR, ticked: false}
     ];
     $scope.criteriaFilter = $scope.criteriaOptions[5];
+    $scope.lineoptions = {
+        chart: {
+            type: 'lineWithFocusChart',
+            height: 450,
+            margin: {
+                top: 20,
+                right: 20,
+                bottom: 40,
+                left: 55
+            },
+            forceX: 0,
+            x: function (d) {
+                return d.x;
+            },
+            y: function (d) {
+                return d.y;
+            },
+            useInteractiveGuideline: true,
+            xAxis: {
+                axisLabel: 'Months',
+                tickFormat: function (d) {
+                    return $scope.monthlySummaryData[0].values[d].z;
+                }
+            },
+            yAxis: {
+                axisLabel: 'Sales (millions)',
+                tickFormat: function (d) {
+                    return d3.format('.02f')(d);
+                },
+                axisLabelDistance: -10
+            },
+            x2Axis: {
+                tickFormat: function (d) {
+                    return "";
+                }
+            },
+            y2Axis: {
+                tickFormat: function (d) {
+                    return d3.format(',.2f')(d);
+                }
+            },
+            callback: function (chart) {
+                /* console.log("!!! lineChart callback !!!");*/
+            }
+        }
 
+    };
 
+    $scope.baroptions = {
+        chart: {
+            type: 'linePlusBarChart',
+            height: 500,
+            margin: {
+                top: 30,
+                right: 10,
+                bottom: 50,
+                left: 55
+            },
+            color: ['#f6148d'],
+            showLegend: false,
+            showValues: true,
+            x: function (d, i) {
+                return i
+            },
+            xAxis: {
+                axisLabel: 'X Axis',
+                tickFormat: function (d) {
+                    var dx = $scope.criteriaFilteredData[0].values[d] && $scope.criteriaFilteredData[0].values[d].x || 0;
+                    return dx;
+                },
+                showMaxMin: false
+            },
+            x2Axis: {
+                tickFormat: function (d) {
+                    return null;
+                },
+                showMaxMin: false
+            },
+            y1Axis: {
+                axisLabel: 'Sales (millions)',
+                tickFormat: function (d) {
+                    return d;
+                },
+                axisLabelDistance: 12
+            },
+            y3Axis: {
+                tickFormat: function (d) {
+                    return d;
+                }
+            },
+            tooltip: {
+
+                contentGenerator: function (d) {
+                    var str = '<table>' +
+                        '<thead>' +
+                        '<tr><td class="legend-color-guide"><strong>' + d.data.x + '</strong> ' + d.data.y + '</td></tr>' +
+                        '<tr><td class="legend-color-guide">Outlets: <strong>' + d.data.z + '</strong></td></tr>' +
+                        '</thead>';
+
+                    str = str + '</table>';
+                    return str;
+                }
+            },
+            callback: function (chart) { //remove 'Line' from the chart and legend
+                d3.selectAll('.nv-y2 .nv-axis').style('display', 'none');
+                d3.selectAll('g.nv-legend g.nv-series').style('display', function (d) {
+                    return d.remove ? 'none' : 'true';
+                });
+
+            }
+
+        }
+    };
+
+    $scope.barXSoptions = {
+        chart: {
+            type: 'multiBarHorizontalChart',
+            height: 500,
+            margin: {
+                top: 30,
+                right: 20,
+                bottom: 70,
+                left: 70
+            },
+            color: ['#f6148d'],
+            showLegend: true,
+            showValues: true,
+            stacked: false,
+            showControls: false,
+            x: function (d, i) {
+                return i
+            },
+            xAxis: {
+                axisLabel: '',
+                tickFormat: function (d) {
+                    var dx = $scope.criteriaFilteredData[0].values[d] && $scope.criteriaFilteredData[0].values[d].x || 0;
+                    return dx;
+                },
+                showMaxMin: false
+            },
+            x2Axis: {
+                tickFormat: function (d) {
+                    return null;
+                },
+                showMaxMin: false
+            },
+            y1Axis: {
+                axisLabel: 'Sales (millions)',
+                tickFormat: function (d) {
+                    return d;
+                },
+                axisLabelDistance: 12
+            },
+            y3Axis: {
+                tickFormat: function (d) {
+                    return d;
+                }
+            },
+            tooltip: {
+
+                contentGenerator: function (d) {
+                    var str = '<table>' +
+                        '<thead>' +
+                        '<tr><td class="legend-color-guide"><strong>' + d.data.x + '</strong> ' + d.data.y + '</td></tr>' +
+                        '<tr><td class="legend-color-guide">Outlets: <strong>' + d.data.z + '</strong></td></tr>' +
+                        '</thead>';
+
+                    str = str + '</table>';
+                    return str;
+                }
+            },
+            callback: function (chart) { //remove 'Line' from the chart and legend
+                d3.selectAll('.nv-y2 .nv-axis').style('display', 'none');
+                d3.selectAll('g.nv-legend g.nv-series').style('display', function (d) {
+                    return d.remove ? 'none' : 'true';
+                });
+
+            }
+
+        }
+    };
+    $scope.oneMonthSummaryBaroptions = {
+        chart: {
+            type: 'multiBarChart',
+            height: 250,
+            margin: {
+                top: 20,
+                right: 20,
+                bottom: 60,
+                left: 35
+            },
+            x: function (d) {
+                return d.label;
+            },
+            y: function (d) {
+                return d.value + (1e-10);
+            },
+            showValues: true,
+            duration: 500,
+            showLegend: true,
+            stacked: false,
+            showControls: false,
+            valueFormat: function (d) {
+                return d3.format(',.2f')(d);
+            },
+            transitionDuration: 500,
+            xAxis: {
+                axisLabel: 'X Axis'
+            },
+            yAxis: {
+                axisLabel: 'Y Axis',
+                axisLabelDistance: -10
+            },
+            legend: false,
+            tooltip: {
+
+                contentGenerator: function (d) {
+                    var str = '<table>' +
+                        '<thead>' +
+                        '<tr><td class="legend-color-guide">' + d.data.label2 + ':' + '<strong>' + d.data.value + '</strong></td></tr>' +
+                        '</thead>';
+
+                    str = str + '</table>';
+                    return str;
+                }
+            }
+        }
+    };
     $scope.foodcostoptions = {
         chart: {
             type: 'discreteBarChart',
@@ -1246,7 +1482,7 @@ ableApp.controller('dashboardController', function ($scope, HttpService, $locati
          });
      };*/
 
-    /*if ($state.current.name == "dashboard") {
+    if ($state.current.name == "dashboard") {
         getDSRSummary();
     }
 
@@ -1264,7 +1500,7 @@ ableApp.controller('dashboardController', function ($scope, HttpService, $locati
         }, function (e) {
             console.info("Error fetching day sale...", e);
         });
-    }*/
+    }
 
     $scope.getRegionDaySale = function () {
         $scope.todayRegionSaleData = undefined;
@@ -1302,7 +1538,12 @@ ableApp.controller('dashboardController', function ($scope, HttpService, $locati
             CityName: ($scope.selectedFilter.City ? $scope.selectedFilter.City : ''),
             ClusterName: $scope.selectedFilter.Cluster ? $scope.selectedFilter.Cluster : ''
         });
-        if ($state.current.name == "dsrReports") {
+        if ($state.current.name == "dashboard") {
+            filterSalesSummary();
+            filterActualvsTarget();
+            //$scope.filterCommonPie();
+            $scope.filterSalesByCriteria();
+        }else if ($state.current.name == "dsrReports") {
             $scope.filterDSRReports();
         } else if ($state.current.name == "foodCost") {
             $scope.getFoodSummary(filterControl);
@@ -1503,7 +1744,8 @@ ableApp.controller('dashboardController', function ($scope, HttpService, $locati
         };
         monthlySummary.post("", postData).then(function (data) {
             $scope.monthlySummaryData = [];
-            if (data.MonthList.length > 0) {
+            if (data.MonthList.length > 2) {
+                $scope.oneMonthGraph = false;
                 var saleData = [];
 
                 var targetData = [];
@@ -1514,11 +1756,156 @@ ableApp.controller('dashboardController', function ($scope, HttpService, $locati
                 }
                 //$scope.monthlySummaryData = [saleData, targetData];
                 $scope.monthlySummaryData = getLineChart(saleData, targetData);
+            } else if (data.MonthList.length == 1) {
+                $scope.oneMonthGraph = true;
+                var mndataObj = {
+                    key: "",
+                    values: []
+                };
+                for (var j = 0; j <= 1; j++) {
+                    mndataObj.key = data.MonthList[0].MTD_Name;
+                    var label = "";
+                    var obj = {
+                        label: "",
+                        value: ""
+                    };
+                    if (j == 0) {
+                        obj.label = "Actual Sales";
+                        obj.label2 = "Actual Sales";
+                        obj.color = '#5bd7aa';
+                        obj.value = data.MonthList[0].MTD_Sale;
+                    } else if (j == 1) {
+                        obj.label = "Target Sales";
+                        obj.label2 = "Target Sales";
+                        obj.color = '#e39b16';
+                        obj.value = data.MonthList[0].MTD_Target;
+                    }
+                    mndataObj.values.push(obj);
+                }
+                $scope.monthlySummaryData.push(mndataObj);
+                $scope.oneMonthSummaryBaroptions.chart.xAxis.axisLabel = mndataObj.key;
+                $scope.oneMonthSummaryBaroptions.chart.showLegend=false;
+            } else if (data.MonthList.length == 2) {
+                var stArr = [];
+                $scope.oneMonthGraph = true;
+                var sObj = getSingleMonthObj(data.MonthList, 0);
+                var tObj = getSingleMonthObj(data.MonthList, 1);
+                stArr = [sObj, tObj];
+                $scope.monthlySummaryData = stArr;
+                $scope.oneMonthSummaryBaroptions.chart.xAxis.axisLabel = "Months";
             }
+
         }, function (e) {
             console.info("Error fetching filtered data...", e);
         });
     };
+    function getSingleMonthObj(itemArr, index) {
+        var item = itemArr[index];
+        var mndataObj = {
+            key: "",
+            values: []
+        };
+        var obj = {
+            label: "",
+            label2: "",
+            color: "",
+            value: ""
+        };
+        var obj2 = {
+            label: "",
+            label2: "",
+            color: "",
+            value: ""
+        };
+        if (index == 0) {
+            obj.label2 = "Target Sales";
+            obj2.label2 = "Target Sales";
+            obj.color = '#5bd7aa';
+            obj2.color = '#5bd7aa';
+            obj.label = item.MTD_Name;
+            obj2.label = itemArr[1].MTD_Name;
+            obj.value = item.MTD_Target;
+            obj2.value = itemArr[1].MTD_Target;
+            mndataObj.key = "Target Sales";
+            mndataObj.color = '#5bd7aa';
+        } else if (index == 1) {
+            obj.label2 = "Actual Sales";
+            obj2.label2 = "Actual Sales";
+            obj.color = '#e39b16';
+            obj2.color = '#e39b16';
+            obj.label = item.MTD_Name;
+            obj2.label = itemArr[0].MTD_Name;
+            obj.value = item.MTD_Sale;
+            obj2.value = itemArr[0].MTD_Sale;
+            mndataObj.key = "Actual Sales";
+            mndataObj.color = '#e39b16';
+        }
+        mndataObj.values = [obj, obj2];
+        return mndataObj;
+    }
+
+    $scope.filterSalesByCriteria = function () {
+        $scope.selectedCriteria = $scope.criteriaFilter[0].name;
+        $scope.criteriaSalesData = undefined;
+        $scope.criteriaFilteredData = undefined;
+        var salesCriteria = new HttpService("SaleDashboard");
+        var postData = {
+            "CurrentDate": $scope.selectedFilter.curDate,
+            "Outlets": getOutletArr(),
+            "RType": $scope.criteriaFilter[0].name,
+            "Session": $scope.selectedFilter.Session,
+            "UserId": parseInt($rootScope.globals.currentUser.Userinfo.UserId)
+        };
+        salesCriteria.post("", postData).then(function (data) {
+            $scope.criteriaSalesData = data.SaleList;
+            $scope.filterSubCriteria();
+        }, function (e) {
+            console.info("Error fetching filtered data...", e);
+        });
+    };
+    $scope.filterSubCriteria = function () {
+        if ($scope.criteriaFilter[0].name == 'CITY' || $scope.criteriaFilter[0].name == 'CLUSTER') {
+            $scope.barXSoptions.chart.height = 2500;
+            $scope.barXSoptions.chart.margin.left = 100;
+        } else if ($scope.criteriaFilter[0].name == 'STORE') {
+            $scope.barXSoptions.chart.height = 4500;
+            $scope.barXSoptions.chart.margin.left = 180;
+        } else {
+            $scope.barXSoptions.chart.height = 500;
+            $scope.barXSoptions.chart.margin.left = 100;
+        }
+        $scope.baroptions.chart.xAxis.axisLabel = $scope.criteriaFilter[0].name;
+        //bar chart
+        var firstBarData = {
+            key: $scope.criteriaFilter[0].name,
+            "bar": true,
+            values: []
+        };
+        var lineData = {
+            "key": "Line",
+            "values": [],
+            "remove": true
+        };
+        var criteriaFilteredData = [];
+        criteriaFilteredData = $scope.criteriaSalesData;
+        for (var i = 0; i < criteriaFilteredData.length; i++) {
+            if (criteriaFilteredData[i].RType != 'Total') {
+                firstBarData.values[i] = {};
+                firstBarData.values[i].label = criteriaFilteredData[i].RType;
+                firstBarData.values[i].value = criteriaFilteredData[i][$scope.subCriteriaFilter];
+                firstBarData.values[i].outlets = criteriaFilteredData[i].NoOfStores;
+            }
+        }
+
+        $scope.criteriaFilteredData = [firstBarData, lineData].map(function (series) {
+            series.values = series.values.map(function (d) {
+                return {x: d.label, y: d.value, z: d.outlets}
+            });
+            return series;
+        });
+
+    };
+
     $scope.foodCostData = "";
     $scope.getFoodSummary = function (filterOption) {
         switch (filterOption) {
@@ -1820,7 +2207,7 @@ ableApp.controller('LoginController',
                 AuthenticationService.login($scope.userLoginInfo.userName, $scope.userLoginInfo.userPassword).then(function (response) {
                     $scope.loginProcessing = true;
                     if (response.Validate === "TRUE") {
-                        $location.path('/dsr');
+                        $location.path('/dashboard');
                         AuthenticationService.setSession($scope.userLoginInfo.userName, $scope.userLoginInfo.userPassword, response, $scope.rememberMe);
 
                     } else {

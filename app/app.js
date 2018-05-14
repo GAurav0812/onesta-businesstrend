@@ -3,9 +3,9 @@ ableApp.config(function ($stateProvider, $urlRouterProvider, $ocLazyLoadProvider
 
     $stateProvider
     //dashboard layouts
-        /*.state('dashboard', {
+        .state('dashboard', {
             url: "/dashboard",
-            templateUrl: "views/dashboard.html?v=104545744",
+            templateUrl: "views/dashboard.html?v=45345434",
             controller: 'dashboardController',
             resolve: {
                 deps: ['$ocLazyLoad', function ($ocLazyLoad) {
@@ -19,7 +19,7 @@ ableApp.config(function ($stateProvider, $urlRouterProvider, $ocLazyLoadProvider
                 }]
             }
         })
-        .state('reports', {
+      /*  .state('reports', {
             url: "/reports",
             templateUrl: "views/reports.html?v=5489754",
             controller: 'dashboardController',
@@ -120,7 +120,7 @@ ableApp.config(function ($stateProvider, $urlRouterProvider, $ocLazyLoadProvider
             templateUrl: "views/register.html",
             controller: 'commonController'
         });
-    $urlRouterProvider.otherwise('/dsr');
+    $urlRouterProvider.otherwise('/dashboard');
 });
 
 /*Directive for owl carousel*/
@@ -246,7 +246,7 @@ ableApp.run(['$templateCache', 'AuthenticationService', '$rootScope', '$location
     function setPageLocation() {
         if (AuthenticationService.authenticate()) {
             if ($location.path() === '/login' || $location.path() === "") {
-                $location.path('/dsr');
+                $location.path('/dashboard');
             }
         } else {
             redirectLogin();

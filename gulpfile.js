@@ -8,8 +8,8 @@ var inject = require('gulp-inject');
 
 var apiserver = proxyMiddleware('/BusinessTrendAPI/Service1.svc', {
     //target: 'http://10.10.0.18:80/',
-    //target: 'http://hrms.onestalove.com/',
-    target: 'http://insights.bnhl.in/',
+    target: 'http://hrms.onestalove.com/',
+    //target: 'http://insights.bnhl.in/',
     changeOrigin: true,             // for vhosted sites, changes host header to match to target's host
     logLevel: 'debug'
 });

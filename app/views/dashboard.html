@@ -1,710 +1,797 @@
 <div class="horizontal-fixed fixed">
     <div class="wrapper">
-        <div ng-include="'shared/header.html?v=6.1'"></div>
-        <div ng-include="'shared/sidebar.html?v=6.1'"></div>
-        <div ng-include="'shared/headerModal.html?v=6.1'"></div>
+        <div ng-include="'shared/header.html?v=7.1'"></div>
+        <div ng-include="'shared/sidebar.html?v=7.1'"></div>
+        <div ng-include="'shared/headerModal.html?v=7.1'"></div>
+        <!--<div ng-include="'shared/offline.html?v=7.1'"></div>-->
         <div class="content-wrapper">
             <!-- Container-fluid starts -->
             <!-- Main content starts -->
             <div class="container-fluid">
-                <div class="text-center" style="padding: 40px;">
-                    <h2>
-                        Page is Under Constriction!
-                    </h2>
-                </div>
-               <!-- <h6 class="text-center">
+                <h6 class="text-center">
                     <small>*All sales figures are in <em>Million(s) <i
                             class="fa fa-inr"></i></em> unless indicated otherwise
                     </small>
-                </h6>-->
+                </h6>
+                <!--   <div class="row">
+                       <div class="col-md-12 xs-no-padding">
+                           <div class="card">
+                               <div class="card-block">
+                                   <div class="card-context-menu">
+                                       <a class="btn-link" data-toggle="dropdown" aria-haspopup="true"
+                                          aria-expanded="false"><i class="fa fa-ellipsis-v"></i></a>
+                                       <div class="dropdown-menu dropdown-menu-right dropdown-menu-options"
+                                            aria-labelledby="ddMenuTodaySales">
+                                           <a class="btn btn-default"
+                                              data-toggle="modal"
+                                              data-target="#todayRegionSale-Modal" data-angular-ripple
+                                              ng-click="getRegionDaySale()">View Details</a>
+                                       </div>
+                                   </div>
+                                   <div class="row todaySales">
+                                       <div class="col-lg-4 col-sm-12">
+                                           <div class="media d-flex order-counter">
+                                               <div class="media-left media-middle">
+                                                   <div class="new-orders" data-toggle="modal"
+                                                        data-target="#todayRegionSale-Modal" data-angular-ripple
+                                                        ng-click="getRegionDaySale()">
+                                                       <i class="fa fa-bolt"></i>
+                                                   </div>
+                                               </div>
+                                               <div class="media-body">
+                                                   <h5 class="d-inline">Today's Sale Summary</h5><br>
+                                                   <p class="text-pink d-inline"><i class="icon-clock"></i> Updated on: {{
+                                                       formatDate(todaySaleData.LastUpdatedOn, 'dd MMM yyyy HH:mm') }} </p>
+                                                   <a href="javascript:;" class="small hidden-md-down"
+                                                      ng-click="getDaySale()">Refresh
+                                                       Now</a>
 
-                <!--  <div class="row">
-                     <div class="col-md-12 xs-no-padding">
-                         <!-- Radial variants start -->
-                <!-- <div class="card">
-                     <div class="card-header">
+                                               </div>
+                                           </div>
+                                       </div>
+                                       <div class="col-lg-2 col-xs-4">
+                                           <p class="text-muted">Sales</p>
+                                           <h4 class="txt-purple" count-to="{{todaySaleData.Sale}}"
+                                               value="0" duration="1" class="ng-scope">0</h4>
+                                       </div>
+                                       <div class="col-lg-2 col-xs-4">
+                                           <p class="text-muted">Covers</p>
+                                           <h4 class="txt-purple" count-to="{{todaySaleData.Cover}}" value="0"
+                                               duration="1" class="ng-scope">0</h4>
+                                       </div>
+                                       <div class="col-lg-2 col-xs-4">
+                                           <p class="text-muted">Outlets</p>
+                                           <h4 class="txt-purple" count-to="{{todaySaleData.Outlets}}" value="0"
+                                               duration="1" class="ng-scope">0</h4>
+                                       </div>
+                                   </div>
 
-                         <h5 class="card-header-text">Snapshot &nbsp;
-                         </h5>
-                         <label class="label bg-facebook label-md">
-                             {{ formatDate(selectedFilter.curDate, 'dd MMM yyyy') }}</label>
-                         <div class="f-right">
-                             <span class="hidden-md-down">
-                             <label class="label label-inverse-success" ng-if="!selectedFilter.Region">All
-                                 Region</label>
-                             <span ng-if="selectedFilter.Region">
-                                 <label class="label label-inverse-success">{{filteredText("Region")}}</label>
-                                 <label class="label label-inverse-success" ng-if="selectedFilter.Cluster">{{filteredText("Cluster")}}</label>
-                                 <label class="label label-inverse-success" ng-if="selectedFilter.City">{{filteredText("City")}}</label>
-                             </span>
-                             <label class="label label-inverse-success">{{filteredText('Outlet')}}</label>
-                             <label class="label label-inverse-success">{{filteredText('Session')}}</label>
-                                 </span>
+                               </div>
+                           </div>
+                       </div>
+                   </div>-->
+                <div class="row">
+                    <div class="col-md-12 xs-no-padding">
+                        <!-- Radial variants start -->
+                        <div class="card">
+                            <div class="card-header">
 
-                             <a href="javascript:;" class="filter-button"><i class="icofont icofont-filter"></i>
-                                 <span class="hidden-md-down">Filters</span></a>
-                         </div>
-                         <div class="hidden-md-up text-center text-muted p-t-10 small">
-                             <strong>Filtered on: </strong>
-                             <span class="label label-inverse-info" ng-if="!selectedFilter.Region">All
-                                 Region</span>
-                             <span ng-if="selectedFilter.Region">
-                                 <span class="label label-inverse-info">{{filteredText("Region")}}</span>
-                                 <span class="label label-inverse-info" ng-if="selectedFilter.Cluster">{{filteredText("Cluster")}}</span>
-                                 <span class="label label-inverse-info" ng-if="selectedFilter.City">{{filteredText("City")}}</span>
-                             </span>
-                             <span class="label label-inverse-info">{{filteredText('Outlet')}}</span>
-                             <span class="label label-inverse-info">{{filteredText('Session')}}</span>
-                         </div>
-                     </div>
-                     <div class="card-block">
-                         <div class="row salesFilter row m-b-30" style="display: none;">
-                             <form class="form-floating-labels">
+                                <h5 class="card-header-text">Snapshot &nbsp;
+                                </h5>
+                                <label class="label bg-facebook label-md">
+                                    {{ formatDate(selectedFilter.curDate, 'dd MMM yyyy') }}</label>
+                                <div class="f-right">
+                                    <span class="hidden-md-down">
+                                    <label class="label label-inverse-success" ng-if="!selectedFilter.Region">All
+                                        Region</label>
+                                    <span ng-if="selectedFilter.Region">
+                                        <label class="label label-inverse-success">{{filteredText("Region")}}</label>
+                                        <label class="label label-inverse-success" ng-if="selectedFilter.Cluster">{{filteredText("Cluster")}}</label>
+                                        <label class="label label-inverse-success" ng-if="selectedFilter.City">{{filteredText("City")}}</label>
+                                    </span>
+                                    <label class="label label-inverse-success">{{filteredText('Outlet')}}</label>
+                                    <label class="label label-inverse-success">{{filteredText('Session')}}</label>
+                                        </span>
 
-                                 <div class="col-md-2">
-                                     <div class="md-group-add-on">
-                                         <span class="md-add-on"><i
-                                                 class="icofont icofont-ui-calendar"></i></span>
-                                         <div class="md-input-wrapper">
-                                             <input type="text" id="date" class="md-form-control md-static"
-                                                    placeholder="Select a Date"
-                                                    ng-change="onFilterChange('tillDate')"
-                                                    ng-model="selectedFilter.curDate">
-                                             <label>Till Date</label>
-                                             <span class="md-line"></span></div>
-                                     </div>
+                                    <a href="javascript:;" class="filter-button"><i class="icofont icofont-filter"></i>
+                                        <span class="hidden-md-down">Filters</span></a>
+                                </div>
+                                <div class="hidden-md-up text-center text-muted p-t-10 small">
+                                    <strong>Filtered on: </strong>
+                                    <span class="label label-inverse-info" ng-if="!selectedFilter.Region">All
+                                        Region</span>
+                                    <span ng-if="selectedFilter.Region">
+                                        <span class="label label-inverse-info">{{filteredText("Region")}}</span>
+                                        <span class="label label-inverse-info" ng-if="selectedFilter.Cluster">{{filteredText("Cluster")}}</span>
+                                        <span class="label label-inverse-info" ng-if="selectedFilter.City">{{filteredText("City")}}</span>
+                                    </span>
+                                    <span class="label label-inverse-info">{{filteredText('Outlet')}}</span>
+                                    <span class="label label-inverse-info">{{filteredText('Session')}}</span>
+                                </div>
+                            </div>
+                            <div class="card-block">
+                                <div class="row salesFilter row m-b-30" style="display: none;">
+                                    <form class="form-floating-labels">
 
-                                 </div>
-                                 <div class="col-md-2">
+                                        <div class="col-md-2">
+                                            <div class="md-group-add-on">
+                                                <span class="md-add-on"><i
+                                                        class="icofont icofont-ui-calendar"></i></span>
+                                                <div class="md-input-wrapper">
+                                                    <input type="text" id="date" class="md-form-control md-static"
+                                                           placeholder="Select a Date"
+                                                           ng-change="onFilterChange('tillDate')"
+                                                           ng-model="selectedFilter.curDate">
+                                                    <label>Till Date</label>
+                                                    <span class="md-line"></span></div>
+                                            </div>
 
-                                     <div class="md-input-wrapper">
-                                         <select class="md-form-control" ng-change="onFilterChange('Region')"
-                                                 ng-model="selectedFilter.Region"
-                                                 ng-options="item.RegionName as item.RegionName for item in hierarchyMaster.Region">
-                                             <option value=""></option>
-                                         </select>
-                                         <label>Select Region</label>
-                                     </div>
-                                 </div>
-                                 <div class="col-md-2">
-                                     <div class="md-input-wrapper">
-                                         <select class="md-form-control"
-                                                 ng-change="onFilterChange('Cluster')"
-                                                 ng-disabled="!selectedFilter.Region"
-                                                 ng-model="selectedFilter.Cluster"
-                                                 ng-options="item.ClusterName as item.ClusterName for item in hierarchyMaster.Cluster | filter:{RegionName:(selectedFilter.Region? selectedFilter.Region : '')}">
-                                             <option value=""></option>
-                                         </select>
-                                         <label>Select Cluster</label>
-                                     </div>
+                                        </div>
+                                        <div class="col-md-2">
 
-                                 </div>
-                                 <div class="col-md-2">
-                                     <div class="md-input-wrapper">
-                                         <select class="md-form-control" ng-change="onFilterChange('City')"
-                                                 ng-disabled="!selectedFilter.Region"
-                                                 ng-model="selectedFilter.City"
-                                                 ng-options="item.CityName as item.CityName for item in hierarchyMaster.City | filter:{RegionName:(selectedFilter.Region? selectedFilter.Region : '')}">
-                                             <option value=""></option>
-                                         </select>
-                                         <label>Select City</label>
-                                     </div>
-                                 </div>
-                                 <div class="col-md-2">
+                                            <div class="md-input-wrapper">
+                                                <select class="md-form-control" ng-change="onFilterChange('Region')"
+                                                        ng-model="selectedFilter.Region"
+                                                        ng-options="item.RegionName as item.RegionName for item in hierarchyMaster.Region">
+                                                    <option value=""></option>
+                                                </select>
+                                                <label>Select Region</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div class="md-input-wrapper">
+                                                <select class="md-form-control"
+                                                        ng-change="onFilterChange('Cluster')"
+                                                        ng-disabled="!selectedFilter.Region"
+                                                        ng-model="selectedFilter.Cluster"
+                                                        ng-options="item.ClusterName as item.ClusterName for item in hierarchyMaster.Cluster | filter:{RegionName:(selectedFilter.Region? selectedFilter.Region : '')}">
+                                                    <option value=""></option>
+                                                </select>
+                                                <label>Select Cluster</label>
+                                            </div>
 
-                                     <div class="md-input-wrapper">
-                                         <select class="md-form-control" ng-change="onFilterChange('Outlet')"
-                                                 ng-model="selectedFilter.Outlet"
-                                                 ng-options="item.OutletCode as item.OutletName for item in filteredOutlets">
-                                             <option value=""></option>
-                                         </select>
-                                         <label>Select Outlet</label>
-                                     </div>
-                                 </div>
-                                 <div class="col-md-2">
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div class="md-input-wrapper">
+                                                <select class="md-form-control" ng-change="onFilterChange('City')"
+                                                        ng-disabled="!selectedFilter.Region"
+                                                        ng-model="selectedFilter.City"
+                                                        ng-options="item.CityName as item.CityName for item in hierarchyMaster.City | filter:{RegionName:(selectedFilter.Region? selectedFilter.Region : '')}">
+                                                    <option value=""></option>
+                                                </select>
+                                                <label>Select City</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
 
-                                     <div class="md-input-wrapper">
-                                         <select class="md-form-control" ng-change="onFilterChange('Session')"
-                                                 ng-options="item.value as item.label for item in sessionOptions"
-                                                 ng-model="selectedFilter.Session">
-                                             <option value=""></option>
-                                         </select>
-                                         <label>Select Session</label>
-                                     </div>
-                                 </div>
-                             </form>
+                                            <div class="md-input-wrapper">
+                                                <select class="md-form-control" ng-change="onFilterChange('Outlet')"
+                                                        ng-model="selectedFilter.Outlet"
+                                                        ng-options="item.OutletCode as item.OutletName for item in filteredOutlets">
+                                                    <option value=""></option>
+                                                </select>
+                                                <label>Select Outlet</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
 
-                         </div>
+                                            <div class="md-input-wrapper">
+                                                <select class="md-form-control" ng-change="onFilterChange('Session')"
+                                                        ng-options="item.value as item.label for item in sessionOptions"
+                                                        ng-model="selectedFilter.Session">
+                                                    <option value=""></option>
+                                                </select>
+                                                <label>Select Session</label>
+                                            </div>
+                                        </div>
+                                    </form>
 
-                         <div class="row m-b-30 dashboard-header">
-                             <div class="col-lg-3 col-sm-6">
-                                 <div class="card">
-                                     <div class="card-context-menu">
-                                         <a class="btn-link" data-ui-sref="dsrReports" href="#!/dsr"><i
-                                                 class="fa fa-external-link text-warning"></i></a>
-                                     </div>
-                                     <div class="card basic-widget  basic-widget-purple  m-b-0">
-                                         <h5 class="p-t-5 m-b-0">SSSG</h5>
-                                         <div class="row">
-                                             <div class="col-xs-6">
-                                                 <small>MTD %</small>
-                                                 <div class="counter-txt">
-                                                     <h5 class="counter-txt counter" value="0" duration="1"
-                                                         count-to="{{dsrSummaryData.SSSG_MTD}}"></h5>
-                                                 </div>
-                                             </div>
-                                             <div class="col-xs-6">
-                                                 <small>YTD %</small>
-                                                 <div class="counter-txt">
-                                                     <h5 class="counter-txt counter" value="0" duration="1"
-                                                         count-to="{{dsrSummaryData.SSSG_YTD}}">
-                                                     </h5>
-                                                 </div>
-                                             </div>
-                                         </div>
-                                     </div>
-                                 </div>
-                             </div>
-                             <div class="col-lg-3 col-sm-6">
-                                 <div class="card">
-                                     <div class="card-context-menu">
-                                         <a class="btn-link" data-ui-sref="dsrReports" href="#!/dsr"><i
-                                                 class="fa fa-external-link text-warning"></i></a>
-                                     </div>
-                                     <div class="card basic-widget basic-widget-purple">
-                                         <h5 class="p-t-5 m-b-0">SSCG</h5>
-                                         <div class="row">
-                                             <div class="col-xs-6">
-                                                 <small>MTD %</small>
-                                                 <div class="counter-txt">
-                                                     <h5 class="counter-txt counter" value="0" duration="1"
-                                                         count-to="{{dsrSummaryData.SSCG_MTD}}"></h5>
-                                                 </div>
-                                             </div>
-                                             <div class="col-xs-6">
-                                                 <small>YTD %</small>
-                                                 <div class="counter-txt">
-                                                     <h5 class="counter-txt counter" value="0" duration="1"
-                                                         count-to="{{dsrSummaryData.SSCG_YTD}}"></h5>
-                                                 </div>
-                                             </div>
-                                         </div>
-                                     </div>
-                                 </div>
-                             </div>
+                                </div>
 
-
-                             &lt;!&ndash;<div class="col-lg-3 col-sm-6">
-                                 <div class="dashboard-primary bg-primary">
-                                     <div class="col-sm-12 card dashboard-product">
-                                         <span>Total Outlets</span>
-                                         <h2 count-to="{{summaryDataObj.TotalOutlet}}" value="{{countFrom}}"
-                                             duration="1"></h2>
-
-                                         <div class="side-box bg-warning">
-                                             <i class="icon-social-soundcloud"></i>
-                                         </div>
-                                     </div>
-
-                                 </div>
-                             </div>&ndash;&gt;
-
-                             <div class="col-lg-3 col-sm-6">
-                                 <div class="card">
-                                     <div class="card-context-menu">
-                                         <a class="btn-link" data-toggle="dropdown" aria-haspopup="true"
-                                            aria-expanded="false"><i class="fa fa-ellipsis-v"></i></a>
-                                         <div class="dropdown-menu dropdown-menu-right dropdown-menu-options"
-                                              aria-labelledby="ddMenuTodaySales">
-                                             <a class="btn btn-default"
-                                                data-toggle="modal"
-                                                data-target="#summaryRegionSale-Modal"
-                                                ng-click="getRegionSummarySale(detailedModalTitle = 'Sales')">View
-                                                 Details</a>
-                                         </div>
-                                     </div>
-                                     <div class="card basic-widget  basic-widget-green  m-b-0">
-                                         <h5 class="p-t-5 m-b-0">Sale</h5>
-                                         <div class="row">
-                                             <div class="col-xs-4 p-r-0">
-                                                 <small>Day's</small>
-                                                 <div class="counter-txt">
-                                                     <h5 class="counter-txt counter" value="0" duration="1"
-                                                         count-to="{{summaryDataObj.DaySale}}"></h5>
-                                                 </div>
-                                             </div>
-                                             <div class="col-xs-4">
-                                                 <small>MTD</small>
-                                                 <div class="counter-txt">
-                                                     <h5 class="counter-txt counter" value="0" duration="1"
-                                                         count-to="{{summaryDataObj.MTDSale}}"></h5>
-                                                 </div>
-                                             </div>
-                                             <div class="col-xs-4  p-l-0">
-                                                 <small>YTD</small>
-                                                 <div class="counter-txt">
-                                                     <h5 class="counter-txt counter" value="0" duration="1"
-                                                         count-to="{{summaryDataObj.YTDSale}}"></h5>
-                                                 </div>
-                                             </div>
-                                         </div>
-                                     </div>
-                                 </div>
-                             </div>
-                             <div class="col-lg-3 col-sm-6">
-                                 <div class="card">
-                                     <div class="card-context-menu">
-                                         <a class="btn-link" data-toggle="dropdown" aria-haspopup="true"
-                                            aria-expanded="false"><i class="fa fa-ellipsis-v"></i></a>
-                                         <div class="dropdown-menu dropdown-menu-right dropdown-menu-options"
-                                              aria-labelledby="ddMenuTodaySales">
-                                             <a class="btn btn-default"
-                                                data-toggle="modal"
-                                                data-target="#summaryRegionSale-Modal"
-                                                ng-click="getRegionSummarySale(detailedModalTitle = 'Covers')">View
-                                                 Details</a>
-                                         </div>
-                                     </div>
-                                     <div class="card basic-widget basic-widget-green  m-b-0">
-                                         <h5 class="p-t-5 m-b-0">Cover</h5>
-                                         <div class="row">
-                                             <div class="col-xs-4 p-r-0">
-                                                 <small>Day's</small>
-                                                 <div class="counter-txt">
-                                                     <h5 class="counter-txt counter" value="0" duration="1"
-                                                         count-to="{{summaryDataObj.DayCovers}}"></h5>
-                                                 </div>
-                                             </div>
-                                             <div class="col-xs-4">
-                                                 <small>MTD</small>
-                                                 <div class="counter-txt">
-                                                     <h5 class="counter-txt counter" value="0" duration="1"
-                                                         count-to="{{summaryDataObj.MTDCovers}}"></h5>
-                                                 </div>
-                                             </div>
-                                             <div class="col-xs-4  p-l-0">
-                                                 <small>YTD</small>
-                                                 <div class="counter-txt">
-                                                     <h5 class="counter-txt counter" value="0" duration="1"
-                                                         count-to="{{summaryDataObj.YTDCovers}}"></h5>
-                                                 </div>
-                                             </div>
-                                         </div>
-                                     </div>
-                                 </div>
-                             </div>
-                             <div class="col-lg-3 col-sm-6">
-                                 <div class="card">
-                                     <div class="card-context-menu">
-                                         <a class="btn-link" data-toggle="dropdown" aria-haspopup="true"
-                                            aria-expanded="false"><i class="fa fa-ellipsis-v"></i></a>
-                                         <div class="dropdown-menu dropdown-menu-right dropdown-menu-options"
-                                              aria-labelledby="ddMenuTodaySales">
-                                             <a class="btn btn-default"
-                                                data-toggle="modal"
-                                                data-target="#summaryRegionSale-Modal"
-                                                ng-click="getRegionSummarySale(detailedModalTitle = 'APC')">View
-                                                 Details</a>
-                                         </div>
-                                     </div>
-                                     <div class="card basic-widget basic-widget-green  m-b-0">
-                                         <h5 class="p-t-5 m-b-0">Sale APC</h5>
-                                         <div class="row">
-                                             <div class="col-xs-4 p-r-0">
-                                                 <small>Day's</small>
-                                                 <h5 class="counter-txt" value="0" duration="1"
-                                                     count-to="{{summaryDataObj.DayAPC}}"></h5>
-                                             </div>
-                                             <div class="col-xs-4">
-                                                 <small>MTD</small>
-                                                 <h5 class="counter-txt" value="0" duration="1"
-                                                     count-to="{{summaryDataObj.MTDAPC}}"></h5>
-                                             </div>
-                                             <div class="col-xs-4  p-l-0">
-                                                 <small>YTD</small>
-                                                 <h5 class="counter-txt" value="0" duration="1"
-                                                     count-to="{{summaryDataObj.YTDAPC}}"></h5>
-                                             </div>
-                                         </div>
-                                     </div>
-                                 </div>
-                             </div>
-                             <div class="col-lg-3 col-sm-6">
-                                 <div class="card">
-                                     <div class="card-context-menu">
-                                         <a class="btn-link" data-ui-sref="foodCost" href="#!/foodCost"><i
-                                                 class="fa fa-external-link text-warning"></i></a>
-                                     </div>
-                                     <div class="card basic-widget  basic-widget-pink m-b-0">
-                                         <h5 class="p-t-5 m-b-0">Food Cost</h5>
-                                         <div class="row">
-                                             <div class="col-xs-6">
-                                                 <small>MTD %</small>
-                                                 <div class="counter-txt">
-                                                     <h5 class="counter-txt counter" value="0" duration="1"
-                                                         count-to="{{summaryDataObj.FoodCostMTDPerc}}"></h5>
-                                                 </div>
-                                             </div>
-                                             <div class="col-xs-6">
-                                                 <small>YTD %</small>
-                                                 <div class="counter-txt">
-                                                     <h5 class="counter-txt counter" value="0" duration="1"
-                                                         count-to="{{summaryDataObj.FoodCostYTDPerc}}"></h5>
-                                                 </div>
-                                             </div>
-                                         </div>
-                                     </div>
-                                 </div>
-                             </div>
-                             <div class="col-lg-3 col-sm-6">
-                                 <div class="card">
-                                     <div class="card-context-menu">
-                                         <a class="btn-link" data-ui-sref="foodCost" href="#!/foodCost"><i
-                                                 class="fa fa-external-link text-warning"></i></a>
-                                     </div>
-                                     <div class="card basic-widget  basic-widget-pink">
-                                         <h5 class="p-t-5 m-b-0">Cost APC</h5>
-                                         <div class="row">
-                                             <div class="col-xs-6">
-                                                 <small>MTD</small>
-                                                 <div class="counter-txt">
-                                                     <h5 class="counter-txt counter" value="0" duration="1"
-                                                         count-to="{{summaryDataObj.FoodCostMTDAPC}}"></h5>
-                                                 </div>
-                                             </div>
-                                             <div class="col-xs-6">
-                                                 <small>YTD</small>
-                                                 <div class="counter-txt">
-                                                     <h5 class="counter-txt counter" value="0" duration="1"
-                                                         count-to="{{summaryDataObj.FoodCostYTDAPC}}"></h5>
-                                                 </div>
-                                             </div>
-                                         </div>
-                                     </div>
-                                 </div>
-                             </div>
-
-                             <div class="col-lg-3 col-sm-6">
-                                 <div class="card">
-                                     <div class="card-context-menu">
-                                         <a class="btn-link" data-ui-sref="gsiReports" href="#!/gsi"><i
-                                                 class="fa fa-external-link text-warning"></i></a>
-                                     </div>
-                                     <div class="card basic-widget  basic-widget-orange">
-                                         <h5 class="p-t-5 m-b-0">GSI</h5>
-                                         <div class="row">
-                                             <div class="col-xs-6">
-                                                 <small>MTD %</small>
-                                                 <div class="counter-txt">
-                                                     <h5 class="counter-txt counter" value="0" duration="1"
-                                                         count-to="{{summaryDataObj.GSIMTD}}"></h5>
-                                                 </div>
-                                             </div>
-                                             <div class="col-xs-6">
-                                                 <small>YTD %</small>
-                                                 <div class="counter-txt">
-                                                     <h5 class="counter-txt counter" value="0" duration="1"
-                                                         count-to="{{summaryDataObj.GSIYTD}}"></h5>
-                                                 </div>
-                                             </div>
-                                         </div>
-                                     </div>
+                                <div class="row m-b-30 dashboard-header">
+                                    <div class="col-lg-3 col-sm-6">
+                                        <div class="card">
+                                            <div class="card-context-menu">
+                                                <a class="btn-link" data-ui-sref="dsrReports" href="#!/dsr"><i
+                                                        class="fa fa-external-link text-warning"></i></a>
+                                            </div>
+                                            <div class="card basic-widget  basic-widget-purple  m-b-0">
+                                                <h5 class="p-t-5 m-b-0">SSSG</h5>
+                                                <div class="row">
+                                                    <div class="col-xs-6">
+                                                        <small>MTD %</small>
+                                                        <div class="counter-txt">
+                                                            <h5 class="counter-txt counter" value="0" duration="1"
+                                                                count-to="{{dsrSummaryData.SSSG_MTD}}"></h5>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-xs-6">
+                                                        <small>YTD %</small>
+                                                        <div class="counter-txt">
+                                                            <h5 class="counter-txt counter" value="0" duration="1"
+                                                                count-to="{{dsrSummaryData.SSSG_YTD}}">
+                                                            </h5>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-3 col-sm-6">
+                                        <div class="card">
+                                            <div class="card-context-menu">
+                                                <a class="btn-link" data-ui-sref="dsrReports" href="#!/dsr"><i
+                                                        class="fa fa-external-link text-warning"></i></a>
+                                            </div>
+                                            <div class="card basic-widget basic-widget-purple">
+                                                <h5 class="p-t-5 m-b-0">SSCG</h5>
+                                                <div class="row">
+                                                    <div class="col-xs-6">
+                                                        <small>MTD %</small>
+                                                        <div class="counter-txt">
+                                                            <h5 class="counter-txt counter" value="0" duration="1"
+                                                                count-to="{{dsrSummaryData.SSCG_MTD}}"></h5>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-xs-6">
+                                                        <small>YTD %</small>
+                                                        <div class="counter-txt">
+                                                            <h5 class="counter-txt counter" value="0" duration="1"
+                                                                count-to="{{dsrSummaryData.SSCG_YTD}}"></h5>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
 
 
-                                 </div>
-                             </div>
+                                    <!--<div class="col-lg-3 col-sm-6">
+                                        <div class="dashboard-primary bg-primary">
+                                            <div class="col-sm-12 card dashboard-product">
+                                                <span>Total Outlets</span>
+                                                <h2 count-to="{{summaryDataObj.TotalOutlet}}" value="{{countFrom}}"
+                                                    duration="1"></h2>
 
-                             <div class="modal fade  modal-flex" id="summaryRegionSale-Modal" tabindex="-1"
-                                  role="dialog">
-                                 <div class="modal-dialog" role="document">
-                                     <div class="modal-content">
-                                         <div class="modal-header">
-                                             <button type="button" class="close" data-dismiss="modal"
-                                                     aria-label="Close">
-                                                 <span aria-hidden="true">&times;</span>
-                                             </button>
-                                             <h4 class="modal-title"><span class="label label-default">{{ formatDate(selectedFilter.curDate, 'dd MMM yyyy') }}</span>
-                                                 Sale <span ng-hide="detailedModalTitle=='Sales'">{{detailedModalTitle}}</span>
-                                                 Summary</h4>
-                                         </div>
-                                         <div class="modal-body">
-                                             <div class="text-center" ng-if="!summaryRegionSaleData"><i
-                                                     class="fa fa-circle-o-notch fa-spin fa-lg"></i> Loading...
-                                             </div>
-                                             <div class="table-responsive">
-                                                 <table class="table" ng-if="summaryRegionSaleData">
-                                                     <thead class="table-inverse">
-                                                     <tr>
-                                                         <th rowspan="2">Region</th>
-                                                         <th colspan="4">{{detailedModalTitle}}</th>
-                                                     </tr>
-                                                     <tr>
-                                                         <th>#Stores</th>
-                                                         <th>#Days</th>
-                                                         <th>#MTD</th>
-                                                         <th>#YTD</th>
-                                                     </tr>
-                                                     </thead>
-                                                     <tbody>
-                                                     <tr ng-class="{'table-warning':$index%2==0,'table-info':$index%2!==0}"
-                                                         ng-repeat="item in summaryRegionSaleData">
-                                                         <td><strong>{{item.RegionName}}</strong></td>
-                                                         <td>{{item.Outlets}}</td>
-                                                         <td>{{item.Day}}</td>
-                                                         <td>{{item.MTD}}</td>
-                                                         <td>{{item.YTD}}</td>
-                                                     </tr>
-                                                     </tbody>
-                                                 </table>
-                                             </div>
-                                         </div>
-                                         <div class="modal-footer">
-                                             <button type="button" class="btn btn-default waves-effect "
-                                                     data-dismiss="modal">OK
-                                             </button>
-                                         </div>
-                                     </div>
-                                 </div>
-                             </div>
-                         </div>
-                         <div class="row">
-                             <div class="col-lg-12 col-md-12">
+                                                <div class="side-box bg-warning">
+                                                    <i class="icon-social-soundcloud"></i>
+                                                </div>
+                                            </div>
 
-                                 <div class="card">
-                                     <div class="card-header">
-                                         <h5 class="card-header-text">Monthwise - Actual vs Target Sales</h5>
+                                        </div>
+                                    </div>-->
 
-                                     </div>
-                                     <div class="card-block">
-                                         <div class="text-center" ng-if="!monthlySummaryData"><i
-                                                 class="fa fa-circle-o-notch fa-spin fa-lg"></i> Loading...
-                                         </div>
-                                         <nvd3 options="lineoptions" data="monthlySummaryData"
-                                               class="with-3d-shadow with-transitions"></nvd3>
-                                         <p ng-if="!monthlySummaryData || monthlySummaryData.length<0">No monthly
-                                             summary data</p>
-                                     </div>
-                                 </div>
-                             </div>
-                             <div class="col-lg-12 col-md-12">
-                                 <div class="card">
-                                     <div class="card-header">
-                                         <h5 class="card-header-text">Co-relations</h5>
-                                         <div class="f-right">
-                                             <div class="dropdown">
-                                                 Filter:
-                                                 <button class="btn btn-secondary dropdown-toggle" type="button"
-                                                         id="dropdownMenuButton" data-toggle="dropdown"
-                                                         aria-haspopup="true" aria-expanded="false">
-                                                     <span ng-if="corelationFilter == 'D'">{{ formatDate(selectedFilter.curDate, 'dd MMM yyyy') }}</span>
-                                                     <span ng-if="corelationFilter == 'W'">Last 7 Days</span>
-                                                     <span ng-if="corelationFilter == 'M'">Month Till Date</span>
-                                                     <span ng-if="corelationFilter == 'Y'">Year Till Date</span>
-                                                 </button>
-                                                 <div class="dropdown-menu dropdown-menu-right dropdown-menu-options"
-                                                      aria-labelledby="dropdownMenuButton">
-                                                     <div class="btn-group-vertical">
-                                                         <label class="btn btn-primary"
-                                                                ng-model="corelationFilter"
-                                                                ng-change="filterCommonPie()"
-                                                                uib-btn-radio="'D'">{{
-                                                             formatDate(selectedFilter.curDate, 'dd MMM yyyy')
-                                                             }}</label>
-                                                         <label class="btn btn-primary"
-                                                                ng-model="corelationFilter"
-                                                                ng-change="filterCommonPie()"
-                                                                uib-btn-radio="'W'">Last 7 Days</label>
-                                                         <label class="btn btn-primary"
-                                                                ng-model="corelationFilter"
-                                                                ng-change="filterCommonPie()"
-                                                                uib-btn-radio="'M'">Month Till Date</label>
-                                                         <label class="btn btn-primary"
-                                                                ng-model="corelationFilter"
-                                                                ng-change="filterCommonPie()"
-                                                                uib-btn-radio="'Y'">Year Till Date</label>
-                                                     </div>
-                                                 </div>
-                                             </div>
+                                    <div class="col-lg-3 col-sm-6">
+                                        <div class="card">
+                                            <div class="card-context-menu">
+                                                <a class="btn-link" data-toggle="dropdown" aria-haspopup="true"
+                                                   aria-expanded="false"><i class="fa fa-ellipsis-v"></i></a>
+                                                <div class="dropdown-menu dropdown-menu-right dropdown-menu-options"
+                                                     aria-labelledby="ddMenuTodaySales">
+                                                    <a class="btn btn-default"
+                                                       data-toggle="modal"
+                                                       data-target="#summaryRegionSale-Modal"
+                                                       ng-click="getRegionSummarySale(detailedModalTitle = 'Sales')">View
+                                                        Details</a>
+                                                </div>
+                                            </div>
+                                            <div class="card basic-widget  basic-widget-green  m-b-0">
+                                                <h5 class="p-t-5 m-b-0">Sale</h5>
+                                                <div class="row">
+                                                    <div class="col-xs-4 p-r-0">
+                                                        <small>Day's</small>
+                                                        <div class="counter-txt">
+                                                            <h5 class="counter-txt counter" value="0" duration="1"
+                                                                count-to="{{summaryDataObj.DaySale}}"></h5>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-xs-4 p-r-0 p-l-0">
+                                                        <small>MTD
+                                                       <!--     <span class="d-inline growth-text">
+                                                                <span ng-if="summaryDataObj.SaleGrowth_MTD>0" class="icon fa fa fa-sort-up"></span>
+                                                                <span ng-if="summaryDataObj.SaleGrowth_MTD<0" class="icon-2 fa fa fa-sort-down"></span>
+                                                                <span value="0" duration="1" count-to="{{summaryDataObj.SaleGrowth_MTD | negativeGrowthCheck}}"></span>
+                                                                <span>%</span>
+                                                            </span>-->
+                                                        </small>
+                                                        <div class="counter-txt">
+                                                            <h5 class="counter-txt counter" value="0" duration="1" style="margin-top: -3px!important;"
+                                                                count-to="{{summaryDataObj.MTDSale}}"></h5>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-xs-4  p-l-0">
+                                                        <small>YTD
+                                                            <!--<span class="d-inline growth-text">
+                                                                <span ng-if="summaryDataObj.SaleGrowth_YTD>0" class="icon fa fa fa-sort-up"></span>
+                                                                <span ng-if="summaryDataObj.SaleGrowth_YTD<0" class="icon-2 fa fa fa-sort-down"></span>
+                                                                <span value="0" duration="1" count-to="{{summaryDataObj.SaleGrowth_YTD | negativeGrowthCheck}}"></span>
+                                                                <span>%</span>
+                                                            </span>-->
+                                                        </small>
+                                                        <div class="counter-txt">
+                                                            <h5 class="counter-txt counter" value="0" duration="1" style="margin-top: -3px!important;"
+                                                                count-to="{{summaryDataObj.YTDSale}}"></h5>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-3 col-sm-6">
+                                        <div class="card">
+                                            <div class="card-context-menu">
+                                                <a class="btn-link" data-toggle="dropdown" aria-haspopup="true"
+                                                   aria-expanded="false"><i class="fa fa-ellipsis-v"></i></a>
+                                                <div class="dropdown-menu dropdown-menu-right dropdown-menu-options"
+                                                     aria-labelledby="ddMenuTodaySales">
+                                                    <a class="btn btn-default"
+                                                       data-toggle="modal"
+                                                       data-target="#summaryRegionSale-Modal"
+                                                       ng-click="getRegionSummarySale(detailedModalTitle = 'Covers')">View
+                                                        Details</a>
+                                                </div>
+                                            </div>
+                                            <div class="card basic-widget basic-widget-green  m-b-0">
+                                                <h5 class="p-t-5 m-b-0">Cover<span ng-show="hasSelectedSingleOutlet">(in K)</span></h5>
+                                                <div class="row">
+                                                    <div class="col-xs-4 p-r-0">
+                                                        <small>Day's</small>
+                                                        <div class="counter-txt">
+                                                            <h5 class="counter-txt counter" value="0" duration="1"
+                                                                count-to-comma="{{summaryDataObj.DayCovers}}"></h5>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-xs-4 p-r-0 p-l-0">
+                                                        <small>MTD
+                                                           <!-- <span class="d-inline growth-text">
+                                                                <span ng-if="summaryDataObj.CoverGrowth_MTD>0" class="icon fa fa fa-sort-up"></span>
+                                                                <span ng-if="summaryDataObj.CoverGrowth_MTD<0" class="icon-2 fa fa fa-sort-down"></span>
+                                                                <span value="0" duration="1" count-to="{{summaryDataObj.CoverGrowth_MTD | negativeGrowthCheck}}"></span>
+                                                                <span>%</span>
+                                                            </span>-->
+                                                        </small>
+                                                        <div class="counter-txt">
+                                                            <h5 class="counter-txt counter" value="0" duration="1" style="margin-top: -3px!important;"
+                                                                count-to="{{summaryDataObj.MTDCovers}}"></h5>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-xs-4  p-l-0">
+                                                        <small>YTD
+                                                           <!-- <span class="d-inline growth-text">
+                                                                <span ng-if="summaryDataObj.CoverGrowth_YTD>0" class="icon fa fa fa-sort-up"></span>
+                                                                <span ng-if="summaryDataObj.CoverGrowth_YTD<0" class="icon-2 fa fa fa-sort-down"></span>
+                                                                <span value="0" duration="1" count-to="{{summaryDataObj.CoverGrowth_YTD | negativeGrowthCheck}}"></span>
+                                                                <span>%</span>
+                                                            </span>-->
+                                                        </small>
+                                                        <div class="counter-txt">
+                                                            <h5 class="counter-txt counter" value="0" duration="1" style="margin-top: -3px!important;"
+                                                                count-to="{{summaryDataObj.YTDCovers}}"></h5>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-3 col-sm-6">
+                                        <div class="card">
+                                            <div class="card-context-menu">
+                                                <a class="btn-link" data-toggle="dropdown" aria-haspopup="true"
+                                                   aria-expanded="false"><i class="fa fa-ellipsis-v"></i></a>
+                                                <div class="dropdown-menu dropdown-menu-right dropdown-menu-options"
+                                                     aria-labelledby="ddMenuTodaySales">
+                                                    <a class="btn btn-default"
+                                                       data-toggle="modal"
+                                                       data-target="#summaryRegionSale-Modal"
+                                                       ng-click="getRegionSummarySale(detailedModalTitle = 'APC')">View
+                                                        Details</a>
+                                                </div>
+                                            </div>
+                                            <div class="card basic-widget basic-widget-green  m-b-0">
+                                                <h5 class="p-t-5 m-b-0">Sale APC</h5>
+                                                <div class="row">
+                                                    <div class="col-xs-4 p-r-0">
+                                                        <small>Day's</small>
+                                                        <h5 class="counter-txt" value="0" duration="1"
+                                                            count-to="{{summaryDataObj.DayAPC}}"></h5>
+                                                    </div>
+                                                    <div class="col-xs-4">
+                                                        <small>MTD</small>
+                                                        <h5 class="counter-txt" value="0" duration="1"
+                                                            count-to="{{summaryDataObj.MTDAPC}}"></h5>
+                                                    </div>
+                                                    <div class="col-xs-4  p-l-0">
+                                                        <small>YTD</small>
+                                                        <h5 class="counter-txt" value="0" duration="1"
+                                                            count-to="{{summaryDataObj.YTDAPC}}"></h5>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-3 col-sm-6">
+                                        <div class="card">
+                                            <div class="card-context-menu">
+                                                <a class="btn-link" data-ui-sref="foodCost" href="#!/foodCost"><i
+                                                        class="fa fa-external-link text-warning"></i></a>
+                                            </div>
+                                            <div class="card basic-widget  basic-widget-pink m-b-0">
+                                                <h5 class="p-t-5 m-b-0">Food Cost</h5>
+                                                <div class="row">
+                                                    <div class="col-xs-6">
+                                                        <small>MTD %</small>
+                                                        <div class="counter-txt">
+                                                            <h5 class="counter-txt counter" value="0" duration="1"
+                                                                count-to="{{summaryDataObj.FoodCostMTDPerc}}"></h5>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-xs-6">
+                                                        <small>YTD %</small>
+                                                        <div class="counter-txt">
+                                                            <h5 class="counter-txt counter" value="0" duration="1"
+                                                                count-to="{{summaryDataObj.FoodCostYTDPerc}}"></h5>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-3 col-sm-6">
+                                        <div class="card">
+                                            <div class="card-context-menu">
+                                                <a class="btn-link" data-ui-sref="foodCost" href="#!/foodCost"><i
+                                                        class="fa fa-external-link text-warning"></i></a>
+                                            </div>
+                                            <div class="card basic-widget  basic-widget-pink">
+                                                <h5 class="p-t-5 m-b-0">Cost APC</h5>
+                                                <div class="row">
+                                                    <div class="col-xs-6">
+                                                        <small>MTD</small>
+                                                        <div class="counter-txt">
+                                                            <h5 class="counter-txt counter" value="0" duration="1"
+                                                                count-to="{{summaryDataObj.FoodCostMTDAPC}}"></h5>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-xs-6">
+                                                        <small>YTD</small>
+                                                        <div class="counter-txt">
+                                                            <h5 class="counter-txt counter" value="0" duration="1"
+                                                                count-to="{{summaryDataObj.FoodCostYTDAPC}}"></h5>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
 
-                                         </div>
-                                     </div>
-                                     <div class="card-block">
-                                         <div class="text-center" ng-if="!pieDataObj"><i
-                                                 class="fa fa-circle-o-notch fa-spin fa-lg"></i> Loading...
-                                         </div>
-                                         &lt;!&ndash;<div class="col-lg-3">
-                                             <nvd3 options="pieoptions" data="pieFoodSessionData"></nvd3>
-
-                                         </div>
-                                         <div class="col-lg-3">
-                                             <nvd3 options="pietenderoptions" data="pieTenderData"></nvd3>
-
-                                         </div>
-                                         <div class="col-lg-3">
-                                             <nvd3 options="pieoptions" data="pieFoodTypeData"></nvd3>
-
-                                         </div>
-
-                                         <div class="col-lg-3">
-                                             <nvd3 options="pieoptions" data="pieFoodSaleData"></nvd3>
-
-                                         </div>&ndash;&gt;
-                                         <div class="col-lg-3">
-                                             <c3chart bindto-id="chart3"
-                                                      ng-if="pieDataObj && (pieDataObj.LunchCover>0 || pieDataObj.DinnerCover>0)">
-                                                 <chart-column column-id="Lunch"
-                                                               column-values="{{pieDataObj.LunchCover}}"
-                                                               column-type="pie"/>
-                                                 <chart-column column-id="Dinner"
-                                                               column-values="{{pieDataObj.DinnerCover}}"
-                                                               column-type="pie"/>
-                                                 <chart-pie expand="true"/>
-                                             </c3chart>
-                                         </div>
-                                         <div class="col-lg-3">
-                                             <c3chart bindto-id="chart4" ng-if="pieTenderData">
-                                                 <chart-column ng-repeat="pieItem in pieTenderData"
-                                                               column-id="{{pieItem.TenderName}}"
-                                                               column-values="{{pieItem.TenderAmount}}"
-                                                               column-type="pie"/>
-                                                 <chart-pie expand="true"/>
-                                             </c3chart>
-                                         </div>
-                                         <div class="col-lg-3">
-                                             <c3chart bindto-id="chart5"
-                                                      ng-if="pieDataObj && (pieDataObj.VegCover>0 || pieDataObj.NonVegCover>0)">
-                                                 <chart-column column-id="Veg"
-                                                               column-values="{{pieDataObj.VegCover}}"
-                                                               column-type="pie"/>
-                                                 <chart-column column-id="Non Veg"
-                                                               column-values="{{pieDataObj.NonVegCover}}"
-                                                               column-type="pie"/>
-                                                 <chart-pie expand="true"/>
-                                             </c3chart>
-                                         </div>
-                                         <div class="col-lg-3">
-                                             <c3chart bindto-id="chart6"
-                                                      ng-if="pieDataObj && (pieDataObj.TotalFoodSale>0 || pieDataObj.TotalBeveragesSale>0)">
-                                                 <chart-column column-id="Food"
-                                                               column-values="{{pieDataObj.TotalFoodSale}}"
-                                                               column-type="pie"/>
-                                                 <chart-column column-id="Beverages"
-                                                               column-values="{{pieDataObj.TotalBeveragesSale}}"
-                                                               column-type="pie"/>
-                                                 <chart-pie expand="true"/>
-                                             </c3chart>
-                                         </div>
-                                     </div>
-                                 </div>
-                             </div>
-                             <div class="col-lg-12 col-md-12">
-                                 <div class="card">
-                                     <div class="card-header">
-                                         <h5 class="card-header-text">Criteria Wise</h5>
-
-                                         <div class="f-right">
-                                             <div class="dropdown d-inline" ng-hide="itsCriteriaGridView">
-                                                 Filter:
-                                                 <button class="btn btn-secondary dropdown-toggle" type="button"
-                                                         id="dropdownMenuButton2" data-toggle="dropdown"
-                                                         aria-haspopup="true" aria-expanded="false">
-                                                     <span ng-if="subCriteriaFilter == 'MTD_Sale'">MTD Sales</span>
-                                                     <span ng-if="subCriteriaFilter == 'YTD_Sale'">YTD Sales</span>
-                                                     <span ng-if="subCriteriaFilter == 'MTD_Cover'">MTD Covers</span>
-                                                     <span ng-if="subCriteriaFilter == 'YTD_Cover'">YTD Covers</span>
-                                                 </button>
-                                                 <div class="dropdown-menu dropdown-menu-right dropdown-menu-options"
-                                                      aria-labelledby="dropdownMenuButton2">
-                                                     <div class="btn-group-vertical">
-                                                         <label class="btn btn-primary"
-                                                                ng-model="subCriteriaFilter"
-                                                                ng-change="filterSubCriteria()"
-                                                                uib-btn-radio="'MTD_Sale'">MTD Sales</label>
-                                                         <label class="btn btn-primary"
-                                                                ng-model="subCriteriaFilter"
-                                                                ng-change="filterSubCriteria()"
-                                                                uib-btn-radio="'YTD_Sale'">YTD Sales</label>
-                                                         <label class="btn btn-primary"
-                                                                ng-model="subCriteriaFilter"
-                                                                ng-change="filterSubCriteria()"
-                                                                uib-btn-radio="'MTD_Cover'">MTD Covers</label>
-                                                         <label class="btn btn-primary"
-                                                                ng-model="subCriteriaFilter"
-                                                                ng-change="filterSubCriteria()"
-                                                                uib-btn-radio="'YTD_Cover'">YTD Covers</label>
-                                                     </div>
-                                                 </div>
-                                             </div>
-                                             <div class="d-inline" ng-if="criteriaSalesData">
-                                                 <button ng-class="itsCriteriaGridView==true?'btn grid-btn grid-btn-active':'btn grid-btn '"
-                                                         ng-click="setCriteriaGridView()">
-                                                     <i class="fa fa-th fa-2x"></i>
-                                                 </button>
-                                             </div>
-
-                                         </div>
-                                         <div class="d-inline" helper-elements="none"
-                                              on-item-click="filterSalesByCriteria(data)" isteven-multi-select
-                                              input-model="criteriaOptions" output-model="criteriaFilter"
-                                              button-label="name" item-label="name" tick-property="ticked"
-                                              selection-mode="single">
-                                         </div>
-                                     </div>
-                                     <div class="card-block" ng-hide="itsCriteriaGridView">
-
-                                         <div class="text-center" ng-if="!criteriaSalesData"><i
-                                                 class="fa fa-circle-o-notch fa-spin fa-lg"></i> Loading...
-                                         </div>
-
-                                         <nvd3 class="hidden-sm-down" options="baroptions" ng-if="criteriaFilteredData"
-                                               data="criteriaFilteredData"></nvd3>
-                                         <nvd3 class="hidden-md-up" options="barXSoptions" ng-if="criteriaFilteredData"
-                                               data="criteriaFilteredData"></nvd3>
-                                         <p ng-if="!criteriaFilteredData || criteriaFilteredData.length<0">No
-                                             data available</p>
-                                     </div>
-                                     <div class="card-block" ng-if="itsCriteriaGridView">
-                                         <div class="text-center" ng-if="!criteriaSalesData"><i
-                                                 class="fa fa-circle-o-notch fa-spin fa-lg"></i> Loading...
-                                         </div>
-                                         <div class="table-responsive">
-                                             <table class="table text-center" ng-if="criteriaSalesData">
-                                                 <thead class="table-inverse">
-                                                 <tr>
-                                                     <th rowspan="2">{{selectedCriteria}}</th>
-                                                     <th rowspan="2">Stores</th>
-                                                     <th colspan="2">MTD</th>
-                                                     <th colspan="2">YTD</th>
-                                                 </tr>
-                                                 <tr>
-                                                     <th>#Sales</th>
-                                                     <th>#Covers</th>
-                                                     <th>#Sales</th>
-                                                     <th>#Covers</th>
-                                                 </tr>
-                                                 </thead>
-                                                 <tbody>
-                                                 <tr ng-class="{'table-warning':$index%2==0,'table-info':$index%2!==0}"
-                                                     ng-repeat="item in criteriaSalesData">
-                                                     <td><strong>{{item.RType}}</strong></td>
-                                                     <td>{{item.NoOfStores}}</td>
-                                                     <td>{{item.MTD_Sale}}</td>
-                                                     <td>{{item.MTD_Cover}}</td>
-                                                     <td>{{item.YTD_Sale}}</td>
-                                                     <td>{{item.YTD_Cover}}</td>
-                                                 </tr>
-                                                 </tbody>
-                                             </table>
-                                         </div>
-                                     </div>
-                                 </div>
-                             </div>
-                         </div>
+                                    <div class="col-lg-3 col-sm-6">
+                                        <div class="card">
+                                            <div class="card-context-menu">
+                                                <a class="btn-link" data-ui-sref="gsiReports" href="#!/gsi"><i
+                                                        class="fa fa-external-link text-warning"></i></a>
+                                            </div>
+                                            <div class="card basic-widget  basic-widget-orange">
+                                                <h5 class="p-t-5 m-b-0">GSI</h5>
+                                                <div class="row">
+                                                    <div class="col-xs-6">
+                                                        <small>MTD %</small>
+                                                        <div class="counter-txt">
+                                                            <h5 class="counter-txt counter" value="0" duration="1"
+                                                                count-to="{{summaryDataObj.GSIMTD}}"></h5>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-xs-6">
+                                                        <small>YTD %</small>
+                                                        <div class="counter-txt">
+                                                            <h5 class="counter-txt counter" value="0" duration="1"
+                                                                count-to="{{summaryDataObj.GSIYTD}}"></h5>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
 
 
-                     </div>
-                 </div>
-                 &lt;!&ndash; Radial variants end &ndash;&gt;-->
+                                        </div>
+                                    </div>
+
+                                    <div class="modal fade  modal-flex" id="summaryRegionSale-Modal" tabindex="-1"
+                                         role="dialog">
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <button type="button" class="close" data-dismiss="modal"
+                                                            aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                    <h4 class="modal-title"><span class="label label-default">{{ formatDate(selectedFilter.curDate, 'dd MMM yyyy') }}</span>
+                                                        Sale <span ng-hide="detailedModalTitle=='Sales'">{{detailedModalTitle}}</span>
+                                                        Summary</h4>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <div class="text-center" ng-if="!summaryRegionSaleData"><i
+                                                            class="fa fa-circle-o-notch fa-spin fa-lg"></i> Loading...
+                                                    </div>
+                                                    <div class="table-responsive">
+                                                        <table class="table" ng-if="summaryRegionSaleData">
+                                                            <thead class="table-inverse">
+                                                            <tr>
+                                                                <th rowspan="2">Region</th>
+                                                                <th colspan="4">{{detailedModalTitle}}</th>
+                                                            </tr>
+                                                            <tr>
+                                                                <th>#Stores</th>
+                                                                <th>#Days</th>
+                                                                <th>#MTD</th>
+                                                                <th>#YTD</th>
+                                                            </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                            <tr ng-class="{'table-warning':$index%2==0,'table-info':$index%2!==0}"
+                                                                ng-repeat="item in summaryRegionSaleData">
+                                                                <td><strong>{{item.RegionName}}</strong></td>
+                                                                <td>{{item.Outlets}}</td>
+                                                                <td>{{item.Day}}</td>
+                                                                <td>{{item.MTD}}</td>
+                                                                <td>{{item.YTD}}</td>
+                                                            </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-default waves-effect "
+                                                            data-dismiss="modal">OK
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-12 col-md-12">
+
+                                        <div class="card">
+                                            <div class="card-header">
+                                                <h5 class="card-header-text">Monthwise - Actual vs Target Sales</h5>
+
+                                            </div>
+                                            <div class="card-block">
+                                                <div class="text-center" ng-if="!monthlySummaryData"><i
+                                                        class="fa fa-circle-o-notch fa-spin fa-lg"></i> Loading...
+                                                </div>
+                                                <nvd3 ng-if="!oneMonthGraph" options="lineoptions" data="monthlySummaryData"
+                                                      class="with-3d-shadow with-transitions"></nvd3>
+                                                <nvd3 ng-if="oneMonthGraph" options="oneMonthSummaryBaroptions" data="monthlySummaryData"
+                                                      class="with-3d-shadow with-transitions"></nvd3>
+                                                <p ng-if="!monthlySummaryData || monthlySummaryData.length<0">No monthly
+                                                    summary data</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                  <!--  <div class="col-lg-12 col-md-12">
+                                        <div class="card">
+                                            <div class="card-header">
+                                                <h5 class="card-header-text">Co-relations</h5>
+                                                <div class="f-right">
+                                                    <span class="d-inline-block">Filter:</span>
+                                                    <btn-dropdown class="d-inline-block" options="corelationOptions" select-model="corelationFilter" select-change="filterCommonPie()"></btn-dropdown>
+                                                </div>
+                                            </div>
+                                            <div class="card-block">
+                                                <div class="text-center" ng-if="!pieDataObj"><i
+                                                        class="fa fa-circle-o-notch fa-spin fa-lg"></i> Loading...
+                                                </div>
+                                                &lt;!&ndash;<div class="col-lg-3">
+                                                    <nvd3 options="pieoptions" data="pieFoodSessionData"></nvd3>
+
+                                                </div>
+                                                <div class="col-lg-3">
+                                                    <nvd3 options="pietenderoptions" data="pieTenderData"></nvd3>
+
+                                                </div>
+                                                <div class="col-lg-3">
+                                                    <nvd3 options="pieoptions" data="pieFoodTypeData"></nvd3>
+
+                                                </div>
+
+                                                <div class="col-lg-3">
+                                                    <nvd3 options="pieoptions" data="pieFoodSaleData"></nvd3>
+
+                                                </div>&ndash;&gt;
+                                                <div class="col-lg-3">
+                                                    <c3chart bindto-id="chart3"
+                                                             ng-if="pieDataObj && (pieDataObj.LunchCover>0 || pieDataObj.DinnerCover>0)">
+                                                        <chart-column column-id="Lunch"
+                                                                      column-values="{{pieDataObj.LunchCover}}"
+                                                                      column-type="pie"/>
+                                                        <chart-column column-id="Dinner"
+                                                                      column-values="{{pieDataObj.DinnerCover}}"
+                                                                      column-type="pie"/>
+                                                        <chart-pie expand="true"/>
+                                                    </c3chart>
+                                                </div>
+                                                <div class="col-lg-3">
+                                                    <c3chart bindto-id="chart4" ng-if="pieTenderData">
+                                                        <chart-column ng-repeat="pieItem in pieTenderData"
+                                                                      column-id="{{pieItem.TenderName}}"
+                                                                      column-values="{{pieItem.TenderAmount}}"
+                                                                      column-type="pie"/>
+                                                        <chart-pie expand="true"/>
+                                                    </c3chart>
+                                                </div>
+                                                <div class="col-lg-3">
+                                                    <c3chart bindto-id="chart5"
+                                                             ng-if="pieDataObj && (pieDataObj.VegCover>0 || pieDataObj.NonVegCover>0)">
+                                                        <chart-column column-id="Veg"
+                                                                      column-values="{{pieDataObj.VegCover}}"
+                                                                      column-type="pie"/>
+                                                        <chart-column column-id="Non Veg"
+                                                                      column-values="{{pieDataObj.NonVegCover}}"
+                                                                      column-type="pie"/>
+                                                        <chart-pie expand="true"/>
+                                                    </c3chart>
+                                                </div>
+                                                <div class="col-lg-3">
+                                                    <c3chart bindto-id="chart6"
+                                                             ng-if="pieDataObj && (pieDataObj.TotalFoodSale>0 || pieDataObj.TotalBeveragesSale>0)">
+                                                        <chart-column column-id="Food"
+                                                                      column-values="{{pieDataObj.TotalFoodSale}}"
+                                                                      column-type="pie"/>
+                                                        <chart-column column-id="Beverages"
+                                                                      column-values="{{pieDataObj.TotalBeveragesSale}}"
+                                                                      column-type="pie"/>
+                                                        <chart-pie expand="true"/>
+                                                    </c3chart>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>-->
+                                    <div class="col-lg-12 col-md-12">
+                                        <div class="card">
+                                            <div class="card-header">
+                                                <h5 class="card-header-text">Criteria Wise</h5>
+
+                                                <div class="f-right">
+                                                    <div class="dropdown d-inline" ng-hide="itsCriteriaGridView">
+                                                        Filter:
+                                                        <button class="btn btn-secondary dropdown-toggle" type="button"
+                                                                id="dropdownMenuButton2" data-toggle="dropdown"
+                                                                aria-haspopup="true" aria-expanded="false">
+                                                            <span ng-if="subCriteriaFilter == 'MTD_Sale'">MTD Sales</span>
+                                                            <span ng-if="subCriteriaFilter == 'YTD_Sale'">YTD Sales</span>
+                                                            <span ng-if="subCriteriaFilter == 'MTD_Cover'">MTD Covers</span>
+                                                            <span ng-if="subCriteriaFilter == 'YTD_Cover'">YTD Covers</span>
+                                                        </button>
+                                                        <div class="dropdown-menu dropdown-menu-right dropdown-menu-options"
+                                                             aria-labelledby="dropdownMenuButton2">
+                                                            <div class="btn-group-vertical">
+                                                                <label class="btn btn-primary"
+                                                                       ng-model="subCriteriaFilter"
+                                                                       ng-change="filterSubCriteria()"
+                                                                       uib-btn-radio="'MTD_Sale'">MTD Sales</label>
+                                                                <label class="btn btn-primary"
+                                                                       ng-model="subCriteriaFilter"
+                                                                       ng-change="filterSubCriteria()"
+                                                                       uib-btn-radio="'YTD_Sale'">YTD Sales</label>
+                                                                <label class="btn btn-primary"
+                                                                       ng-model="subCriteriaFilter"
+                                                                       ng-change="filterSubCriteria()"
+                                                                       uib-btn-radio="'MTD_Cover'">MTD Covers</label>
+                                                                <label class="btn btn-primary"
+                                                                       ng-model="subCriteriaFilter"
+                                                                       ng-change="filterSubCriteria()"
+                                                                       uib-btn-radio="'YTD_Cover'">YTD Covers</label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                   <!-- <div class="d-inline" ng-if="criteriaSalesData">
+                                                        <button ng-class="itsCriteriaGridView==true?'btn grid-btn grid-btn-active':'btn grid-btn '"
+                                                                ng-click="setCriteriaGridView()">
+                                                            <i class="fa fa-th fa-2x"></i>
+                                                        </button>
+                                                    </div>-->
+                                                </div>
+                                                <div class="d-inline" helper-elements="none"
+                                                     on-item-click="filterSalesByCriteria(data)" isteven-multi-select
+                                                     input-model="criteriaOptions" output-model="criteriaFilter"
+                                                     button-label="name" item-label="name" tick-property="ticked"
+                                                     selection-mode="single">
+                                                </div>
+                                            </div>
+                                            <div class="card-block" ng-hide="itsCriteriaGridView">
+
+                                                <div class="text-center" ng-if="!criteriaSalesData"><i
+                                                        class="fa fa-circle-o-notch fa-spin fa-lg"></i> Loading...
+                                                </div>
+
+                                                <nvd3 class="" options="baroptions" ng-if="criteriaFilteredData"
+                                                      data="criteriaFilteredData"></nvd3>
+                                              <!--  <nvd3 class="hidden-md-up" options="barXSoptions" ng-if="criteriaFilteredData"
+                                                      data="criteriaFilteredData"></nvd3>-->
+                                                <p ng-if="!criteriaFilteredData || criteriaFilteredData.length<0">No
+                                                    data available</p>
+                                            </div>
+                                            <div class="card-block" ng-if="itsCriteriaGridView">
+                                                <div class="text-center" ng-if="!criteriaSalesData"><i
+                                                        class="fa fa-circle-o-notch fa-spin fa-lg"></i> Loading...
+                                                </div>
+                                                <div class="">
+                                                    <table class="table text-center hidden-md-down" ng-if="criteriaSalesData">
+                                                        <thead class="table-inverse">
+                                                        <tr>
+                                                            <th rowspan="2">{{selectedCriteria}}</th>
+                                                            <th rowspan="2">ADS</th>
+                                                            <th rowspan="2">Stores</th>
+                                                            <th colspan="2">MTD</th>
+                                                            <th class="nodata"></th>
+                                                            <th colspan="2">YTD</th>
+                                                        </tr>
+                                                        <tr>
+                                                            <th>#Sales</th>
+                                                            <th>#Covers</th>
+                                                            <th></th>
+                                                            <th>#Sales</th>
+                                                            <th>#Covers</th>
+                                                        </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                        <tr ng-class="{'table-warning':$index%2==0,'table-info':$index%2!==0}"
+                                                            ng-repeat="item in criteriaSalesData">
+                                                            <td><strong>{{item.RType}}</strong></td>
+                                                            <td><strong>{{item.ADS}}</strong></td>
+                                                            <td>{{item.NoOfStores}}</td>
+                                                            <td>{{item.MTD_Sale}}</td>
+                                                            <td>{{item.MTD_Cover}}</td>
+                                                            <th>&nbsp;</th>
+                                                            <td>{{item.YTD_Sale}}</td>
+                                                            <td>{{item.YTD_Cover}}</td>
+                                                        </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                                <div class="">
+                                                    <table class="table text-center table-sm hidden-md-up" ng-if="criteriaSalesData">
+                                                        <thead class="table-inverse">
+                                                        <tr>
+                                                            <th rowspan="2">{{selectedCriteria}}</th>
+                                                            <th rowspan="2">ADS</th>
+                                                            <th rowspan="2">Stores</th>
+                                                            <th colspan="2">MTD</th>
+                                                            <th class="nodata"></th>
+                                                            <th colspan="2">YTD</th>
+                                                        </tr>
+                                                        <tr>
+                                                            <th>#Sales</th>
+                                                            <th>#Covers</th>
+                                                            <th></th>
+                                                            <th>#Sales</th>
+                                                            <th>#Covers</th>
+                                                        </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                        <tr ng-class="{'table-warning':$index%2==0,'table-info':$index%2!==0}"
+                                                            ng-repeat="item in criteriaSalesData">
+                                                            <td><strong>{{item.RType}}</strong></td>
+                                                            <td><strong>{{item.ADS}}</strong></td>
+                                                            <td>{{item.NoOfStores}}</td>
+                                                            <td>{{item.MTD_Sale}}</td>
+                                                            <td>{{item.MTD_Cover}}</td>
+                                                            <th>&nbsp;</th>
+                                                            <td>{{item.YTD_Sale}}</td>
+                                                            <td>{{item.YTD_Cover}}</td>
+                                                        </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                            </div>
+                        </div>
+                        <!-- Radial variants end -->
                     </div>
 
                 </div>
