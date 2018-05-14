@@ -9524,7 +9524,10 @@ $th-col: #1b8bf9, #f57c00, #ff5252, #8B4DA5, #40c4ff;
 .note-text {
   color: red;
 }
-
+.dtp div.dtp-picker {
+  padding: 0.5em!important;
+  text-align: center;
+}
 .background-whitesmoke {
   background-color: whitesmoke;
 }

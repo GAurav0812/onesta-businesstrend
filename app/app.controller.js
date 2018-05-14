@@ -1117,7 +1117,7 @@ ableApp.controller('dashboardController', function ($scope, HttpService, $locati
                 bottom: 50,
                 left: 55
             },
-            color: ['#f6148d'],
+            color: ['#19ce71'],
             showLegend: false,
             showValues: true,
             x: function (d, i) {
@@ -1183,7 +1183,7 @@ ableApp.controller('dashboardController', function ($scope, HttpService, $locati
                 bottom: 70,
                 left: 70
             },
-            color: ['#f6148d'],
+            color: ['#19ce71'],
             showLegend: true,
             showValues: true,
             stacked: false,
@@ -1425,7 +1425,192 @@ ableApp.controller('dashboardController', function ($scope, HttpService, $locati
             }*/
         }
     };
+    var hrmsBarGrpahOptions = {
+        chart: {
+            type: 'discreteBarChart',
+            height: 400,
+            margin: {
+                top: 20,
+                right: 0,
+                bottom: 60,
+                left: 60
+            },
+            color: (['#e04941', '#35a4e0', '#2ae01c', '#bb13b1', '#f67a1b']),
+            x: function (d) {
+                return d.label;
+            },
+            y: function (d) {
+                return d.value;
+            },
+            showValues: true,
+            valueFormat: function (d) {
+                return d3.format(',.2f')(d);
+            },
+            xAxis: {
+                axisLabel: ''
+            },
+            yAxis: {
+                axisLabel: 'Count'
+            },
+            showLabels: true,
+            duration: 500,
+            legend: {
+                margin: {
+                    top: 5,
+                    right: 100,
+                    bottom: 5,
+                    left: 0
+                }
+            }
+        },
+        title: {
+            enable: true,
+            className: 'h4',
+            css: {
+                width: null,
+                textAlign: 'center'
+            }
+        }/*,
+        subtitle: {
+            enable: true,
+            css: {
+                width: null,
+                textAlign: 'center'
+            }
+        }*/
+    };
+    var hrmsPieOptions = {
+        chart: {
+            type: 'pieChart',
+            height: 400,
+            donut: false,
+            x: function (d) {
+                return d.label;
+            },
+            y: function (d) {
+                return d.value;
+            },
+            showLabels: true,
+            labelType: 'percent',
+            valueFormat: function (d) {
+                return d3.format(',f%')(d);
+            },
+            duration: 500,
+            legend: {
+                margin: {
+                    top: 5,
+                    right: 150,
+                    bottom: 5,
+                    left: 0
+                }
+            }
+        },
+        title: {
+            enable: true,
+            className: 'h4',
+            css: {
+                width: null,
+                textAlign: 'center'
+            }
+        }
+    };   //For Nvd3 Design
 
+    var mutliBarHorizontalOpions = {
+        chart: {
+            type: 'multiBarHorizontalChart',
+            height: 450,
+            margin: {
+                top: 20,
+                right: 20,
+                bottom: 50,
+                left: 65
+            },
+            x: function (d) {
+                return d.label;
+            },
+            y: function (d) {
+                return d.value + (1e-10);
+            },
+            showValues: true,
+            stacked: false,
+            showControls: false,
+            duration: 500,
+            xAxis: {
+                axisLabel: 'X Axis'
+            },
+            yAxis: {
+                axisLabel: 'Y Axis',
+                axisLabelDistance: -10
+            },
+            tooltip: {
+
+                contentGenerator: function (d) {
+                    var str = '<table>' +
+                        '<thead>' +
+                        '<tr><td class="legend-color-guide"><strong>' + d.data.label + '</strong> : ' + d.data.value + '</td></tr>' +
+                        '</thead>';
+
+                    str = str + '</table>';
+                    return str;
+                }
+            }
+        },
+        title: {
+            enable: true,
+            className: 'h4',
+            css: {
+                width: null,
+                textAlign: 'center'
+            }
+        }
+    };
+    $scope.leftJoindGraphOptions = {
+        chart: {
+            type: 'multiBarChart',
+            height: 450,
+            margin: {
+                top: 50,
+                right: 10,
+                bottom: 50,
+                left: 100
+            },
+            x: function (d) {
+                return d.label;
+            },
+            y: function (d) {
+                return d.value + (1e-10);
+            },
+            showValues: true,
+            duration: 500,
+            stacked: false,
+            showControls: false,
+            xAxis: {
+                axisLabel: 'X Axis'
+            },
+            yAxis: {
+                axisLabel: 'Count',
+            },
+            tooltip: {
+                contentGenerator: function (d) {
+                    var str = '<table>' +
+                        '<thead>' +
+                        '<tr><td class="legend-color-guide"><strong>' + d.data.key + '</strong> : ' + d.data.value + '</td></tr>' +
+                        '</thead>';
+
+                    str = str + '</table>';
+                    return str;
+                }
+            }
+        },
+        title: {
+            enable: true,
+            className: 'h4',
+            css: {
+                width: null,
+                textAlign: 'center'
+            }
+        }
+    };
     $scope.sessionOptions = [
         {label: "Lunch", value: "L"},
         {label: "Dinner", value: "D"}
@@ -1443,16 +1628,29 @@ ableApp.controller('dashboardController', function ($scope, HttpService, $locati
         Type: "CM",
         RType: "OA"
     };
-
+    $scope.selectedHrmsFilter = {
+        curDate: getDateNow(-2),
+        Type: 'RG',
+        HRMSType: 'C',
+        Day_MTD: 'D'
+    };
     var td = new Date();
     var yt = new Date(td);
+    var dby = new Date(td);
     yt.setDate(td.getDate() - 1);
+    dby.setDate(td.getDate() - 2);
 
     angular.element('#date, #date2, #dsrdate1, #dsrdate2').bootstrapMaterialDatePicker({
         time: false,
         format: "YYYY-MM-DD",
         clearButton: false,
         maxDate: yt
+    });
+    angular.element('#dateBeforeYes, #dateBeforeYes2').bootstrapMaterialDatePicker({
+        time: false,
+        format: "YYYY-MM-DD",
+        clearButton: false,
+        maxDate: dby
     });
 
 
@@ -1547,6 +1745,8 @@ ableApp.controller('dashboardController', function ($scope, HttpService, $locati
             $scope.filterDSRReports();
         } else if ($state.current.name == "foodCost") {
             $scope.getFoodSummary(filterControl);
+        }else if ($state.current.name == "hrms") {
+            $scope.getHrmsReport();
         }
     };
 
@@ -1987,7 +2187,168 @@ ableApp.controller('dashboardController', function ($scope, HttpService, $locati
         $scope.foodcostXSMonthlyoptions.chart.showControls = false;
         $scope.foodcostMonthlyoptions.chart.xAxis.axisLabel = "Months of " + $scope.selectedYear;
     };
+    $scope.selectedHRMSType = "Count";
+    $scope.getHrmsReport = function () {
+        $scope.pieDataObj={
+            Male:undefined,
+            FeMale:undefined,
+            FOH:undefined,
+            BOH:undefined
+        };
+        if ($scope.selectedHrmsFilter.HRMSType == 'C') {
+            $scope.selectedHRMSType = "Count"
+        } else {
+            $scope.selectedHRMSType = "Salary"
+        }
+        $scope.hrmsData = null;
+        var hrmsSummary = new HttpService("HRMS");
+        var postData = {
+            "CurrentDate": $scope.selectedHrmsFilter.curDate,
+            "Outlets": getOutletArr(),
+            "Type": $scope.selectedHrmsFilter.Type,
+            "HRMS_Type": $scope.selectedHrmsFilter.HRMSType,
+            "Day_MTD": $scope.selectedHrmsFilter.Day_MTD,
+            "UserId": parseInt($rootScope.globals.currentUser.Userinfo.UserId)
+        };
+        hrmsSummary.post("", postData).then(function (data) {
+            $scope.hrmsData = data;
+            drawHrmsPieChart(data.HRMS_2, data.HRMS_3);
+            drawHrmsBarChart(data.HRMS_4, data.HRMS_5, data.HRMS_6)
+        }, function (e) {
+            console.info("Error fetching filtered data...", e);
+        });
+    };
 
+    function drawHrmsPieChart(maleFemaleArr, fohBohArr) {
+        /*  $scope.pieDataObj.Male= maleFemaleArr[0].Male;
+          $scope.pieDataObj.Female= maleFemaleArr[0].Female;
+          $scope.pieDataObj.FOH= fohBohArr[0].FOH;
+          $scope.pieDataObj.BOH= fohBohArr[0].BOH;*/
+        $scope.maleFemalePieData = [];
+        $scope.fbPieData = [];
+        var mData = {};
+        var fData = {};
+        var fohData = {};
+        var bohdata = {};
+        for (var j = 0; j < maleFemaleArr.length; j++) {
+            mData.label = "Male";
+            mData.value = maleFemaleArr[j].Male;
+            mData.color = '#ff7f0e';
+            $scope.maleFemalePieData.push(mData);
+        }
+        for (var i = 0; i < fohBohArr.length; i++) {
+            fohData.label = "Front Office";
+            fohData.value = fohBohArr[i].FOH;
+            fohData.color = '#0dcb22';
+            $scope.fbPieData.push(fohData);
+        }
+        for (var k = 0; k < maleFemaleArr.length; k++) {
+            fData.label = "Female";
+            fData.color = '#1f77b4';
+            fData.value = maleFemaleArr[k].Female;
+            $scope.maleFemalePieData.push(fData);
+        }
+        for (var m = 0; m < fohBohArr.length; m++) {
+            bohdata.label = "Back Office";
+            bohdata.color = '#ee34b3';
+            bohdata.value = fohBohArr[m].BOH;
+            $scope.fbPieData.push(bohdata);
+        }
+
+        $scope.malefemalePieOptions = angular.copy(hrmsPieOptions);
+        $scope.fbPieOption = angular.copy(hrmsPieOptions);
+        $scope.malefemalePieOptions.title.text = "Male-Female Ratio";
+        $scope.malefemalePieOptions.chart.donut = false;
+        $scope.fbPieOption.title.text = "Front-Back Office Ratio";
+        $scope.fbPieOption.chart.donut = false;
+        $scope.fbPieOption.chart.legend.margin.right = 120;
+        $scope.fbPieOption.chart.legend.margin.left = 0;  //Nvd3 Design Implementation
+    }
+
+    function drawHrmsBarChart(avgAgeArr, yearOfServiceArr, leftJoinedArr) {
+        $scope.avgAgeGraphData = [];
+        var avgAgeObj = {
+            key: "Avg Age Group",
+            values: avgAgeArr.map(function (d) {
+                return {
+                    label: d.AgeGroup,
+                    value: d.Count
+                }
+            })
+        };
+        $scope.avgAgeGraphData = [avgAgeObj];
+        $scope.yearOfSerGraphData = [];
+        var yearofServedObj = {
+            key: "Served Years",
+            values: yearOfServiceArr.map(function (d) {
+                return {
+                    label: d.YearServed,
+                    value: d.Count
+                }
+            })
+        };
+
+
+        $scope.yearOfSerGraphData = [yearofServedObj];
+        $scope.aveAgeGraphOptions = angular.copy(hrmsBarGrpahOptions);
+        $scope.aveAgeXsGraphOptions = angular.copy(mutliBarHorizontalOpions);
+        $scope.aveAgeGraphOptions.title.text = "Average Age Group";
+        $scope.aveAgeXsGraphOptions.title.text = "Average Age Group";
+        $scope.aveAgeXsGraphOptions.chart.barColor=['#e04941', '#35a4e0', '#2ae01c', '#bb13b1', '#f67a1b'];
+        $scope.aveAgeGraphOptions.chart.xAxis.axisLabel = "Age Group";
+        $scope.aveAgeXsGraphOptions.chart.xAxis.axisLabel = "Age Group";
+        $scope.aveAgeXsGraphOptions.chart.yAxis.axisLabel = "Counts";
+        $scope.yearOfSerGraphOptions = angular.copy(hrmsBarGrpahOptions);
+        $scope.yearOfSerXsGraphOptions = angular.copy(mutliBarHorizontalOpions);
+        $scope.yearOfSerGraphOptions.title.text = "Year Of Service";
+        $scope.yearOfSerXsGraphOptions.title.text = "Year Of Service";
+        $scope.yearOfSerXsGraphOptions.chart.barColor=['#e04941', '#35a4e0', '#2ae01c', '#bb13b1', '#f67a1b'];
+        $scope.yearOfSerGraphOptions.chart.xAxis.axisLabel = "Years";
+        $scope.yearOfSerXsGraphOptions.chart.xAxis.axisLabel = "Years";
+        $scope.yearOfSerXsGraphOptions.chart.yAxis.axisLabel = "Counts";
+        $scope.leftJoinedGraphData = [];
+        var joinedCount = {
+            key: "",
+            values: []
+        };
+        var leftCount = {
+            key: "",
+            values: []
+        };
+        for (var i = 0; i < leftJoinedArr.length; i++) {
+            if (leftJoinedArr[i].Months != 'Total') {
+                joinedCount.key = "Joined Counts",
+                    joinedCount.color = '#2dd320';
+                joinedCount.values.push({
+                    label: leftJoinedArr[i].Months,
+                    value: leftJoinedArr[i].JoinedCount
+                });
+            }
+        }
+        $scope.leftJoinedGraphData.push(joinedCount);
+
+        for (var j = 0; j < leftJoinedArr.length; j++) {
+            if (leftJoinedArr[j].Months != 'Total') {
+                leftCount.key = "Left Counts";
+                leftCount.color = '#fe3133';
+                leftCount.values.push({
+                    label: leftJoinedArr[j].Months,
+                    value: leftJoinedArr[j].LeftCount
+                });
+            }
+        }
+        $scope.leftJoinedGraphData.push(leftCount);
+        $scope.leftJoindXsGraphOptions = angular.copy(mutliBarHorizontalOpions);
+        $scope.leftJoindGraphOptions.chart.stacked = true;
+        $scope.leftJoindXsGraphOptions.chart.stacked = true;
+        $scope.leftJoindGraphOptions.chart.showControls = true;
+        $scope.leftJoindXsGraphOptions.chart.showControls = true;
+        $scope.leftJoindGraphOptions.chart.xAxis.axisLabel = "Months";
+        $scope.leftJoindXsGraphOptions.chart.xAxis.axisLabel = "Months";
+        $scope.leftJoindXsGraphOptions.chart.yAxis.axisLabel = "Counts";
+        $scope.leftJoindGraphOptions.title.text = "Left & Joined Employee Count";
+        $scope.leftJoindXsGraphOptions.title.text = "Left & Joined Employee Count";
+    }
     function getLineChart(arr1, arr2) {
         //Line chart data should be sent as an array of series objects.
         return [{

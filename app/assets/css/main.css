@@ -9535,6 +9535,10 @@ form .messages {
 .note-text {
   color: red; }
 
+.dtp div.dtp-picker {
+  padding: 0.5em !important;
+  text-align: center; }
+
 .background-whitesmoke {
   background-color: whitesmoke; }
 

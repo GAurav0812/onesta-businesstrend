@@ -287,12 +287,12 @@
                                                     </div>
                                                     <div class="col-xs-4 p-r-0 p-l-0">
                                                         <small>MTD
-                                                       <!--     <span class="d-inline growth-text">
+                                                            <span class="d-inline growth-text">
                                                                 <span ng-if="summaryDataObj.SaleGrowth_MTD>0" class="icon fa fa fa-sort-up"></span>
                                                                 <span ng-if="summaryDataObj.SaleGrowth_MTD<0" class="icon-2 fa fa fa-sort-down"></span>
                                                                 <span value="0" duration="1" count-to="{{summaryDataObj.SaleGrowth_MTD | negativeGrowthCheck}}"></span>
                                                                 <span>%</span>
-                                                            </span>-->
+                                                            </span>
                                                         </small>
                                                         <div class="counter-txt">
                                                             <h5 class="counter-txt counter" value="0" duration="1" style="margin-top: -3px!important;"
@@ -301,12 +301,12 @@
                                                     </div>
                                                     <div class="col-xs-4  p-l-0">
                                                         <small>YTD
-                                                            <!--<span class="d-inline growth-text">
+                                                            <span class="d-inline growth-text">
                                                                 <span ng-if="summaryDataObj.SaleGrowth_YTD>0" class="icon fa fa fa-sort-up"></span>
                                                                 <span ng-if="summaryDataObj.SaleGrowth_YTD<0" class="icon-2 fa fa fa-sort-down"></span>
                                                                 <span value="0" duration="1" count-to="{{summaryDataObj.SaleGrowth_YTD | negativeGrowthCheck}}"></span>
                                                                 <span>%</span>
-                                                            </span>-->
+                                                            </span>
                                                         </small>
                                                         <div class="counter-txt">
                                                             <h5 class="counter-txt counter" value="0" duration="1" style="margin-top: -3px!important;"
@@ -343,12 +343,12 @@
                                                     </div>
                                                     <div class="col-xs-4 p-r-0 p-l-0">
                                                         <small>MTD
-                                                           <!-- <span class="d-inline growth-text">
+                                                            <span class="d-inline growth-text">
                                                                 <span ng-if="summaryDataObj.CoverGrowth_MTD>0" class="icon fa fa fa-sort-up"></span>
                                                                 <span ng-if="summaryDataObj.CoverGrowth_MTD<0" class="icon-2 fa fa fa-sort-down"></span>
                                                                 <span value="0" duration="1" count-to="{{summaryDataObj.CoverGrowth_MTD | negativeGrowthCheck}}"></span>
                                                                 <span>%</span>
-                                                            </span>-->
+                                                            </span>
                                                         </small>
                                                         <div class="counter-txt">
                                                             <h5 class="counter-txt counter" value="0" duration="1" style="margin-top: -3px!important;"
@@ -357,12 +357,12 @@
                                                     </div>
                                                     <div class="col-xs-4  p-l-0">
                                                         <small>YTD
-                                                           <!-- <span class="d-inline growth-text">
+                                                            <span class="d-inline growth-text">
                                                                 <span ng-if="summaryDataObj.CoverGrowth_YTD>0" class="icon fa fa fa-sort-up"></span>
                                                                 <span ng-if="summaryDataObj.CoverGrowth_YTD<0" class="icon-2 fa fa fa-sort-down"></span>
                                                                 <span value="0" duration="1" count-to="{{summaryDataObj.CoverGrowth_YTD | negativeGrowthCheck}}"></span>
                                                                 <span>%</span>
-                                                            </span>-->
+                                                            </span>
                                                         </small>
                                                         <div class="counter-txt">
                                                             <h5 class="counter-txt counter" value="0" duration="1" style="margin-top: -3px!important;"
@@ -467,8 +467,8 @@
                                     <div class="col-lg-3 col-sm-6">
                                         <div class="card">
                                             <div class="card-context-menu">
-                                                <a class="btn-link" data-ui-sref="gsiReports" href="#!/gsi"><i
-                                                        class="fa fa-external-link text-warning"></i></a>
+                                               <!-- <a class="btn-link" data-ui-sref="gsiReports" href="#!/gsi"><i
+                                                        class="fa fa-external-link text-warning"></i></a>-->
                                             </div>
                                             <div class="card basic-widget  basic-widget-orange">
                                                 <h5 class="p-t-5 m-b-0">GSI</h5>
@@ -652,10 +652,42 @@
                                                 <h5 class="card-header-text">Criteria Wise</h5>
 
                                                 <div class="f-right">
-                                                    <div class="dropdown d-inline" ng-hide="itsCriteriaGridView">
+                                                    <div class="dropdown d-inline hidden-md-down" ng-hide="itsCriteriaGridView">
                                                         Filter:
                                                         <button class="btn btn-secondary dropdown-toggle" type="button"
                                                                 id="dropdownMenuButton2" data-toggle="dropdown"
+                                                                aria-haspopup="true" aria-expanded="false">
+                                                            <span ng-if="subCriteriaFilter == 'MTD_Sale'">MTD Sales</span>
+                                                            <span ng-if="subCriteriaFilter == 'YTD_Sale'">YTD Sales</span>
+                                                            <span ng-if="subCriteriaFilter == 'MTD_Cover'">MTD Covers</span>
+                                                            <span ng-if="subCriteriaFilter == 'YTD_Cover'">YTD Covers</span>
+                                                        </button>
+                                                        <div class="dropdown-menu dropdown-menu-right dropdown-menu-options"
+                                                             aria-labelledby="dropdownMenuButton2">
+                                                            <div class="btn-group-vertical">
+                                                                <label class="btn btn-primary"
+                                                                       ng-model="subCriteriaFilter"
+                                                                       ng-change="filterSubCriteria()"
+                                                                       uib-btn-radio="'MTD_Sale'">MTD Sales</label>
+                                                                <label class="btn btn-primary"
+                                                                       ng-model="subCriteriaFilter"
+                                                                       ng-change="filterSubCriteria()"
+                                                                       uib-btn-radio="'YTD_Sale'">YTD Sales</label>
+                                                                <label class="btn btn-primary"
+                                                                       ng-model="subCriteriaFilter"
+                                                                       ng-change="filterSubCriteria()"
+                                                                       uib-btn-radio="'MTD_Cover'">MTD Covers</label>
+                                                                <label class="btn btn-primary"
+                                                                       ng-model="subCriteriaFilter"
+                                                                       ng-change="filterSubCriteria()"
+                                                                       uib-btn-radio="'YTD_Cover'">YTD Covers</label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="dropdown d-inline hidden-md-up" ng-hide="itsCriteriaGridView">
+                                                        Filter:
+                                                        <button style="padding: 5px 10px; margin: 2px 0 1px 0;" class="btn btn-secondary dropdown-toggle" type="button"
+                                                                id="dropdownMenuButton2Xs" data-toggle="dropdown"
                                                                 aria-haspopup="true" aria-expanded="false">
                                                             <span ng-if="subCriteriaFilter == 'MTD_Sale'">MTD Sales</span>
                                                             <span ng-if="subCriteriaFilter == 'YTD_Sale'">YTD Sales</span>
@@ -691,6 +723,8 @@
                                                         </button>
                                                     </div>-->
                                                 </div>
+
+
                                                 <div class="d-inline" helper-elements="none"
                                                      on-item-click="filterSalesByCriteria(data)" isteven-multi-select
                                                      input-model="criteriaOptions" output-model="criteriaFilter"
@@ -704,10 +738,10 @@
                                                         class="fa fa-circle-o-notch fa-spin fa-lg"></i> Loading...
                                                 </div>
 
-                                                <nvd3 class="" options="baroptions" ng-if="criteriaFilteredData"
+                                                <nvd3 class="hidden-md-down" options="baroptions" ng-if="criteriaFilteredData"
                                                       data="criteriaFilteredData"></nvd3>
-                                              <!--  <nvd3 class="hidden-md-up" options="barXSoptions" ng-if="criteriaFilteredData"
-                                                      data="criteriaFilteredData"></nvd3>-->
+                                                <nvd3 class="hidden-md-up" options="barXSoptions" ng-if="criteriaFilteredData"
+                                                      data="criteriaFilteredData"></nvd3>
                                                 <p ng-if="!criteriaFilteredData || criteriaFilteredData.length<0">No
                                                     data available</p>
                                             </div>

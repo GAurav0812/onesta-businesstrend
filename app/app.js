@@ -5,7 +5,7 @@ ableApp.config(function ($stateProvider, $urlRouterProvider, $ocLazyLoadProvider
     //dashboard layouts
         .state('dashboard', {
             url: "/dashboard",
-            templateUrl: "views/dashboard.html?v=45345434",
+            templateUrl: "views/dashboard.html?v=7575764565",
             controller: 'dashboardController',
             resolve: {
                 deps: ['$ocLazyLoad', function ($ocLazyLoad) {
@@ -89,7 +89,20 @@ ableApp.config(function ($stateProvider, $urlRouterProvider, $ocLazyLoadProvider
                 }]
             }
         })
+        .state('hrms', {
+            url: "/hrms",
+            templateUrl: "views/hrms.html?v=2534563465",
+            controller: 'dashboardController',
+            resolve: {
+                deps: ['$ocLazyLoad', function ($ocLazyLoad) {
+                    return $ocLazyLoad.load([
+                        'lazy_form_elements_advance',
+                        'lazy_nvd3_chart'
 
+                    ], {serie: true});
+                }]
+            }
+        })
        /* .state('gsiReports', {
             url: "/gsi",
             templateUrl: "views/gsi.html?v=54658451",
