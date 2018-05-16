@@ -1,11 +1,11 @@
 ﻿var ableApp = angular.module('able', ['ngCookies', 'base64', 'ui.router', 'oc.lazyLoad', 'ui.bootstrap', 'ui.slimscroll', 'angularRipple', 'ngMessages']); //'ui.bootstrap', 'ui.slimscroll', 'angularRipple'
-ableApp.config(function ($stateProvider, $urlRouterProvider, $ocLazyLoadProvider) { //$locationProvider
+ableApp.config(function ($stateProvider, $urlRouterProvider, $ocLazyLoadProvider,$locationProvider) { //$locationProvider
 
     $stateProvider
     //dashboard layouts
         .state('dashboard', {
             url: "/dashboard",
-            templateUrl: "views/dashboard.html?v=7575764565",
+            templateUrl: "views/dashboard.html?v=346545734",
             controller: 'dashboardController',
             resolve: {
                 deps: ['$ocLazyLoad', function ($ocLazyLoad) {
@@ -91,7 +91,7 @@ ableApp.config(function ($stateProvider, $urlRouterProvider, $ocLazyLoadProvider
         })
         .state('hrms', {
             url: "/hrms",
-            templateUrl: "views/hrms.html?v=2534563465",
+            templateUrl: "views/hrms.html?v=234645634",
             controller: 'dashboardController',
             resolve: {
                 deps: ['$ocLazyLoad', function ($ocLazyLoad) {
@@ -134,6 +134,10 @@ ableApp.config(function ($stateProvider, $urlRouterProvider, $ocLazyLoadProvider
             controller: 'commonController'
         });
     $urlRouterProvider.otherwise('/dashboard');
+   /* $locationProvider.html5Mode({
+        enabled: true,
+        requireBase: false
+    });*/
 });
 
 /*Directive for owl carousel*/

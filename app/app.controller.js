@@ -1022,6 +1022,13 @@ ableApp.filter('negativeGrowthCheck', function () {
     }
 });
 
+ableApp.filter('numberToThousand', function () {
+    return function (value) {
+        var val=Math.round(value);
+        return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    }
+});
+
 ableApp.controller('dashboardController', function ($scope, HttpService, $location, $rootScope, $filter, CriteriaFilter, $state) {
 
     $scope.countFrom = 0;
@@ -1444,7 +1451,7 @@ ableApp.controller('dashboardController', function ($scope, HttpService, $locati
             },
             showValues: true,
             valueFormat: function (d) {
-                return d3.format(',.2f')(d);
+                return d3.format('.2d')(d);
             },
             xAxis: {
                 axisLabel: ''
@@ -1460,6 +1467,17 @@ ableApp.controller('dashboardController', function ($scope, HttpService, $locati
                     right: 100,
                     bottom: 5,
                     left: 0
+                }
+            },
+            tooltip: {
+                contentGenerator: function (d) {
+                    var str = '<table>' +
+                        '<thead>' +
+                        '<tr><td class="legend-color-guide">' + d.data.label + '<strong> : ' + d.data.value + ' Employees'+'<strong></td></tr>' +
+                        '</thead>';
+
+                    str = str + '</table>';
+                    return str;
                 }
             }
         },
@@ -1495,6 +1513,17 @@ ableApp.controller('dashboardController', function ($scope, HttpService, $locati
             valueFormat: function (d) {
                 return d3.format(',f%')(d);
             },
+            tooltip: {
+                contentGenerator: function (d) {
+                    var str = '<table>' +
+                        '<thead>' +
+                        '<tr><td class="legend-color-guide">' + d.data.label + '<strong> : ' + d.data.value + ' Employees'+'</strong></td></tr>' +
+                        '</thead>';
+
+                    str = str + '</table>';
+                    return str;
+                }
+            },
             duration: 500,
             legend: {
                 margin: {
@@ -1529,9 +1558,12 @@ ableApp.controller('dashboardController', function ($scope, HttpService, $locati
                 return d.label;
             },
             y: function (d) {
-                return d.value + (1e-10);
+                return d.value;
             },
             showValues: true,
+            valueFormat: function (d) {
+                return d3.format('.2d')(d);
+            },
             stacked: false,
             showControls: false,
             duration: 500,
@@ -1547,7 +1579,7 @@ ableApp.controller('dashboardController', function ($scope, HttpService, $locati
                 contentGenerator: function (d) {
                     var str = '<table>' +
                         '<thead>' +
-                        '<tr><td class="legend-color-guide"><strong>' + d.data.label + '</strong> : ' + d.data.value + '</td></tr>' +
+                        '<tr><td class="legend-color-guide">' + d.data.label + '<strong> : ' + d.data.value + ' Employees'+'</strong></td></tr>' +
                         '</thead>';
 
                     str = str + '</table>';
@@ -1564,6 +1596,7 @@ ableApp.controller('dashboardController', function ($scope, HttpService, $locati
             }
         }
     };
+
     $scope.leftJoindGraphOptions = {
         chart: {
             type: 'multiBarChart',
@@ -1588,13 +1621,13 @@ ableApp.controller('dashboardController', function ($scope, HttpService, $locati
                 axisLabel: 'X Axis'
             },
             yAxis: {
-                axisLabel: 'Count',
+                axisLabel: 'Count'
             },
             tooltip: {
                 contentGenerator: function (d) {
                     var str = '<table>' +
                         '<thead>' +
-                        '<tr><td class="legend-color-guide"><strong>' + d.data.key + '</strong> : ' + d.data.value + '</td></tr>' +
+                        '<tr><td class="legend-color-guide">' + d.data.key + '<strong> : ' + d.data.value + ' Employees'+'</strong></td></tr>' +
                         '</thead>';
 
                     str = str + '</table>';
@@ -1632,7 +1665,9 @@ ableApp.controller('dashboardController', function ($scope, HttpService, $locati
         curDate: getDateNow(-2),
         Type: 'RG',
         HRMSType: 'C',
-        Day_MTD: 'D'
+        Day_MTD: 'D',
+        StoreMasterTypes:'A',
+        EmployeeType:'A'
     };
     var td = new Date();
     var yt = new Date(td);
@@ -1680,7 +1715,7 @@ ableApp.controller('dashboardController', function ($scope, HttpService, $locati
          });
      };*/
 
-    if ($state.current.name == "dashboard") {
+   /* if ($state.current.name == "dashboard") {
         getDSRSummary();
     }
 
@@ -1698,7 +1733,7 @@ ableApp.controller('dashboardController', function ($scope, HttpService, $locati
         }, function (e) {
             console.info("Error fetching day sale...", e);
         });
-    }
+    }*/
 
     $scope.getRegionDaySale = function () {
         $scope.todayRegionSaleData = undefined;
@@ -1899,7 +1934,7 @@ ableApp.controller('dashboardController', function ($scope, HttpService, $locati
         }
 
         var summaryData = new HttpService("SummaryReport");
-        var dailySaleSummaryData = new HttpService("DailySaleReportSummary");
+     /*   var dailySaleSummaryData = new HttpService("DailySaleReportSummary");*/
         var filterSession = "";
         if ($scope.selectedFilter.Session == 'L') {
             filterSession = 1;
@@ -1914,17 +1949,17 @@ ableApp.controller('dashboardController', function ($scope, HttpService, $locati
             "ParamType": paramType,
             "UserId": parseInt($rootScope.globals.currentUser.Userinfo.UserId)
         };
-        var dsrPostData = {
+      /*  var dsrPostData = {
             "CurrentDate": getDateNow(-1),
             "RType": "HH",
             "Outlets": getOutletArr(),
             "UserId": parseInt($rootScope.globals.currentUser.Userinfo.UserId)
-        };
-        dailySaleSummaryData.post("", dsrPostData).then(function (data) {
+        };*/
+       /* dailySaleSummaryData.post("", dsrPostData).then(function (data) {
             $scope.dsrSummaryData = data;
         }, function (e) {
             console.info("Error fetching day sale...", e);
-        });
+        });*/
 
         summaryData.post("", postData).then(function (data) {
             $scope.summaryDataObj = data;
@@ -2188,6 +2223,19 @@ ableApp.controller('dashboardController', function ($scope, HttpService, $locati
         $scope.foodcostMonthlyoptions.chart.xAxis.axisLabel = "Months of " + $scope.selectedYear;
     };
     $scope.selectedHRMSType = "Count";
+
+    $scope.hrmsGraph = {
+        Pie: "MF",
+        Bar: "AA"
+    };
+
+    $scope.setHrmsPieView = function (value) {
+        $scope.hrmsGraph.Pie = value;
+    };
+    $scope.setHrmsBarView = function (value) {
+        $scope.hrmsGraph.Bar = value;
+    };
+
     $scope.getHrmsReport = function () {
         $scope.pieDataObj={
             Male:undefined,
@@ -2208,6 +2256,8 @@ ableApp.controller('dashboardController', function ($scope, HttpService, $locati
             "Type": $scope.selectedHrmsFilter.Type,
             "HRMS_Type": $scope.selectedHrmsFilter.HRMSType,
             "Day_MTD": $scope.selectedHrmsFilter.Day_MTD,
+            "StoreMasterTypes": $scope.selectedHrmsFilter.StoreMasterTypes,
+            "EmployeeType": $scope.selectedHrmsFilter.EmployeeType,
             "UserId": parseInt($rootScope.globals.currentUser.Userinfo.UserId)
         };
         hrmsSummary.post("", postData).then(function (data) {
@@ -2292,20 +2342,22 @@ ableApp.controller('dashboardController', function ($scope, HttpService, $locati
         $scope.yearOfSerGraphData = [yearofServedObj];
         $scope.aveAgeGraphOptions = angular.copy(hrmsBarGrpahOptions);
         $scope.aveAgeXsGraphOptions = angular.copy(mutliBarHorizontalOpions);
+        $scope.aveAgeXsGraphOptions.chart.showLegend=false;
         $scope.aveAgeGraphOptions.title.text = "Average Age Group";
         $scope.aveAgeXsGraphOptions.title.text = "Average Age Group";
         $scope.aveAgeXsGraphOptions.chart.barColor=['#e04941', '#35a4e0', '#2ae01c', '#bb13b1', '#f67a1b'];
         $scope.aveAgeGraphOptions.chart.xAxis.axisLabel = "Age Group";
         $scope.aveAgeXsGraphOptions.chart.xAxis.axisLabel = "Age Group";
-        $scope.aveAgeXsGraphOptions.chart.yAxis.axisLabel = "Counts";
+        $scope.aveAgeXsGraphOptions.chart.yAxis.axisLabel = "Count";
         $scope.yearOfSerGraphOptions = angular.copy(hrmsBarGrpahOptions);
         $scope.yearOfSerXsGraphOptions = angular.copy(mutliBarHorizontalOpions);
+        $scope.yearOfSerXsGraphOptions.chart.showLegend=false;
         $scope.yearOfSerGraphOptions.title.text = "Year Of Service";
         $scope.yearOfSerXsGraphOptions.title.text = "Year Of Service";
         $scope.yearOfSerXsGraphOptions.chart.barColor=['#e04941', '#35a4e0', '#2ae01c', '#bb13b1', '#f67a1b'];
         $scope.yearOfSerGraphOptions.chart.xAxis.axisLabel = "Years";
         $scope.yearOfSerXsGraphOptions.chart.xAxis.axisLabel = "Years";
-        $scope.yearOfSerXsGraphOptions.chart.yAxis.axisLabel = "Counts";
+        $scope.yearOfSerXsGraphOptions.chart.yAxis.axisLabel = "Count";
         $scope.leftJoinedGraphData = [];
         var joinedCount = {
             key: "",
@@ -2345,7 +2397,8 @@ ableApp.controller('dashboardController', function ($scope, HttpService, $locati
         $scope.leftJoindXsGraphOptions.chart.showControls = true;
         $scope.leftJoindGraphOptions.chart.xAxis.axisLabel = "Months";
         $scope.leftJoindXsGraphOptions.chart.xAxis.axisLabel = "Months";
-        $scope.leftJoindXsGraphOptions.chart.yAxis.axisLabel = "Counts";
+        $scope.leftJoindXsGraphOptions.chart.yAxis.axisLabel = "Count";
+        $scope.leftJoindGraphOptions.chart.reduceXTicks = false;
         $scope.leftJoindGraphOptions.title.text = "Left & Joined Employee Count";
         $scope.leftJoindXsGraphOptions.title.text = "Left & Joined Employee Count";
     }
