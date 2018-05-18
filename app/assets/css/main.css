@@ -9361,7 +9361,7 @@ form .messages {
   background-color: white !important;
   border-color: #d2d2d2 !important;
   cursor: pointer;
-  padding: 4px 6px 2px 6px; }
+  padding: 5px 5px 1px 6px; }
   .grid-btn:hover {
     background-color: #d2d2d2 !important; }
   .grid-btn:active {
@@ -9370,8 +9370,9 @@ form .messages {
 .grid-xs-btn {
   background-color: white !important;
   border-color: #d2d2d2 !important;
+  -webkit-box-shadow: none !important;
   cursor: pointer;
-  padding: 4px 4px 5px 5px; }
+  padding: 4px 4px 4px 4px; }
   .grid-xs-btn:hover {
     background-color: #d2d2d2 !important; }
   .grid-xs-btn:active {
@@ -9379,7 +9380,7 @@ form .messages {
 
 .grid-btn-active {
   background-color: #025aa5 !important;
-  padding: 4px 6px 2px 6px;
+  padding: 5px 5px 1px 6px;
   border-color: #025aa5 !important; }
   .grid-btn-active:hover {
     background-color: #d2d2d2 !important;
@@ -9391,7 +9392,8 @@ form .messages {
 
 .grid-xs-btn-active {
   background-color: #025aa5 !important;
-  padding: 4px 4px 5px 5px;
+  padding: 4px 4px 4px 4px;
+  -webkit-box-shadow: none !important;
   border-color: #025aa5 !important; }
   .grid-xs-btn-active:hover {
     background-color: #d2d2d2 !important;
@@ -9534,6 +9536,13 @@ form .messages {
 
 .note-text {
   color: red; }
+
+.no-shadow {
+  -webkit-box-shadow: none !important; }
+
+.btn-voilet {
+  background-color: #ff2ed2;
+  color: #ffffff; }
 
 .dtp div.dtp-picker {
   padding: 0.5em !important;

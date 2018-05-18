@@ -1,5 +1,5 @@
-﻿var ableApp = angular.module('able', ['ngCookies', 'base64', 'ui.router', 'oc.lazyLoad', 'ui.bootstrap', 'ui.slimscroll', 'angularRipple', 'ngMessages']); //'ui.bootstrap', 'ui.slimscroll', 'angularRipple'
-ableApp.config(function ($stateProvider, $urlRouterProvider, $ocLazyLoadProvider,$locationProvider) { //$locationProvider
+﻿var ableApp = angular.module('able', ['ngCookies', 'base64', 'ui.router', 'oc.lazyLoad', 'ui.bootstrap', 'ui.slimscroll', 'angularRipple', 'ngMessages', 'ui.toggle']); //'ui.bootstrap', 'ui.slimscroll', 'angularRipple'
+ableApp.config(function ($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, $locationProvider) { //$locationProvider
 
     $stateProvider
     //dashboard layouts
@@ -19,20 +19,20 @@ ableApp.config(function ($stateProvider, $urlRouterProvider, $ocLazyLoadProvider
                 }]
             }
         })
-      /*  .state('reports', {
-            url: "/reports",
-            templateUrl: "views/reports.html?v=5489754",
-            controller: 'dashboardController',
-            resolve: {
-                deps: ['$ocLazyLoad', function ($ocLazyLoad) {
-                    return $ocLazyLoad.load([
-                        'lazy_form_elements_advance',
-                        'lazy_nvd3_chart'
+        /*  .state('reports', {
+              url: "/reports",
+              templateUrl: "views/reports.html?v=5489754",
+              controller: 'dashboardController',
+              resolve: {
+                  deps: ['$ocLazyLoad', function ($ocLazyLoad) {
+                      return $ocLazyLoad.load([
+                          'lazy_form_elements_advance',
+                          'lazy_nvd3_chart'
 
-                    ], {serie: true});
-                }]
-            }
-        })*/
+                      ], {serie: true});
+                  }]
+              }
+          })*/
         .state('dsrReports', {
             url: "/dsr",
             templateUrl: "views/dsr.html?v=687651354",
@@ -91,7 +91,7 @@ ableApp.config(function ($stateProvider, $urlRouterProvider, $ocLazyLoadProvider
         })
         .state('hrms', {
             url: "/hrms",
-            templateUrl: "views/hrms.html?v=234645634",
+            templateUrl: "views/hrms.html?v=867565",
             controller: 'dashboardController',
             resolve: {
                 deps: ['$ocLazyLoad', function ($ocLazyLoad) {
@@ -103,20 +103,20 @@ ableApp.config(function ($stateProvider, $urlRouterProvider, $ocLazyLoadProvider
                 }]
             }
         })
-       /* .state('gsiReports', {
-            url: "/gsi",
-            templateUrl: "views/gsi.html?v=54658451",
-            controller: 'dashboardController',
-            resolve: {
-                deps: ['$ocLazyLoad', function ($ocLazyLoad) {
-                    return $ocLazyLoad.load([
-                        'lazy_form_elements_advance',
-                        'lazy_nvd3_chart'
+        /* .state('gsiReports', {
+             url: "/gsi",
+             templateUrl: "views/gsi.html?v=54658451",
+             controller: 'dashboardController',
+             resolve: {
+                 deps: ['$ocLazyLoad', function ($ocLazyLoad) {
+                     return $ocLazyLoad.load([
+                         'lazy_form_elements_advance',
+                         'lazy_nvd3_chart'
 
-                    ], {serie: true});
-                }]
-            }
-        })*/
+                     ], {serie: true});
+                 }]
+             }
+         })*/
         //pages
         .state('login', {
             url: "/login",
@@ -134,10 +134,10 @@ ableApp.config(function ($stateProvider, $urlRouterProvider, $ocLazyLoadProvider
             controller: 'commonController'
         });
     $urlRouterProvider.otherwise('/dashboard');
-   /* $locationProvider.html5Mode({
-        enabled: true,
-        requireBase: false
-    });*/
+    /* $locationProvider.html5Mode({
+         enabled: true,
+         requireBase: false
+     });*/
 });
 
 /*Directive for owl carousel*/
@@ -235,12 +235,12 @@ ableApp.factory('Util', [function () {
     };
 }]);
 
-ableApp.run(['$templateCache', 'AuthenticationService', '$rootScope', '$location', '$base64', function ($templateCache, AuthenticationService, $rootScope, $location,$base64) {
+ableApp.run(['$templateCache', 'AuthenticationService', '$rootScope', '$location', '$base64', function ($templateCache, AuthenticationService, $rootScope, $location, $base64) {
 
     AuthenticationService.init();
-    if(AuthenticationService.authenticate()){
+    if (AuthenticationService.authenticate()) {
         var credentials = JSON.parse($base64.decode($rootScope.globals.auth));
-        AuthenticationService.login(credentials.un, credentials.pw).then(function(response){
+        AuthenticationService.login(credentials.un, credentials.pw).then(function (response) {
             if (response.Validate === "TRUE") {
                 $rootScope.globals.currentUser = {};
                 $rootScope.globals.currentUser.Userinfo = response.Userinfo;
@@ -249,7 +249,7 @@ ableApp.run(['$templateCache', 'AuthenticationService', '$rootScope', '$location
             } else {
                 redirectLogin()
             }
-        },function(){
+        }, function () {
             redirectLogin()
         });
     } else {
@@ -269,6 +269,7 @@ ableApp.run(['$templateCache', 'AuthenticationService', '$rootScope', '$location
             redirectLogin();
         }
     }
+
     function redirectLogin() {
         // redirect to login page if not logged in
         if ($location.path() !== '/login')
@@ -818,13 +819,13 @@ ableApp.factory('AuthenticationService', function AuthenticationService($base64,
     };
 
     AuthenticationService.setSession = function (username, password, userSuccessResponse, remember) {
-        var authData = $base64.encode(JSON.stringify({un:username,pw:password}));
+        var authData = $base64.encode(JSON.stringify({un: username, pw: password}));
         $rootScope.globals.auth = authData;
         $rootScope.globals.currentUser = {};
         $rootScope.globals.currentUser.Userinfo = userSuccessResponse.Userinfo;
         $http.defaults.headers.common['Auth'] = authData; // jshint ignore:line
 
-        if(remember){
+        if (remember) {
             var expireDate = new Date();
             expireDate.setDate(expireDate.getDate() + 30);
 

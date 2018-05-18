@@ -9299,32 +9299,33 @@ $th-col: #1b8bf9, #f57c00, #ff5252, #8B4DA5, #40c4ff;
   background-color: white !important;
   border-color: #d2d2d2 !important;
   cursor: pointer;
-  padding: 4px 6px 2px 6px;
+  padding: 5px 5px 1px 6px;
   &:hover {
     background-color: #d2d2d2 !important;
   }
   &:active {
-    background-color: #025aa5 !important;
+    background-color: #e3440a !important
   }
 }
 
 .grid-xs-btn {
   background-color: white !important;
   border-color: #d2d2d2 !important;
+  -webkit-box-shadow:none!important;
   cursor: pointer;
-  padding: 4px 4px 5px 5px;
+  padding: 4px 4px 4px 4px;
   &:hover {
     background-color: #d2d2d2 !important;
   }
   &:active {
-    background-color: #025aa5 !important;
+    background-color: #e3440a !important
   }
 }
 
 .grid-btn-active {
-  background-color: #025aa5 !important;
-  padding: 4px 6px 2px 6px;
-  border-color: #025aa5 !important;
+  background-color: #e3440a !important
+  padding: 5px 5px 1px 6px;
+  border-color:#e3440a !important
   &:hover {
     background-color: #d2d2d2 !important;
     border-color: #d2d2d2 !important;
@@ -9338,9 +9339,10 @@ $th-col: #1b8bf9, #f57c00, #ff5252, #8B4DA5, #40c4ff;
 }
 
 .grid-xs-btn-active {
-  background-color: #025aa5 !important;
-  padding: 4px 4px 5px 5px;
-  border-color: #025aa5 !important;
+  background-color:#e3440a !important
+  padding: 4px 4px 4px 4px;
+  -webkit-box-shadow:none!important;
+  border-color: #e3440a !important
   &:hover {
     background-color: #d2d2d2 !important;
     border-color: #d2d2d2 !important;
@@ -9524,6 +9526,15 @@ $th-col: #1b8bf9, #f57c00, #ff5252, #8B4DA5, #40c4ff;
 .note-text {
   color: red;
 }
+.no-shadow{
+  -webkit-box-shadow: none!important;
+}
+
+.btn-voilet{
+  background-color: #ff2ed2;
+  color: #ffffff;
+}
+
 .dtp div.dtp-picker {
   padding: 0.5em!important;
   text-align: center;

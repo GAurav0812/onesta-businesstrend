@@ -153,6 +153,7 @@
     "yui3": "liferay/yui3#patched-v3.18.1",
     "waypoints": "4.0.0",
     "Waves": "waves#0.7.5",
-    "angular-base64": "^2.0.5"
+    "angular-base64": "^2.0.5",
+    "angular-bootstrap-toggle": "^0.1.3"
   }
 }

@@ -1664,10 +1664,10 @@ ableApp.controller('dashboardController', function ($scope, HttpService, $locati
     $scope.selectedHrmsFilter = {
         curDate: getDateNow(-2),
         Type: 'RG',
-        HRMSType: 'C',
-        Day_MTD: 'D',
-        StoreMasterTypes:'A',
-        EmployeeType:'A'
+        HRMSType: true,
+        Day_MTD: true,
+        StoreMasterTypes: true,
+        EmployeeType: 'A'
     };
     var td = new Date();
     var yt = new Date(td);
@@ -2243,10 +2243,31 @@ ableApp.controller('dashboardController', function ($scope, HttpService, $locati
             FOH:undefined,
             BOH:undefined
         };
-        if ($scope.selectedHrmsFilter.HRMSType == 'C') {
-            $scope.selectedHRMSType = "Count"
+        var hrmsType = "";
+        var dayMtd = "";
+        var storeMasterType = "";
+        if ($scope.selectedHrmsFilter.HRMSType == true) {
+            $scope.selectedHRMSType = "Count";
+            $scope.hrmsTypeToolTip = "Salary";
+            hrmsType = "C";
         } else {
-            $scope.selectedHRMSType = "Salary"
+            $scope.selectedHRMSType = "Salary";
+            $scope.hrmsTypeToolTip = "Count";
+            hrmsType = "S";
+        }
+        if ($scope.selectedHrmsFilter.Day_MTD == true) {
+            dayMtd = "D";
+            $scope.dayMtdToolTip = "Month";
+        } else {
+            dayMtd = "M";
+            $scope.dayMtdToolTip = "Day";
+        }
+        if ($scope.selectedHrmsFilter.StoreMasterTypes == true) {
+            storeMasterType = "A";
+            $scope.storetypeToolTip = "Store";
+        } else {
+            storeMasterType = "S";
+            $scope.storetypeToolTip = "All";
         }
         $scope.hrmsData = null;
         var hrmsSummary = new HttpService("HRMS");
@@ -2254,9 +2275,9 @@ ableApp.controller('dashboardController', function ($scope, HttpService, $locati
             "CurrentDate": $scope.selectedHrmsFilter.curDate,
             "Outlets": getOutletArr(),
             "Type": $scope.selectedHrmsFilter.Type,
-            "HRMS_Type": $scope.selectedHrmsFilter.HRMSType,
-            "Day_MTD": $scope.selectedHrmsFilter.Day_MTD,
-            "StoreMasterTypes": $scope.selectedHrmsFilter.StoreMasterTypes,
+            "HRMS_Type": hrmsType,
+            "Day_MTD": dayMtd,
+            "StoreMasterTypes": storeMasterType,
             "EmployeeType": $scope.selectedHrmsFilter.EmployeeType,
             "UserId": parseInt($rootScope.globals.currentUser.Userinfo.UserId)
         };
@@ -2314,7 +2335,14 @@ ableApp.controller('dashboardController', function ($scope, HttpService, $locati
         $scope.fbPieOption.chart.legend.margin.right = 120;
         $scope.fbPieOption.chart.legend.margin.left = 0;  //Nvd3 Design Implementation
     }
-
+    $scope.itsLeftJoindGridView = false;
+    $scope.setLeftJoinedGridView = function () {
+        if ($scope.itsLeftJoindGridView) {
+            $scope.itsLeftJoindGridView = false;
+        } else {
+            $scope.itsLeftJoindGridView = true;
+        }
+    };
     function drawHrmsBarChart(avgAgeArr, yearOfServiceArr, leftJoinedArr) {
         $scope.avgAgeGraphData = [];
         var avgAgeObj = {
