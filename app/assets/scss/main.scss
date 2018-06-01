@@ -1159,15 +1159,15 @@ textarea {
 }
 
 .btn-primary {
-  @include bg-c(#2196F3 !important);
-  @include b(#2196F3 !important, color);
+  @include bg-c(#e3440a !important);
+  @include b(#e3440a !important, color);
   &:focus,
   &:hover,
   &:active {
     @extend .btn-primary;
   }
   &.active {
-    background-color: #025aa5 !important;
+    background-color: #b91303 !important;
   }
 }
 
@@ -9318,14 +9318,14 @@ $th-col: #1b8bf9, #f57c00, #ff5252, #8B4DA5, #40c4ff;
     background-color: #d2d2d2 !important;
   }
   &:active {
-    background-color: #e3440a !important
+    background-color: #e3440a !important;
   }
 }
 
 .grid-btn-active {
-  background-color: #e3440a !important
+  background-color: #e3440a !important;
   padding: 5px 5px 1px 6px;
-  border-color:#e3440a !important
+  border-color:#e3440a !important;
   &:hover {
     background-color: #d2d2d2 !important;
     border-color: #d2d2d2 !important;
@@ -9339,10 +9339,10 @@ $th-col: #1b8bf9, #f57c00, #ff5252, #8B4DA5, #40c4ff;
 }
 
 .grid-xs-btn-active {
-  background-color:#e3440a !important
+  background-color:#e3440a !important;
   padding: 4px 4px 4px 4px;
   -webkit-box-shadow:none!important;
-  border-color: #e3440a !important
+  border-color: #e3440a !important;
   &:hover {
     background-color: #d2d2d2 !important;
     border-color: #d2d2d2 !important;
@@ -9360,7 +9360,7 @@ $th-col: #1b8bf9, #f57c00, #ff5252, #8B4DA5, #40c4ff;
   color: #fdfeff;
   height: 50px;
   text-align: center;
-  background-color: #1777d4;
+  background-color: #584132;
   p {
     color: #d8c9c9;
     font-size: 12px;

@@ -5,7 +5,7 @@ ableApp.config(function ($stateProvider, $urlRouterProvider, $ocLazyLoadProvider
     //dashboard layouts
         .state('dashboard', {
             url: "/dashboard",
-            templateUrl: "views/dashboard.html?v=346545734",
+            templateUrl: "views/dashboard.html?v=234234",
             controller: 'dashboardController',
             resolve: {
                 deps: ['$ocLazyLoad', function ($ocLazyLoad) {
@@ -35,7 +35,7 @@ ableApp.config(function ($stateProvider, $urlRouterProvider, $ocLazyLoadProvider
           })*/
         .state('dsrReports', {
             url: "/dsr",
-            templateUrl: "views/dsr.html?v=687651354",
+            templateUrl: "views/dsr.html?v=234234",
             controller: 'dashboardController',
             resolve: {
                 deps: ['$ocLazyLoad', function ($ocLazyLoad) {
@@ -77,7 +77,7 @@ ableApp.config(function ($stateProvider, $urlRouterProvider, $ocLazyLoadProvider
         })*/
         .state('foodCost', {
             url: "/foodCost",
-            templateUrl: "views/food_cost.html?v=378634544",
+            templateUrl: "views/food_cost.html?v=2341432",
             controller: 'dashboardController',
             resolve: {
                 deps: ['$ocLazyLoad', function ($ocLazyLoad) {
@@ -91,7 +91,7 @@ ableApp.config(function ($stateProvider, $urlRouterProvider, $ocLazyLoadProvider
         })
         .state('hrms', {
             url: "/hrms",
-            templateUrl: "views/hrms.html?v=867565",
+            templateUrl: "views/hrms.html?v=234234",
             controller: 'dashboardController',
             resolve: {
                 deps: ['$ocLazyLoad', function ($ocLazyLoad) {
@@ -858,3 +858,4 @@ ableApp.constant('CriteriaFilter', {
     'VINTAGE': 'VINTAGE',
     'LIQUOR': 'LIQUOR'
 });
+

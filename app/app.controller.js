@@ -1024,12 +1024,12 @@ ableApp.filter('negativeGrowthCheck', function () {
 
 ableApp.filter('numberToThousand', function () {
     return function (value) {
-        var val=Math.round(value);
+        var val = Math.round(value);
         return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     }
 });
 
-ableApp.controller('dashboardController', function ($scope, HttpService, $location, $rootScope, $filter, CriteriaFilter, $state) {
+ableApp.controller('dashboardController', function ($scope, $uibModal, HttpService, $location, $rootScope, $filter, CriteriaFilter, $state) {
 
     $scope.countFrom = 0;
     $scope.summaryDataObj = {
@@ -1052,20 +1052,6 @@ ableApp.controller('dashboardController', function ($scope, HttpService, $locati
     };
     $scope.corelationFilter = 'D';
     $scope.subCriteriaFilter = 'MTD_Sale';
-
-    $scope.criteriaOptions = [
-        {name: CriteriaFilter.STORE, ticked: false},
-        {name: CriteriaFilter.BUILDING, ticked: false},
-        {name: CriteriaFilter.CITY, ticked: false},
-        {name: CriteriaFilter.CLUSTER, ticked: false},
-        {name: CriteriaFilter.MODEL, ticked: false},
-        {name: CriteriaFilter.REGION, ticked: true},
-        {name: CriteriaFilter.TIER, ticked: false},
-        {name: CriteriaFilter.TRADEAREA, ticked: false},
-        {name: CriteriaFilter.VINTAGE, ticked: false},
-        {name: CriteriaFilter.LIQUOR, ticked: false}
-    ];
-    $scope.criteriaFilter = $scope.criteriaOptions[5];
     $scope.lineoptions = {
         chart: {
             type: 'lineWithFocusChart',
@@ -1473,7 +1459,7 @@ ableApp.controller('dashboardController', function ($scope, HttpService, $locati
                 contentGenerator: function (d) {
                     var str = '<table>' +
                         '<thead>' +
-                        '<tr><td class="legend-color-guide">' + d.data.label + '<strong> : ' + d.data.value + ' Employees'+'<strong></td></tr>' +
+                        '<tr><td class="legend-color-guide">' + d.data.label + '<strong> : ' + d.data.value + ' Employees' + '<strong></td></tr>' +
                         '</thead>';
 
                     str = str + '</table>';
@@ -1517,7 +1503,7 @@ ableApp.controller('dashboardController', function ($scope, HttpService, $locati
                 contentGenerator: function (d) {
                     var str = '<table>' +
                         '<thead>' +
-                        '<tr><td class="legend-color-guide">' + d.data.label + '<strong> : ' + d.data.value + ' Employees'+'</strong></td></tr>' +
+                        '<tr><td class="legend-color-guide">' + d.data.label + '<strong> : ' + d.data.value + ' Employees' + '</strong></td></tr>' +
                         '</thead>';
 
                     str = str + '</table>';
@@ -1579,7 +1565,7 @@ ableApp.controller('dashboardController', function ($scope, HttpService, $locati
                 contentGenerator: function (d) {
                     var str = '<table>' +
                         '<thead>' +
-                        '<tr><td class="legend-color-guide">' + d.data.label + '<strong> : ' + d.data.value + ' Employees'+'</strong></td></tr>' +
+                        '<tr><td class="legend-color-guide">' + d.data.label + '<strong> : ' + d.data.value + ' Employees' + '</strong></td></tr>' +
                         '</thead>';
 
                     str = str + '</table>';
@@ -1627,7 +1613,7 @@ ableApp.controller('dashboardController', function ($scope, HttpService, $locati
                 contentGenerator: function (d) {
                     var str = '<table>' +
                         '<thead>' +
-                        '<tr><td class="legend-color-guide">' + d.data.key + '<strong> : ' + d.data.value + ' Employees'+'</strong></td></tr>' +
+                        '<tr><td class="legend-color-guide">' + d.data.key + '<strong> : ' + d.data.value + ' Employees' + '</strong></td></tr>' +
                         '</thead>';
 
                     str = str + '</table>';
@@ -1662,7 +1648,7 @@ ableApp.controller('dashboardController', function ($scope, HttpService, $locati
         RType: "OA"
     };
     $scope.selectedHrmsFilter = {
-        curDate: getDateNow(-2),
+        curDate: getDateNow(-1),
         Type: 'RG',
         HRMSType: true,
         Day_MTD: true,
@@ -1681,6 +1667,10 @@ ableApp.controller('dashboardController', function ($scope, HttpService, $locati
         clearButton: false,
         maxDate: yt
     });
+    $scope.selectedHeaderFilter = {
+        RType: 'Region'
+    };
+    $scope.criteriaFilter=[];
     angular.element('#dateBeforeYes, #dateBeforeYes2').bootstrapMaterialDatePicker({
         time: false,
         format: "YYYY-MM-DD",
@@ -1696,51 +1686,130 @@ ableApp.controller('dashboardController', function ($scope, HttpService, $locati
     };
     hierarchyData.post("", postData).then(function (data) {
         $scope.hierarchyMaster = data;
+        if (data.Region.length == 1) {
+            $scope.itHasSingleRegion = true;
+            if (data.Cluster.length == 1) {
+                $scope.criteriaOptions = [
+                    {name: CriteriaFilter.STORE, ticked: true},
+                    {name: CriteriaFilter.BUILDING, ticked: false},
+                    {name: CriteriaFilter.CITY, ticked: false},
+                    {name: CriteriaFilter.CLUSTER, ticked: false},
+                    {name: CriteriaFilter.REGION, ticked: true},
+                    {name: CriteriaFilter.MODEL, ticked: false},
+                    {name: CriteriaFilter.TIER, ticked: false},
+                    {name: CriteriaFilter.TRADEAREA, ticked: false},
+                    {name: CriteriaFilter.VINTAGE, ticked: false},
+                    {name: CriteriaFilter.LIQUOR, ticked: false}
+                ];
+                $scope.criteriaFilter.push($scope.criteriaOptions[0]);
+                $scope.selectedDSRFilter.value = "ST";
+                $scope.selectedHeaderFilter.RType = "Store";
+            } else {
+                $scope.criteriaOptions = [
+                    {name: CriteriaFilter.STORE, ticked: false},
+                    {name: CriteriaFilter.BUILDING, ticked: false},
+                    {name: CriteriaFilter.CITY, ticked: false},
+                    {name: CriteriaFilter.CLUSTER, ticked: true},
+                    {name: CriteriaFilter.REGION, ticked: true},
+                    {name: CriteriaFilter.MODEL, ticked: false},
+                    {name: CriteriaFilter.TIER, ticked: false},
+                    {name: CriteriaFilter.TRADEAREA, ticked: false},
+                    {name: CriteriaFilter.VINTAGE, ticked: false},
+                    {name: CriteriaFilter.LIQUOR, ticked: false}
+                ];
+                $scope.criteriaFilter.push($scope.criteriaOptions[3]);
+                $scope.selectedDSRFilter.value = "CL";
+                $scope.selectedHeaderFilter.RType = "Cluster";
+            }
+        } else {
+            $scope.itHasSingleRegion = false;
+            $scope.criteriaOptions = [
+                {name: CriteriaFilter.STORE, ticked: false},
+                {name: CriteriaFilter.BUILDING, ticked: false},
+                {name: CriteriaFilter.CITY, ticked: false},
+                {name: CriteriaFilter.CLUSTER, ticked: false},
+                {name: CriteriaFilter.MODEL, ticked: false},
+                {name: CriteriaFilter.REGION, ticked: true},
+                {name: CriteriaFilter.TIER, ticked: false},
+                {name: CriteriaFilter.TRADEAREA, ticked: false},
+                {name: CriteriaFilter.VINTAGE, ticked: false},
+                {name: CriteriaFilter.LIQUOR, ticked: false}
+            ];
+            $scope.criteriaFilter.push($scope.criteriaOptions[5]);
+            $scope.selectedDSRFilter.value = "RR";
+            $scope.selectedHeaderFilter.RType = "Region";
+        }
         $scope.onFilterChange();
     }, function (e) {
         console.info("Error fetching hierarchy data...", e);
     });
 
-    /* getDaySale();
+    getDaySale();
 
-     function getDaySale() {
-         var todayData = new HttpService("TodaySale");
-         var postData = {
-             "UserId": parseInt($rootScope.globals.currentUser.Userinfo.UserId)
-         };
-         todayData.post("", postData).then(function (data) {
-             $scope.todaySaleData = data;
-         }, function (e) {
-             console.info("Error fetching day sale...", e);
-         });
-     };*/
-
-   /* if ($state.current.name == "dashboard") {
-        getDSRSummary();
-    }
-
-
-    function getDSRSummary() {
-        var dsrSummary = new HttpService("DailySaleReportSummary");
+    function getDaySale() {
+        var todayData = new HttpService("TodaySale");
         var postData = {
-            "CurrentDate": getDateNow(-1),
-            "RType": "HH",
-            "Outlets": getOutletArr(),
             "UserId": parseInt($rootScope.globals.currentUser.Userinfo.UserId)
         };
-        dsrSummary.post("", postData).then(function (data) {
-            $scope.dsrSummaryData = data;
+        todayData.post("", postData).then(function (data) {
+            $scope.todaySaleData = data;
         }, function (e) {
             console.info("Error fetching day sale...", e);
         });
-    }*/
+    };
 
+    /* if ($state.current.name == "dashboard") {
+         getDSRSummary();
+     }
+
+
+     function getDSRSummary() {
+         var dsrSummary = new HttpService("DailySaleReportSummary");
+         var postData = {
+             "CurrentDate": getDateNow(-1),
+             "RType": "HH",
+             "Outlets": getOutletArr(),
+             "UserId": parseInt($rootScope.globals.currentUser.Userinfo.UserId)
+         };
+         dsrSummary.post("", postData).then(function (data) {
+             $scope.dsrSummaryData = data;
+         }, function (e) {
+             console.info("Error fetching day sale...", e);
+         });
+     }*/
+
+    var setRegionDaySale;
     $scope.getRegionDaySale = function () {
+        $scope.getRegionDaySaleData();
+        setRegionDaySale = $uibModal.open({
+            animation: true,
+            templateUrl: 'shared/headerModal.html',
+            size: 'md',
+            backdrop: 'static',
+            keyboard: false,
+            scope: $scope
+        });
+    };
+
+    $scope.closeHeaderModal = function () {
+        setRegionDaySale.close();
+    };
+
+    $scope.getRegionDaySaleData = function () {
         $scope.todayRegionSaleData = undefined;
+        var RType = undefined;
+        if ($scope.selectedHeaderFilter.RType == "Region") {
+            RType = 'R'
+        } else if ($scope.selectedHeaderFilter.RType == "Cluster") {
+            RType = 'C'
+        } else {
+            RType = 'S'
+        }
         var todayData = new HttpService("TodayRegionSale");
         var postData = {
             "Outlets": getOutletArr(true),
             "Session": "",
+            "RType": RType,
             "UserId": parseInt($rootScope.globals.currentUser.Userinfo.UserId)
         };
         todayData.post("", postData).then(function (data) {
@@ -1750,6 +1819,34 @@ ableApp.controller('dashboardController', function ($scope, HttpService, $locati
         });
     };
 
+    $scope.getRegionSummarySale=function(filterBy) {
+        $scope.summaryRegionSaleData = undefined;
+        var todayData = new HttpService("SummaryRegionSale");
+        var postData = {
+            "CurrentDate": $scope.selectedFilter.curDate,
+            "Outlets": getOutletArr(true),
+            "Range": "S",
+            "Session": "",
+            "UserId": parseInt($rootScope.globals.currentUser.Userinfo.UserId)
+        };
+        if (filterBy == 'Sales')
+            postData.Range = 'S';
+        if (filterBy == 'Covers')
+            postData.Range = 'C';
+        if (filterBy == 'APC')
+            postData.Range = 'A';
+
+        todayData.post("", postData).then(function (data) {
+            if (filterBy == 'Sales')
+                $scope.summaryRegionSaleData = data.SaleList;
+            if (filterBy == 'Covers')
+                $scope.summaryRegionSaleData = data.CoverList;
+            if (filterBy == 'APC')
+                $scope.summaryRegionSaleData = data.APCList;
+        }, function (e) {
+            console.info("Error fetching day sale...", e);
+        });
+    };
 
     $scope.onFilterChange = function (filterControl) {
         switch (filterControl) {
@@ -1776,11 +1873,11 @@ ableApp.controller('dashboardController', function ($scope, HttpService, $locati
             filterActualvsTarget();
             //$scope.filterCommonPie();
             $scope.filterSalesByCriteria();
-        }else if ($state.current.name == "dsrReports") {
+        } else if ($state.current.name == "dsrReports") {
             $scope.filterDSRReports();
         } else if ($state.current.name == "foodCost") {
             $scope.getFoodSummary(filterControl);
-        }else if ($state.current.name == "hrms") {
+        } else if ($state.current.name == "hrms") {
             $scope.getHrmsReport();
         }
     };
@@ -1934,7 +2031,7 @@ ableApp.controller('dashboardController', function ($scope, HttpService, $locati
         }
 
         var summaryData = new HttpService("SummaryReport");
-     /*   var dailySaleSummaryData = new HttpService("DailySaleReportSummary");*/
+        var dailySaleSummaryData = new HttpService("DailySaleReportSummary");
         var filterSession = "";
         if ($scope.selectedFilter.Session == 'L') {
             filterSession = 1;
@@ -1949,17 +2046,17 @@ ableApp.controller('dashboardController', function ($scope, HttpService, $locati
             "ParamType": paramType,
             "UserId": parseInt($rootScope.globals.currentUser.Userinfo.UserId)
         };
-      /*  var dsrPostData = {
+        var dsrPostData = {
             "CurrentDate": getDateNow(-1),
             "RType": "HH",
             "Outlets": getOutletArr(),
             "UserId": parseInt($rootScope.globals.currentUser.Userinfo.UserId)
-        };*/
-       /* dailySaleSummaryData.post("", dsrPostData).then(function (data) {
+        };
+        dailySaleSummaryData.post("", dsrPostData).then(function (data) {
             $scope.dsrSummaryData = data;
         }, function (e) {
             console.info("Error fetching day sale...", e);
-        });*/
+        });
 
         summaryData.post("", postData).then(function (data) {
             $scope.summaryDataObj = data;
@@ -2019,7 +2116,7 @@ ableApp.controller('dashboardController', function ($scope, HttpService, $locati
                 }
                 $scope.monthlySummaryData.push(mndataObj);
                 $scope.oneMonthSummaryBaroptions.chart.xAxis.axisLabel = mndataObj.key;
-                $scope.oneMonthSummaryBaroptions.chart.showLegend=false;
+                $scope.oneMonthSummaryBaroptions.chart.showLegend = false;
             } else if (data.MonthList.length == 2) {
                 var stArr = [];
                 $scope.oneMonthGraph = true;
@@ -2034,6 +2131,7 @@ ableApp.controller('dashboardController', function ($scope, HttpService, $locati
             console.info("Error fetching filtered data...", e);
         });
     };
+
     function getSingleMonthObj(itemArr, index) {
         var item = itemArr[index];
         var mndataObj = {
@@ -2149,14 +2247,14 @@ ableApp.controller('dashboardController', function ($scope, HttpService, $locati
                 onYearChange($scope.selectedYearObj[0].text);
                 break;
         }
-        if($scope.selectedFCFilter.Type == "CM"){
-            $scope.selectedCriteria="Company"
-        }else if($scope.selectedFCFilter.Type == "RG"){
-            $scope.selectedCriteria="Region"
-        }else if($scope.selectedFCFilter.Type == "CT"){
-            $scope.selectedCriteria="City"
-        }else if($scope.selectedFCFilter.Type == "ST"){
-            $scope.selectedCriteria="Store"
+        if ($scope.selectedFCFilter.Type == "CM") {
+            $scope.selectedCriteria = "Company"
+        } else if ($scope.selectedFCFilter.Type == "RG") {
+            $scope.selectedCriteria = "Region"
+        } else if ($scope.selectedFCFilter.Type == "CT") {
+            $scope.selectedCriteria = "City"
+        } else if ($scope.selectedFCFilter.Type == "ST") {
+            $scope.selectedCriteria = "Store"
         }
         $scope.foodCostData = "";
         $scope.selectedYear = $scope.selectedYearObj[0].text;
@@ -2237,11 +2335,11 @@ ableApp.controller('dashboardController', function ($scope, HttpService, $locati
     };
 
     $scope.getHrmsReport = function () {
-        $scope.pieDataObj={
-            Male:undefined,
-            FeMale:undefined,
-            FOH:undefined,
-            BOH:undefined
+        $scope.pieDataObj = {
+            Male: undefined,
+            FeMale: undefined,
+            FOH: undefined,
+            BOH: undefined
         };
         var hrmsType = "";
         var dayMtd = "";
@@ -2335,6 +2433,7 @@ ableApp.controller('dashboardController', function ($scope, HttpService, $locati
         $scope.fbPieOption.chart.legend.margin.right = 120;
         $scope.fbPieOption.chart.legend.margin.left = 0;  //Nvd3 Design Implementation
     }
+
     $scope.itsLeftJoindGridView = false;
     $scope.setLeftJoinedGridView = function () {
         if ($scope.itsLeftJoindGridView) {
@@ -2343,6 +2442,7 @@ ableApp.controller('dashboardController', function ($scope, HttpService, $locati
             $scope.itsLeftJoindGridView = true;
         }
     };
+
     function drawHrmsBarChart(avgAgeArr, yearOfServiceArr, leftJoinedArr) {
         $scope.avgAgeGraphData = [];
         var avgAgeObj = {
@@ -2370,19 +2470,19 @@ ableApp.controller('dashboardController', function ($scope, HttpService, $locati
         $scope.yearOfSerGraphData = [yearofServedObj];
         $scope.aveAgeGraphOptions = angular.copy(hrmsBarGrpahOptions);
         $scope.aveAgeXsGraphOptions = angular.copy(mutliBarHorizontalOpions);
-        $scope.aveAgeXsGraphOptions.chart.showLegend=false;
+        $scope.aveAgeXsGraphOptions.chart.showLegend = false;
         $scope.aveAgeGraphOptions.title.text = "Average Age Group";
         $scope.aveAgeXsGraphOptions.title.text = "Average Age Group";
-        $scope.aveAgeXsGraphOptions.chart.barColor=['#e04941', '#35a4e0', '#2ae01c', '#bb13b1', '#f67a1b'];
+        $scope.aveAgeXsGraphOptions.chart.barColor = ['#e04941', '#35a4e0', '#2ae01c', '#bb13b1', '#f67a1b'];
         $scope.aveAgeGraphOptions.chart.xAxis.axisLabel = "Age Group";
         $scope.aveAgeXsGraphOptions.chart.xAxis.axisLabel = "Age Group";
         $scope.aveAgeXsGraphOptions.chart.yAxis.axisLabel = "Count";
         $scope.yearOfSerGraphOptions = angular.copy(hrmsBarGrpahOptions);
         $scope.yearOfSerXsGraphOptions = angular.copy(mutliBarHorizontalOpions);
-        $scope.yearOfSerXsGraphOptions.chart.showLegend=false;
+        $scope.yearOfSerXsGraphOptions.chart.showLegend = false;
         $scope.yearOfSerGraphOptions.title.text = "Year Of Service";
         $scope.yearOfSerXsGraphOptions.title.text = "Year Of Service";
-        $scope.yearOfSerXsGraphOptions.chart.barColor=['#e04941', '#35a4e0', '#2ae01c', '#bb13b1', '#f67a1b'];
+        $scope.yearOfSerXsGraphOptions.chart.barColor = ['#e04941', '#35a4e0', '#2ae01c', '#bb13b1', '#f67a1b'];
         $scope.yearOfSerGraphOptions.chart.xAxis.axisLabel = "Years";
         $scope.yearOfSerXsGraphOptions.chart.xAxis.axisLabel = "Years";
         $scope.yearOfSerXsGraphOptions.chart.yAxis.axisLabel = "Count";
@@ -2430,6 +2530,7 @@ ableApp.controller('dashboardController', function ($scope, HttpService, $locati
         $scope.leftJoindGraphOptions.title.text = "Left & Joined Employee Count";
         $scope.leftJoindXsGraphOptions.title.text = "Left & Joined Employee Count";
     }
+
     function getLineChart(arr1, arr2) {
         //Line chart data should be sent as an array of series objects.
         return [{

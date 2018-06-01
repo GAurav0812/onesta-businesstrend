@@ -1016,10 +1016,10 @@ textarea {
   border-color: #40c4ff !important; }
 
 .btn-primary, .btn-primary:focus, .btn-primary:hover, .btn-primary:active {
-  background-color: #2196F3 !important;
-  border-color: #2196F3 !important; }
+  background-color: #e3440a !important;
+  border-color: #e3440a !important; }
   .btn-primary.active {
-    background-color: #025aa5 !important; }
+    background-color: #b91303 !important; }
 
 .btn-success, .btn-success:focus, .btn-success:hover, .btn-success:active {
   background-color: #4CAF50 !important;
@@ -9365,7 +9365,7 @@ form .messages {
   .grid-btn:hover {
     background-color: #d2d2d2 !important; }
   .grid-btn:active {
-    background-color: #025aa5 !important; }
+    background-color: #e3440a !important; }
 
 .grid-xs-btn {
   background-color: white !important;
@@ -9376,12 +9376,12 @@ form .messages {
   .grid-xs-btn:hover {
     background-color: #d2d2d2 !important; }
   .grid-xs-btn:active {
-    background-color: #025aa5 !important; }
+    background-color: #e3440a !important; }
 
 .grid-btn-active {
-  background-color: #025aa5 !important;
+  background-color: #e3440a !important;
   padding: 5px 5px 1px 6px;
-  border-color: #025aa5 !important; }
+  border-color: #e3440a !important; }
   .grid-btn-active:hover {
     background-color: #d2d2d2 !important;
     border-color: #d2d2d2 !important; }
@@ -9391,10 +9391,10 @@ form .messages {
     color: white; }
 
 .grid-xs-btn-active {
-  background-color: #025aa5 !important;
+  background-color: #e3440a !important;
   padding: 4px 4px 4px 4px;
   -webkit-box-shadow: none !important;
-  border-color: #025aa5 !important; }
+  border-color: #e3440a !important; }
   .grid-xs-btn-active:hover {
     background-color: #d2d2d2 !important;
     border-color: #d2d2d2 !important; }
@@ -9408,7 +9408,7 @@ form .messages {
   color: #fdfeff;
   height: 50px;
   text-align: center;
-  background-color: #1777d4; }
+  background-color: #584132; }
   .head-sale p {
     color: #d8c9c9;
     font-size: 12px;
