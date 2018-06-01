@@ -1,0 +1,76 @@
+<div class="modal-content ">
+    <div class="modal-header panel-background">
+        <button type="button" class="close" ng-click="closeSummarySaleModal()" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title"><span class="label label-default">{{ formatDate(selectedFilter.curDate, 'dd MMM yyyy') }}</span>
+            Sale <span ng-hide="detailedModalTitle=='Sales'">{{detailedModalTitle}}</span>
+            Summary</h4>
+    </div>
+    <div class="modal-body">
+        <div class="text-center" ng-if="!summaryRegionSaleData"><i
+                class="fa fa-circle-o-notch fa-spin fa-lg"></i> Loading...
+        </div>
+        <div class="table-responsive">
+            <table class="table hidden-md-down" ng-if="summaryRegionSaleData">
+                <thead class="table-inverse">
+                <tr>
+                    <th rowspan="2">Region</th>
+                    <th colspan="4">{{detailedModalTitle}}</th>
+                </tr>
+                <tr>
+                    <th>#Stores</th>
+                    <th>#Days</th>
+                    <th>#MTD</th>
+                    <th>#YTD</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-class="{'table-warning':$index%2==0,'table-info':$index%2!==0}"
+                    ng-repeat="item in summaryRegionSaleData">
+                    <td><strong>{{item.RegionName}}</strong></td>
+                    <td>{{item.Outlets}}</td>
+                    <td>{{item.Day}}</td>
+                    <td>{{item.MTD}}</td>
+                    <td>{{item.YTD}}</td>
+                </tr>
+                </tbody>
+            </table>
+            <table class="table table-sm hidden-md-up" ng-if="summaryRegionSaleData">
+                <thead class="table-inverse">
+                <tr>
+                    <th rowspan="2">Region</th>
+                    <th colspan="4">{{detailedModalTitle}}</th>
+                </tr>
+                <tr>
+                    <th>#Stores</th>
+                    <th>#Days</th>
+                    <th>#MTD</th>
+                    <th>#YTD</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-class="{'table-warning':$index%2==0,'table-info':$index%2!==0}"
+                    ng-repeat="item in summaryRegionSaleData">
+                    <td><strong>{{item.RegionName}}</strong></td>
+                    <td>{{item.Outlets}}</td>
+                    <td>{{item.Day}}</td>
+                    <td>{{item.MTD}}</td>
+                    <td>{{item.YTD}}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button"
+                class="btn btn-danger no-shadow waves-effect"
+                ng-click="closeSummarySaleModal()">OK
+        </button>
+    </div>
+</div>
+
+
+
+
+
