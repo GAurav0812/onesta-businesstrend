@@ -1052,52 +1052,47 @@ ableApp.controller('dashboardController', function ($scope, $uibModal, HttpServi
     };
     $scope.corelationFilter = 'D';
     $scope.subCriteriaFilter = 'MTD_Sale';
-    $scope.lineoptions = {
+    $scope.monthlySummaryOptions = {
         chart: {
-            type: 'lineWithFocusChart',
+            type: 'multiBarChart',
             height: 450,
             margin: {
                 top: 20,
                 right: 20,
-                bottom: 40,
-                left: 55
+                bottom: 50,
+                left: 80
             },
-            forceX: 0,
             x: function (d) {
-                return d.x;
+                return d.label;
             },
             y: function (d) {
-                return d.y;
+                return d.value + (1e-10);
             },
-            useInteractiveGuideline: true,
+            showValues: true,
+            duration: 500,
+            stacked: false,
+            showControls: true,
+            valueFormat: function (d) {
+                return d3.format('.2f')(d);
+            },
             xAxis: {
-                axisLabel: 'Months',
-                tickFormat: function (d) {
-                    return $scope.monthlySummaryData[0].values[d].z;
-                }
+                axisLabel: 'X Axis'
             },
             yAxis: {
-                axisLabel: 'Sales (millions)',
-                tickFormat: function (d) {
-                    return d3.format('.02f')(d);
-                },
-                axisLabelDistance: -10
+                axisLabel: 'Count'
             },
-            x2Axis: {
-                tickFormat: function (d) {
-                    return "";
+            tooltip: {
+                contentGenerator: function (d) {
+                    var str = '<table>' +
+                        '<thead>' +
+                        '<tr><td class="legend-color-guide">' + d.data.key + '<strong> : ' + d.data.value + '</strong></td></tr>' +
+                        '</thead>';
+
+                    str = str + '</table>';
+                    return str;
                 }
-            },
-            y2Axis: {
-                tickFormat: function (d) {
-                    return d3.format(',.2f')(d);
-                }
-            },
-            callback: function (chart) {
-                /* console.log("!!! lineChart callback !!!");*/
             }
         }
-
     };
 
     $scope.baroptions = {
@@ -2076,106 +2071,57 @@ ableApp.controller('dashboardController', function ($scope, $uibModal, HttpServi
         };
         monthlySummary.post("", postData).then(function (data) {
             $scope.monthlySummaryData = [];
-            if (data.MonthList.length > 2) {
-                $scope.oneMonthGraph = false;
-                var saleData = [];
+            let targetSale = {
+                key: "Target Sales",
+                values: []
+            };
+            let actualSale = {
+                key: "Actual Sales",
+                values: []
+            };
+            for (let i = 0; i < data.MonthList.length; i++) {
 
-                var targetData = [];
+                targetSale.key = "Target Sales";
+                targetSale.color = '#5bd7aa';
+                targetSale.values.push({
+                    label: data.MonthList[i].MTD_Name,
+                    value: data.MonthList[i].MTD_Target
+                });
 
-                for (var i = 0; i < data.MonthList.length; i++) {
-                    saleData.push({x: i, z: data.MonthList[i].MTD_Name, y: data.MonthList[i].MTD_Sale});
-                    targetData.push({x: i, z: data.MonthList[i].MTD_Name, y: data.MonthList[i].MTD_Target});
-                }
-                //$scope.monthlySummaryData = [saleData, targetData];
-                $scope.monthlySummaryData = getLineChart(saleData, targetData);
-            } else if (data.MonthList.length == 1) {
-                $scope.oneMonthGraph = true;
-                var mndataObj = {
-                    key: "",
-                    values: []
-                };
-                for (var j = 0; j <= 1; j++) {
-                    mndataObj.key = data.MonthList[0].MTD_Name;
-                    var label = "";
-                    var obj = {
-                        label: "",
-                        value: ""
-                    };
-                    if (j == 0) {
-                        obj.label = "Actual Sales";
-                        obj.label2 = "Actual Sales";
-                        obj.color = '#5bd7aa';
-                        obj.value = data.MonthList[0].MTD_Sale;
-                    } else if (j == 1) {
-                        obj.label = "Target Sales";
-                        obj.label2 = "Target Sales";
-                        obj.color = '#e39b16';
-                        obj.value = data.MonthList[0].MTD_Target;
-                    }
-                    mndataObj.values.push(obj);
-                }
-                $scope.monthlySummaryData.push(mndataObj);
-                $scope.oneMonthSummaryBaroptions.chart.xAxis.axisLabel = mndataObj.key;
-                $scope.oneMonthSummaryBaroptions.chart.showLegend = false;
-            } else if (data.MonthList.length == 2) {
-                var stArr = [];
-                $scope.oneMonthGraph = true;
-                var sObj = getSingleMonthObj(data.MonthList, 0);
-                var tObj = getSingleMonthObj(data.MonthList, 1);
-                stArr = [sObj, tObj];
-                $scope.monthlySummaryData = stArr;
-                $scope.oneMonthSummaryBaroptions.chart.xAxis.axisLabel = "Months";
             }
+            $scope.monthlySummaryData.push(targetSale);
+
+            for (let j = 0; j < data.MonthList.length; j++) {
+
+                actualSale.key = "Actual Sales";
+                actualSale.color = '#e39b16';
+                actualSale.values.push({
+                    label: data.MonthList[j].MTD_Name,
+                    value: data.MonthList[j].MTD_Sale
+                });
+
+            }
+            $scope.monthlySummaryData.push(actualSale);
+            $scope.monthlySummaryXsOptions = angular.copy(mutliBarHorizontalOpions);
+            $scope.monthlySummaryOptions.chart.stacked = false;
+            $scope.monthlySummaryXsOptions.chart.stacked = false;
+            $scope.monthlySummaryXsOptions.title.enable = false;
+            $scope.monthlySummaryXsOptions.chart.margin.left = 60;
+            $scope.monthlySummaryXsOptions.chart.yAxis.axisLabelDistance = -10;
+            $scope.monthlySummaryXsOptions.chart.xAxis.axisLabelDistance = -10;
+            $scope.monthlySummaryOptions.chart.showControls = false;
+            $scope.monthlySummaryXsOptions.chart.showControls = false;
+            $scope.monthlySummaryOptions.chart.xAxis.axisLabel = "Months";
+            $scope.monthlySummaryOptions.chart.reduceXTick = true;
+            $scope.monthlySummaryXsOptions.chart.xAxis.axisLabel = "Months";
+            $scope.monthlySummaryXsOptions.chart.yAxis.axisLabel = "Values";
+            $scope.monthlySummaryXsOptions.chart.reduceXTicks = true;
 
         }, function (e) {
             console.info("Error fetching filtered data...", e);
         });
     };
 
-    function getSingleMonthObj(itemArr, index) {
-        var item = itemArr[index];
-        var mndataObj = {
-            key: "",
-            values: []
-        };
-        var obj = {
-            label: "",
-            label2: "",
-            color: "",
-            value: ""
-        };
-        var obj2 = {
-            label: "",
-            label2: "",
-            color: "",
-            value: ""
-        };
-        if (index == 0) {
-            obj.label2 = "Target Sales";
-            obj2.label2 = "Target Sales";
-            obj.color = '#5bd7aa';
-            obj2.color = '#5bd7aa';
-            obj.label = item.MTD_Name;
-            obj2.label = itemArr[1].MTD_Name;
-            obj.value = item.MTD_Target;
-            obj2.value = itemArr[1].MTD_Target;
-            mndataObj.key = "Target Sales";
-            mndataObj.color = '#5bd7aa';
-        } else if (index == 1) {
-            obj.label2 = "Actual Sales";
-            obj2.label2 = "Actual Sales";
-            obj.color = '#e39b16';
-            obj2.color = '#e39b16';
-            obj.label = item.MTD_Name;
-            obj2.label = itemArr[0].MTD_Name;
-            obj.value = item.MTD_Sale;
-            obj2.value = itemArr[0].MTD_Sale;
-            mndataObj.key = "Actual Sales";
-            mndataObj.color = '#e39b16';
-        }
-        mndataObj.values = [obj, obj2];
-        return mndataObj;
-    }
 
     $scope.filterSalesByCriteria = function () {
         $scope.selectedCriteria = $scope.criteriaFilter[0].name;

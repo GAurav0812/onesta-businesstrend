@@ -1,7 +1,7 @@
 <div class="horizontal-fixed fixed">
     <div class="wrapper">
-        <div ng-include="'shared/header.html?v=8.1'"></div>
-        <div ng-include="'shared/sidebar.html?v=8.1'"></div>
+        <div ng-include="'shared/header.html?v=9.1'"></div>
+        <div ng-include="'shared/sidebar.html?v=9.1'"></div>
         <!--<div ng-include="'shared/offline.html?v=7.1'"></div>-->
         <div class="content-wrapper">
             <!-- Container-fluid starts -->
@@ -548,7 +548,6 @@
                                 </div>
                                 <div class="row">
                                     <div class="col-lg-12 col-md-12">
-
                                         <div class="card">
                                             <div class="card-header">
                                                 <h5 class="card-header-text">Monthwise - Actual vs Target Sales</h5>
@@ -558,10 +557,12 @@
                                                 <div class="text-center" ng-if="!monthlySummaryData"><i
                                                         class="fa fa-circle-o-notch fa-spin fa-lg"></i> Loading...
                                                 </div>
-                                                <nvd3 ng-if="!oneMonthGraph" options="lineoptions" data="monthlySummaryData"
-                                                      class="with-3d-shadow with-transitions"></nvd3>
-                                                <nvd3 ng-if="oneMonthGraph" options="oneMonthSummaryBaroptions" data="monthlySummaryData"
-                                                      class="with-3d-shadow with-transitions"></nvd3>
+                                                <nvd3  options="monthlySummaryOptions"
+                                                       data="monthlySummaryData"
+                                                       class="with-3d-shadow with-transitions hidden-sm-down"></nvd3>
+                                                <nvd3  options="monthlySummaryXsOptions"
+                                                       data="monthlySummaryData"
+                                                       class="with-3d-shadow with-transitions hidden-md-up"></nvd3>
                                                 <p ng-if="!monthlySummaryData || monthlySummaryData.length<0">No monthly
                                                     summary data</p>
                                             </div>

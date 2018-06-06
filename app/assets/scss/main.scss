@@ -2018,7 +2018,6 @@ Basic card CSS
   @include disp(flex);
   align-items: center;
   @include t-a(left);
-  @include bg-c(#2196F3);
   h3 {
     @include c(#666666);
     @include f-s(20px);
@@ -2046,6 +2045,7 @@ Basic card CSS
   width: 500px;
   @include pos(relative);
   @include disp(block);
+  border-radius: 5px;
   @include bg-c(#fff);
   @include shadow(0 6px 10px 0 rgba(0, 0, 0, 0.14), 0 1px 18px 0 rgba(0, 0, 0, 0.12), 0 3px 5px -1px rgba(0, 0, 0, 0.3));
   h1 {

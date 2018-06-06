@@ -29,9 +29,9 @@
                     <th rowspan="2">#{{selectedHeaderFilter.RType}}</th>
                     <th colspan="3">Today</th>
                     <th colspan="3">This {{formatDate(getCurDate(0), 'EEEE')}}
-                        Last Year
+                        Last Week
                     </th>
-                    <th colspan="2">Projected</th>
+                    <th rowspan="2">Difference</th>
                 </tr>
                 <tr>
                     <th>#Stores</th>
@@ -39,8 +39,6 @@
                     <th>Covers</th>
                     <th>#Stores</th>
                     <th>Sales</th>
-                    <th>Covers</th>
-                    <th>Sale</th>
                     <th>Covers</th>
                 </tr>
                 </thead>
@@ -54,8 +52,7 @@
                     <td>{{item.POutlets}}</td>
                     <td>{{item.PSale}}</td>
                     <td>{{item.PCover}}</td>
-                    <td>{{item.ProjSale}}</td>
-                    <td>{{item.ProjCover}}</td>
+                    <td>{{(item.Sale - item.PSale).toFixed(2)}}</td>
                 </tr>
                 </tbody>
             </table>
@@ -67,9 +64,9 @@
                     <th rowspan="2">#{{selectedHeaderFilter.RType}}</th>
                     <th colspan="3">Today</th>
                     <th colspan="3">This {{formatDate(getCurDate(0), 'EEEE')}}
-                        Last Year
+                        Last Week
                     </th>
-                    <th colspan="2">Projected</th>
+                    <th rowspan="2">Difference</th>
                 </tr>
                 <tr>
                     <th>#Stores</th>
@@ -77,8 +74,6 @@
                     <th>Covers</th>
                     <th>#Stores</th>
                     <th>Sales</th>
-                    <th>Covers</th>
-                    <th>Sale</th>
                     <th>Covers</th>
                 </tr>
                 </thead>
@@ -92,8 +87,7 @@
                     <td>{{item.POutlets}}</td>
                     <td>{{item.PSale}}</td>
                     <td>{{item.PCover}}</td>
-                    <td>{{item.ProjSale}}</td>
-                    <td>{{item.ProjCover}}</td>
+                    <td>{{(item.Sale - item.PSale).toFixed(2)}}</td>
                 </tr>
                 </tbody>
             </table>
