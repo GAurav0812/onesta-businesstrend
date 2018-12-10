@@ -1,0 +1,120 @@
+<div class="modal-content ">
+    <div class="modal-header panel-background">
+        <button type="button" class="close" ng-click="$close()" aria-label="Close">
+            <em class="fa fa-close fa-md"></em>
+        </button>
+        <h4 class="modal-title"><span style="color: #373a3c;">Detailed GSI Reasons - <span style="color: #ff7f0e">{{categoryWiseReasondata.SubCategoryName}}</span></span></h4>
+    </div>
+    <div class="modal-body">
+        <div class="text-center" ng-if="!categoryWiseReasondata"><i
+                class="fa fa-circle-o-notch fa-spin fa-lg"></i> Loading...
+        </div>
+        <div class="f-left m-b-5" ng-if="categoryWiseReasondata.SubCategoryName !== 'Overall'">
+            <div ng-click="gridToggle()">
+                <i ng-if="!gridView.show"
+                   class="fas fa-th-large fa-lg"></i>
+                <i ng-if="gridView.show" style="color:#b2b2b3"
+                   class="fas fa-chart-pie fa-lg"></i>
+            </div>
+        </div>
+        <div class="text-center" ng-show="!gridView.show && categoryWiseReasondata.SubCategoryName !== 'Overall'">
+            <!-- <h5><span style="color: #0fa1f9">{{categoryWiseReasondata.ReasonName}} </span> is effecting <span
+                     style="color: #f93717">{{categoryWiseReasondata.Perc}}%</span>
+                 to the GSI Contribution.
+             </h5>-->
+            <br>
+            <h6>BREAK UP OF All REASONS.</h6>
+            <c3chart  class="hidden-sm-down" bindto-id="categoryWiseReasonsChart" ng-if="categoryWiseReasondata">
+                <chart-column ng-repeat="pieItem in gsiReasonCatPieData"
+                              column-id="{{pieItem.ReasonName}}"
+                              column-values="{{pieItem.Perc}}"
+                              column-type="donut"/>
+                <chart-legend show-legend="true" legend-position="bottom"/>
+                <chart-size height="500" width="500"/>
+                <chart-donut title="{{categoryWiseReasondata.SubCategoryName}}" width="40"/>
+            </c3chart>
+            <c3chart class="hidden-md-up" bindto-id="categoryWiseReasonsXsChart" ng-if="categoryWiseReasondata">
+                <chart-column ng-repeat="pieItem in gsiReasonCatPieData"
+                              column-id="{{pieItem.ReasonName}}"
+                              column-values="{{pieItem.Perc}}"
+                              column-type="donut"/>
+                <chart-legend show-legend="false"/>
+                <chart-donut title="{{categoryWiseReasondata.SubCategoryName}}" width="50"/>
+            </c3chart>
+        </div>
+        <div class="table-responsive" ng-show="gridView.show && categoryWiseReasondata.SubCategoryName === 'Overall'">
+            <div class="col-lg-12 p-0">
+                <table class="table table-xs">
+                    <thead class="table-inverse">
+                    <tr>
+                        <th><p>Attributes</p></th>
+                        <th><p>Count</p></th>
+                        <th><p>Perc %</p></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="item in gsiReasonCatTableData"
+                        ng-style="{'cursor':'pointer'}" ng-class="{'gsiReasonTr':item.ParentRow==='0'}"
+                        ng-click="item.isExpanded = !item.isExpanded"
+                        ng-if="getGSIRowExpandedStatus(item, gsiReasonCatTableData)">
+                        <td style="text-align: left!important;"
+                            ng-init="item.isExpanded=false">
+                            <i ng-if="getGSIRowHasChild(item, gsiReasonCatTableData) && item.isExpanded==false"
+                               class="fa fa-plus-circle"
+                            ></i>
+                            <i ng-if="getGSIRowHasChild(item, gsiReasonCatTableData) && item.isExpanded==true"
+                               class="fa fa-minus-circle"
+                            ></i>
+                            <p style="display:inline;">{{item.ReasonName}}</p>
+                        </td>
+                        <td>
+                            <p>{{item.Count}}</p>
+                        </td>
+                        <td>
+                            <p>{{item.Perc}}</p>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="table-responsive" ng-show="gridView.show && categoryWiseReasondata.SubCategoryName !== 'Overall'">
+            <div class="col-lg-12 p-0">
+                <table class="table table-xs">
+                    <thead class="table-inverse">
+                    <tr>
+                        <th><p>Attributes</p></th>
+                        <th><p>Count</p></th>
+                        <th><p>Perc %</p></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="item in gsiReasonCatTableData"
+                        ng-style="{'cursor':'pointer'}" ng-class="{'gsiReasonTr2':item.ParentRow==='0'}">
+                        <td style="text-align: left!important;">
+                            <p>{{item.ReasonName}}</p>
+                        </td>
+                        <td>
+                            <p>{{item.Count}}</p>
+                        </td>
+                        <td>
+                            <p>{{item.Perc}}</p>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button"
+                class="btn btn-danger no-shadow waves-effect"
+                ng-click="$close()">OK
+        </button>
+    </div>
+</div>
+
+
+
+
+

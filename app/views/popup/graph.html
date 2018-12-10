@@ -1,0 +1,31 @@
+<div class="modal-content ">
+    <div class="modal-header panel-background">
+        <button type="button" class="close" ng-click="$close()" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title"><span class="label label-default">{{ crmTillDateWiseGraph.title}}</span>
+        </h4>
+    </div>
+    <div class="modal-body">
+        <div class="text-center" ng-if="crmTillDateWiseGraph.length==0"><i
+                class="fa fa-circle-o-notch fa-spin fa-lg"></i>
+            Loading...
+        </div>
+        <div ng-if="crmTillDateWiseGraph.length>0">
+            <nvd3 options="crmTillDateWiseGraphOptions"
+                  data="crmTillDateWiseGraph" ng-show="tillDateGraphLoaded"
+                  class="with-3d-shadow with-transitions "></nvd3>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button"
+                class="btn btn-danger no-shadow waves-effect"
+                ng-click="$close()">OK
+        </button>
+    </div>
+</div>
+
+
+
+
+

@@ -297,7 +297,7 @@
     margin-bottom: 40px; }
   .card-block,
   .card-header {
-    padding: 15px; }
+    padding: 10px; }
   .card-block.box-list {
     padding-bottom: 0; }
   .accordion-block {
@@ -306,7 +306,7 @@
     margin-bottom: 20px; }
   .card-header-text,
   .sub-title {
-    font-size: 15px; }
+    font-size: 14px; }
   .sub-title {
     padding-bottom: 8px;
     margin-bottom: 15px; }
@@ -1019,6 +1019,14 @@
   #contact-list_wrapper {
     height: 350px !important; } }
 
+@media only screen and (max-width: 767px) {
+  .table.table-xs td,
+  .table.table-xs th {
+    font-size: 10px;
+    padding: 3px 3px; }
+  .table.table-xs p {
+    font-size: 10px; } }
+
 @media only screen and (max-height: 433px) {
   #maintance img {
     position: relative;
@@ -1104,7 +1112,7 @@
   .chart-redial .card-block {
     text-align: center; }
   .login-card {
-    width: 290px; }
+    width: 100%; }
   .wizard .steps ul li {
     width: 100%; }
   .form-inline .btn {
@@ -1372,10 +1380,12 @@
     padding: 7px 10px; }
   .table.table-sm td,
   .table.table-sm th {
-    font-size: 8px;
-    padding: 1px 2px; }
+    font-size: 10px;
+    padding: 3px 3px; }
   .table.table-sm p {
-    font-size: 8px; }
+    font-size: 10px; }
+  .table.table-sm .pnl-p {
+    color: white; }
   table.dataTable.dtr-inline.collapsed > tbody > tr > td:first-child:before,
   table.dataTable.dtr-inline.collapsed > tbody > tr > th:first-child:before {
     top: 8px; }
@@ -1519,6 +1529,15 @@
   .task-detail-btn {
     margin-top: 10px; } }
 
+.table-md td,
+.table-md th {
+  font-size: 13px;
+  padding: 3px 3px; }
+
+@media only screen and (max-width: 576px) {
+  .login-button {
+    height: 36px !important; } }
+
 @media only screen and (min-width: 320px) and (max-width: 480px) {
   .chat-single-box {
     width: 190px; }
@@ -1526,3 +1545,43 @@
     left: -40px; }
     #main-chat .chat-box ul.boxs li.minimized .chat-dropdown {
       width: 130px; } }
+
+@media only screen and (min-width: 768px) and (max-width: 991px) {
+  .main-header-top .logo {
+    width: 30% !important;
+    font-size: 14px !important; }
+    .main-header-top .logo .able-logo {
+      display: none; }
+    .main-header-top .logo .company-name {
+      font-size: 10px !important;
+      line-height: 11px !important;
+      top: 10px !important;
+      margin-left: 1px !important; }
+  .head-sale {
+    width: 75% !important; }
+    .head-sale p {
+      font-size: 10px !important;
+      font-weight: 600; }
+    .head-sale h5 {
+      font-size: 15px !important; }
+    .head-sale .clock-icon {
+      font-size: 11px; }
+    .head-sale .date {
+      padding: 5px 0 0 10px !important;
+      vertical-align: middle;
+      font-weight: 600;
+      font-size: 10px; } }
+
+@media only screen and (min-width: 992px) and (max-width: 1095px) {
+  .head-sale {
+    width: 60% !important; } }
+
+@media only screen and (min-width: 991px) and (max-width: 1175px) {
+  .dashboard-header .counter-txt h5 {
+    font-size: 1.0rem !important; }
+  .dashboard-header small {
+    font-size: 65% !important; } }
+
+@media only screen and (min-width: 1096px) and (max-width: 1295px) {
+  .head-sale {
+    width: 55% !important; } }

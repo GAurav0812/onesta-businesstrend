@@ -1,0 +1,1443 @@
+<div class="horizontal-fixed fixed">
+    <div class="wrapper">
+        <div ng-include="'shared/header.html'"></div>
+        <div ng-include="'shared/sidebar.html'"></div>
+        <div class="content-wrapper">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-12 xs-no-padding">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5 class="card-header-text">Hrms &nbsp;</h5>
+                                <label class="label bg-facebook label-md">
+                                    {{ formatDate(selectedFilter.curDate, 'dd MMM yyyy') }}</label>
+                                <div class="f-right">
+                                    <span class="hidden-sm-down">
+                                    <label class="label label-inverse-success" ng-if="!selectedFilter.Region">All
+                                        Region</label>
+                                    <span ng-if="selectedFilter.Region">
+                                        <label class="label label-inverse-success">{{filteredText("Region")}}</label>
+                                        <label class="label label-inverse-success" ng-if="selectedFilter.Cluster">{{filteredText("Cluster")}}</label>
+                                        <label class="label label-inverse-success" ng-if="selectedFilter.City">{{filteredText("City")}}</label>
+                                    </span>
+                                    <label class="label label-inverse-success">{{filteredText('Outlet')}}</label>
+                                        </span>
+
+                                    <a href="javascript:;" class="filter-button p-r-15"><i
+                                            class="icofont icofont-filter"></i>
+                                        <span class="hidden-sm-down">Filters</span></a>
+                                </div>
+                                <div class="hidden-xs-up text-center text-muted p-t-10 small">
+                                    <strong>Filtered on: </strong>
+                                    <span class="label label-inverse-info" ng-if="!selectedFilter.Region">All
+                                        Region</span>
+                                    <span ng-if="selectedFilter.Region">
+                                        <span class="label label-inverse-info">{{filteredText("Region")}}</span>
+                                        <span class="label label-inverse-info" ng-if="selectedFilter.Cluster">{{filteredText("Cluster")}}</span>
+                                        <span class="label label-inverse-info" ng-if="selectedFilter.City">{{filteredText("City")}}</span>
+                                    </span>
+                                    <span class="label label-inverse-info">{{filteredText('Outlet')}}</span>
+                                </div>
+                            </div>
+                            <div class="card-block xs-no-padding">
+                                <div class="row salesFilter row m-b-5" style="display: none;">
+                                    <form class="form-floating-labels m-t-10">
+                                        <div class="col-lg-2 col-md-6 col-sm-6 col-xs-12">
+                                            <div class="md-group-add-on">
+                                                <span class="md-add-on"><i
+                                                        class="icofont icofont-ui-calendar"></i></span>
+                                                <div class="md-input-wrapper">
+                                                    <input type="text" id="date"
+                                                           class="md-form-control md-static"
+                                                           placeholder="Till Date"
+                                                           ng-change="onFilterChange('tillDate')"
+                                                           ng-model="selectedFilter.curDate">
+                                                    <label>Till Date</label>
+                                                    <span class="md-line"></span></div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-2 col-md-6 col-sm-6 col-xs-6">
+                                            <div class="md-input-wrapper">
+                                                <select class="md-form-control" ng-change="onFilterChange()"
+                                                        ng-model="selectedFilter.EmployeeType"
+                                                        ng-options="item.text for item in empSelectionOptions">
+                                                </select>
+                                                <label>Employee Type</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-2 col-md-6 col-sm-6 col-xs-6">
+                                            <div class="md-input-wrapper">
+                                                <select class="md-form-control" ng-change="onFilterChange()"
+                                                        ng-model="selectedFilter.StoreMasterTypes"
+                                                        ng-options="item.text for item in storeMasterOptions">
+                                                </select>
+                                                <label>Store Type</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-2 col-md-6 col-sm-6 col-xs-12">
+                                            <div class="md-input-wrapper">
+                                                <select class="md-form-control" ng-change="onFilterChange('Region')"
+                                                        ng-model="selectedFilter.Region"
+                                                        ng-options="item.RegionName as item.RegionName for item in hierarchyMaster.Region">
+                                                    <option value=""></option>
+                                                </select>
+                                                <label>Select Region</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-2 col-md-6 col-sm-6 col-xs-12">
+                                            <div class="md-input-wrapper">
+                                                <select class="md-form-control"
+                                                        ng-change="onFilterChange('Cluster')"
+                                                        ng-disabled="!selectedFilter.Region"
+                                                        ng-model="selectedFilter.Cluster"
+                                                        ng-options="item.ClusterName as item.ClusterName for item in hierarchyMaster.Cluster | filter:{RegionName:(selectedFilter.Region? selectedFilter.Region : '')}">
+                                                    <option value=""></option>
+                                                </select>
+                                                <label>Select Cluster</label>
+                                            </div>
+                                        </div>
+                                        <!--  <div class="col-lg-2 col-md-6 col-sm-6 col-xs-12">
+                                              <div class="md-input-wrapper">
+                                                  <select class="md-form-control" ng-change="onFilterChange('City')"
+                                                          ng-disabled="!selectedFilter.Region"
+                                                          ng-model="selectedFilter.City"
+                                                          ng-options="item.CityName as item.CityName for item in hierarchyMaster.City | filter:{RegionName:(selectedFilter.Region? selectedFilter.Region : '')}">
+                                                      <option value=""></option>
+                                                  </select>
+                                                  <label>Select City</label>
+                                              </div>
+                                          </div>-->
+                                        <div class="col-lg-2 col-md-6 col-sm-6 col-xs-12">
+                                            <div class="md-input-wrapper">
+                                                <select class="md-form-control" ng-change="onFilterChange('Outlet')"
+                                                        ng-model="selectedFilter.Outlet"
+                                                        ng-options="item.OutletCode as item.OutletName for item in filteredOutlets">
+                                                    <option value=""></option>
+                                                </select>
+                                                <label>Select Outlet</label>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <div class="f-left hidden-sm-down">
+                                            <div class="dropdown">
+                                                <!--disabled="!hrmsData"-->
+                                                <switch class="wide"
+                                                        name="hrrmPercentage" ng-model="selectedFilter.HRMSType"
+                                                        on="Salary" ng-change="getHrmsReport()"
+                                                        off="Count"></switch>
+                                                <switch class="wide"
+                                                        name="hrrmPercentage" ng-model="selectedFilter.Day_MTD"
+                                                        on="Month" ng-change="getHrmsReport()"
+                                                        off="Day"></switch>
+                                            </div>
+                                        </div>
+                                        <div class="f-right">
+                                            <div class="dropdown">
+                                                <btn-dropdown class="d-inline-block"
+                                                              options="criteriaOptions"
+                                                              select-model="selectedFilter.Type"
+                                                              select-change="getHrmsReport()"></btn-dropdown>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-12 hrms-start-div">
+                                        <div class="" style="color: #fa3c04;display: block">
+                                            <h5 class="card-header-text hidden-xs-down">
+                                                Registered Employee vs Sale
+                                            </h5>
+                                            <h6 style="color: #fa3c04;" class="card-header-text hidden-sm-up">
+                                                Registered Employee vs Sale
+                                            </h6>
+                                            <div class="f-right hidden-md-up">
+                                                <div class="dropdown">
+                                                    <!--disabled="!hrmsData"-->
+                                                    <switch class="wide"
+                                                            name="hrrmPercentage" ng-model="selectedFilter.HRMSType"
+                                                            on="Salary" ng-change="getHrmsReport()"
+                                                            off="Count"></switch>
+                                                    <switch class="wide"
+                                                            name="hrrmPercentage" ng-model="selectedFilter.Day_MTD"
+                                                            on="Month" ng-change="getHrmsReport()"
+                                                            off="Day"></switch>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="table-responsive">
+                                            <table class="table text-center hidden-sm-down">
+                                                <thead class="table-inverse">
+                                                <tr>
+                                                    <th rowspan="2">
+                                                        <p><strong>Srno</strong></p>
+                                                    </th>
+                                                    <th rowspan="2">
+                                                        <p><strong># Criteria</strong></p>
+                                                    </th>
+                                                    <th rowspan="2">
+                                                        <p><strong>Capacity</strong></p>
+                                                    </th>
+                                                    <th colspan="7">
+                                                        <p><strong>{{selectedHRMSType}} of Employee</strong></p>
+                                                    </th>
+                                                    <th rowspan="2">
+                                                        <p><strong>GSI</strong></p>
+                                                    </th>
+                                                    <th colspan="2">Sale</th>
+                                                    <th class="nodata"></th>
+                                                    <th colspan="2" style="font-size: 14px!important;">
+                                                        Efficiency
+                                                    </th>
+                                                </tr>
+                                                <tr>
+                                                    <th>
+                                                        <p><strong>L-1</strong></p>
+                                                    </th>
+                                                    <th>
+                                                        <p><strong>L-2</strong></p>
+                                                    </th>
+                                                    <th>
+                                                        <p><strong>L-3</strong></p>
+                                                    </th>
+                                                    <th>
+                                                        <p><strong>L-4</strong></p>
+                                                    </th>
+                                                    <th>
+                                                        <p><strong>L-5</strong></p>
+                                                    </th>
+                                                    <th>
+                                                        <p><strong>>L-5</strong></p>
+                                                    </th>
+                                                    <th>
+                                                        <p><strong>Total</strong></p>
+                                                    </th>
+                                                    <th>
+                                                        <p><strong>Sale</strong></p>
+                                                    </th>
+                                                    <th>
+                                                        <p><strong>Cover</strong></p>
+                                                    </th>
+                                                    <th></th>
+                                                    <th>
+                                                        <p><strong>Sale Staff</strong></p>
+                                                    </th>
+                                                    <th>
+                                                        <p><strong>Cover Staff</strong></p>
+                                                    </th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                <tr ng-repeat="item in hrmsData.HRMS_1"
+                                                    ng-class="{'grey-row':item.Criteria.indexOf('Total')==0}">
+                                                    <td>
+                                                        <p ng-if="item.Criteria.indexOf('Total')==-1">
+                                                            <strong>{{$index+1}}</strong></p>
+                                                    </td>
+                                                    <td>
+                                                        <p class="text-left"><strong>{{item.Criteria}}</strong>
+                                                        </p>
+                                                    </td>
+                                                    <td>
+                                                        <p><strong>{{item.Capacity|numberToThousand}}</strong>
+                                                        </p>
+                                                    </td>
+                                                    <td>
+                                                        <p>{{item.L_1|numberToThousand}}</p>
+                                                    </td>
+                                                    <td>
+                                                        <p>{{item.L_2| numberToThousand}}</p>
+                                                    </td>
+                                                    <td>
+                                                        <p>{{item.L_3|numberToThousand}}</p>
+                                                    </td>
+                                                    <td>
+                                                        <p>{{item.L_4|numberToThousand}}</p>
+                                                    </td>
+                                                    <td>
+                                                        <p>{{item.L_5|numberToThousand}}</p>
+                                                    </td>
+                                                    <td>
+                                                        <p>-</p>
+                                                    </td>
+                                                    <td>
+                                                        <p>{{item.Total|numberToThousand}}</p>
+                                                    </td>
+                                                    <td>
+                                                        <p><strong>{{item.GSI}}</strong></p>
+                                                    </td>
+                                                    <td>
+                                                        <p>{{item.Sale|numberToThousand}}</p>
+                                                    </td>
+                                                    <td>
+                                                        <p>{{item.Cover|numberToThousand}}</p>
+                                                    </td>
+                                                    <td>&nbsp;</td>
+                                                    <td>
+                                                        <p>{{item.Sale_Staff|numberToThousand}}
+                                                        </p>
+                                                    </td>
+                                                    <td><p>{{item.Cover_Staff.toFixed(1)}}</p>
+                                                    </td>
+                                                </tr>
+                                                <tr ng-if="!hrmsData" class="dem-grey-row">
+                                                    <td colspan="18">
+                                                        <i class="fa fa-circle-o-notch fa-spin fa-md"></i>
+                                                        Loading
+                                                    </td>
+                                                </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <div class="table-responsive">
+                                            <table class="table text-center table-sm hidden-md-up">
+                                                <thead class="table-inverse">
+                                                <tr>
+                                                    <th rowspan="2">
+                                                        <p><strong>Srno</strong></p>
+                                                    </th>
+                                                    <th rowspan="2">
+                                                        <p><strong># Criteria</strong></p>
+                                                    </th>
+                                                    <th rowspan="2">
+                                                        <p><strong>Capacity</strong></p>
+                                                    </th>
+                                                    <th colspan="7">
+                                                        <p><strong>{{selectedHRMSType}} of Employee</strong></p>
+                                                    </th>
+                                                </tr>
+                                                <tr>
+                                                    <th>
+                                                        <p><strong>L-1</strong></p>
+                                                    </th>
+                                                    <th>
+                                                        <p><strong>L-2</strong></p>
+                                                    </th>
+                                                    <th>
+                                                        <p><strong>L-3</strong></p>
+                                                    </th>
+                                                    <th>
+                                                        <p><strong>L-4</strong></p>
+                                                    </th>
+                                                    <th>
+                                                        <p><strong>L-5</strong></p>
+                                                    </th>
+                                                    <th>
+                                                        <p><strong>>L-5</strong></p>
+                                                    </th>
+                                                    <th>
+                                                        <p><strong>>Total</strong></p>
+                                                    </th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                <tr ng-repeat="item in hrmsData.HRMS_1"
+                                                    ng-class="{'grey-row':item.Criteria.indexOf('Total')==0}">
+                                                    <td>
+                                                        <p ng-if="item.Criteria.indexOf('Total')==-1">
+                                                            <strong>{{$index+1}}</strong></p>
+                                                    </td>
+                                                    <td>
+                                                        <p class="text-left"><strong>{{item.Criteria}}</strong>
+                                                        </p>
+                                                    </td>
+                                                    <td>
+                                                        <p><strong>{{item.Capacity|numberToThousand}}</strong>
+                                                        </p>
+                                                    </td>
+                                                    <td>
+                                                        <p>{{item.L_1|numberToThousand}}</p>
+                                                    </td>
+                                                    <td>
+                                                        <p>{{item.L_2| numberToThousand}}</p>
+                                                    </td>
+                                                    <td>
+                                                        <p>{{item.L_3|numberToThousand}}</p>
+                                                    </td>
+                                                    <td>
+                                                        <p>{{item.L_4|numberToThousand}}</p>
+                                                    </td>
+                                                    <td>
+                                                        <p>{{item.L_5|numberToThousand}}</p>
+                                                    </td>
+                                                    <td>
+                                                        <p>-</p>
+                                                    </td>
+                                                    <td>
+                                                        <p>{{item.Total|numberToThousand}}</p>
+                                                    </td>
+                                                </tr>
+                                                <tr ng-if="!hrmsData" class="dem-grey-row">
+                                                    <td colspan="12">
+                                                        <i class="fa fa-circle-o-notch fa-spin fa-md"></i>
+                                                        Loading
+                                                    </td>
+                                                </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <div class="table-responsive">
+                                            <table class="table text-center table-sm hidden-md-up">
+                                                <thead class="table-inverse">
+                                                <tr>
+                                                    <th rowspan="2">
+                                                        <p><strong>Srno</strong></p>
+                                                    </th>
+                                                    <th rowspan="2">
+                                                        <p><strong># Criteria</strong></p>
+                                                    </th>
+                                                    <th rowspan="2">
+                                                        <p><strong>GSI</strong></p>
+                                                    </th>
+                                                    <th colspan="2" style="font-size: 12px!important;">Sale</th>
+                                                    <th class="nodata"></th>
+                                                    <th colspan="2" style="font-size: 12px!important;">
+                                                        Efficiency
+                                                    </th>
+                                                </tr>
+                                                <tr>
+                                                    <th>
+                                                        <p><strong>Sale</strong></p>
+                                                    </th>
+                                                    <th>
+                                                        <p><strong>Cover</strong></p>
+                                                    </th>
+                                                    <th></th>
+                                                    <th>
+                                                        <p><strong>Sale Staff</strong></p>
+                                                    </th>
+                                                    <th>
+                                                        <p><strong>Cover Staff</strong></p>
+                                                    </th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                <tr ng-repeat="item in hrmsData.HRMS_1"
+                                                    ng-class="{'grey-row':item.Criteria.indexOf('Total')==0}">
+                                                    <td>
+                                                        <p ng-if="item.Criteria.indexOf('Total')==-1">
+                                                            <strong>{{$index+1}}</strong></p>
+                                                    </td>
+                                                    <td>
+                                                        <p class="text-left"><strong>{{item.Criteria}}</strong>
+                                                        </p>
+                                                    </td>
+                                                    <td>
+                                                        <p><strong>{{item.GSI}}</strong></p>
+                                                    </td>
+                                                    <td>
+                                                        <p>{{item.Sale|numberToThousand}}</p>
+                                                    </td>
+                                                    <td>
+                                                        <p>{{item.Cover|numberToThousand}}</p>
+                                                    </td>
+                                                    <td>&nbsp;</td>
+                                                    <td>
+                                                        <p>{{item.Sale_Staff|numberToThousand}}
+                                                        </p>
+                                                    </td>
+                                                    <td><p>{{item.Cover_Staff.toFixed(1)}}</p>
+                                                    </td>
+                                                </tr>
+                                                <tr ng-if="!hrmsData" class="dem-grey-row">
+                                                    <td colspan="9">
+                                                        <i class="fa fa-circle-o-notch fa-spin fa-md"></i>
+                                                        Loading
+                                                    </td>
+                                                </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-12" ng-if="hrmsData">
+                                        <div class="hidden-sm-down">
+                                            <span class="card-header-text"
+                                                  style="color: #fa3c04;position: relative!important;margin-bottom: -18px!important;">
+                                                Present Employee vs Sale (
+                                                <span style="color: #3f51b5!important;">{{ formatDate(selectedFilter.curDate, 'MMM dd') }}</span>
+                                                )
+                                            </span>
+                                            <switch class="pull-right small"
+                                                    name="hrrmPercentage" ng-model="hrmsTable.Percentage"
+                                                    on="<i class='fa fa-percent'></i>"
+                                                    off="<i class='fa fa-inr'></i>"></switch>
+                                        </div>
+                                        <div style="margin-bottom: -6px;" class="hidden-md-up">
+                                            <span class="card-header-text"
+                                                  style="color: #fa3c04;position: relative!important;">
+                                                Present Employee vs Sale (
+                                                <span style="color: #3f51b5!important;">{{ formatDate(selectedFilter.curDate, 'MMM dd') }}</span>
+                                                )
+                                            </span>
+                                            <switch class="pull-right small"
+                                                    name="hrrmPercentage" ng-model="hrmsTable.Percentage"
+                                                    on="<i class='fa fa-percent'></i>"
+                                                    off="<i class='fa fa-inr'></i>"></switch>
+                                        </div>
+                                        <div ng-if="hrmsTable.Percentage"
+                                             style="margin-top: 6px!important;">
+                                            <div class="table-responsive">
+                                                <table class="table text-center hidden-sm-down">
+                                                    <thead class="table-inverse">
+                                                    <tr>
+                                                        <th rowspan="2">
+                                                            <p><strong>Srno</strong></p>
+                                                        </th>
+                                                        <th rowspan="2">
+                                                            <p><strong># Criteria</strong></p>
+                                                        </th>
+                                                        <th rowspan="2">
+                                                            <p><strong>Capacity</strong></p>
+                                                        </th>
+                                                        <th colspan="7">
+                                                            <p><strong>{{selectedHRMSType}} of Employee ( In % )</strong></p>
+                                                        </th>
+                                                        <th rowspan="2">
+                                                            <p><strong>GSI</strong></p>
+                                                        </th>
+                                                        <th colspan="2">Sale</th>
+                                                        <th class="nodata"></th>
+                                                        <th colspan="2" style="font-size: 14px!important;">
+                                                            Effiency ( In % )
+                                                        </th>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>
+                                                            <p><strong>L-1</strong></p>
+                                                        </th>
+                                                        <th>
+                                                            <p><strong>L-2</strong></p>
+                                                        </th>
+                                                        <th>
+                                                            <p><strong>L-3</strong></p>
+                                                        </th>
+                                                        <th>
+                                                            <p><strong>L-4</strong></p>
+                                                        </th>
+                                                        <th>
+                                                            <p><strong>L-5</strong></p>
+                                                        </th>
+                                                        <th>
+                                                            <p><strong>>L-5</strong></p>
+                                                        </th>
+                                                        <th>
+                                                            <p><strong>Total</strong></p>
+                                                        </th>
+                                                        <th>
+                                                            <p><strong>Sale</strong></p>
+                                                        </th>
+                                                        <th>
+                                                            <p><strong>Cover</strong></p>
+                                                        </th>
+                                                        <th></th>
+                                                        <th>
+                                                            <p><strong>Sale Staff</strong></p>
+                                                        </th>
+                                                        <th>
+                                                            <p><strong>Cover Staff</strong></p>
+                                                        </th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    <tr ng-repeat="item in hrmsData.HRMS_7"
+                                                        ng-class="{'grey-row':item.Criteria.indexOf('Total')==0}">
+                                                        <td>
+                                                            <p ng-if="item.Criteria.indexOf('Total')==-1">
+                                                                <strong>{{$index+1}}</strong></p>
+                                                        </td>
+                                                        <td>
+                                                            <p class="text-left"><strong>{{item.Criteria}}</strong>
+                                                            </p>
+                                                        </td>
+                                                        <td>
+                                                            <p><strong>{{item.Capacity|numberToThousand}}</strong>
+                                                            </p>
+                                                        </td>
+                                                        <td>
+                                                            <p ng-bind="numberToPerc(item.L_1,item.RL_1)"></p>
+                                                        </td>
+                                                        <td>
+                                                            <p ng-bind="numberToPerc(item.L_2,item.RL_2)"></p>
+                                                        </td>
+                                                        <td>
+                                                            <p ng-bind="numberToPerc(item.L_3,item.RL_3)"></p>
+                                                        </td>
+                                                        <td>
+                                                            <p ng-bind="numberToPerc(item.L_4,item.RL_4)"></p>
+                                                        </td>
+                                                        <td>
+                                                            <p ng-bind="numberToPerc(item.L_5,item.RL_5)"></p>
+                                                        </td>
+                                                        <td>
+                                                            <p>-</p>
+                                                        </td>
+                                                        <td>
+                                                            <p ng-bind="numberToPerc(item.Total,item.RTotal)"></p>
+                                                        </td>
+                                                        <td>
+                                                            <p><strong>{{item.GSI}}</strong></p>
+                                                        </td>
+                                                        <td>
+                                                            <p>{{item.Sale|numberToThousand}}</p>
+                                                        </td>
+                                                        <td>
+                                                            <p>{{item.Cover|numberToThousand}}</p>
+                                                        </td>
+                                                        <td>&nbsp;</td>
+                                                        <td>
+                                                            <p>{{item.Sale_Staff|numberToThousand}}
+                                                            </p>
+                                                        </td>
+                                                        <td><p>{{item.Cover_Staff.toFixed(1)}}</p>
+                                                        </td>
+                                                    </tr>
+                                                    <tr ng-if="!hrmsData" class="dem-grey-row">
+                                                        <td colspan="18">
+                                                            <i class="fa fa-circle-o-notch fa-spin fa-md"></i>
+                                                            Loading...
+                                                        </td>
+                                                    </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                            <div class="table-responsive">
+                                                <table class="table text-center table-sm hidden-md-up">
+                                                    <thead class="table-inverse">
+                                                    <tr>
+                                                        <th rowspan="2">
+                                                            <p><strong>Srno</strong></p>
+                                                        </th>
+                                                        <th rowspan="2">
+                                                            <p><strong># Criteria</strong></p>
+                                                        </th>
+                                                        <th rowspan="2">
+                                                            <p><strong>Capacity</strong></p>
+                                                        </th>
+                                                        <th colspan="7">
+                                                            <p><strong>{{selectedHRMSType}} of Employee</strong></p>
+                                                        </th>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>
+                                                            <p><strong>L-1</strong></p>
+                                                        </th>
+                                                        <th>
+                                                            <p><strong>L-2</strong></p>
+                                                        </th>
+                                                        <th>
+                                                            <p><strong>L-3</strong></p>
+                                                        </th>
+                                                        <th>
+                                                            <p><strong>L-4</strong></p>
+                                                        </th>
+                                                        <th>
+                                                            <p><strong>L-5</strong></p>
+                                                        </th>
+                                                        <th>
+                                                            <p><strong>>L-5</strong></p>
+                                                        </th>
+                                                        <th>
+                                                            <p><strong>>Total</strong></p>
+                                                        </th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    <tr ng-repeat="item in hrmsData.HRMS_7"
+                                                        ng-class="{'grey-row':item.Criteria.indexOf('Total')==0}">
+                                                        <td>
+                                                            <p ng-if="item.Criteria.indexOf('Total')==-1">
+                                                                <strong>{{$index+1}}</strong></p>
+                                                        </td>
+                                                        <td>
+                                                            <p class="text-left"><strong>{{item.Criteria}}</strong>
+                                                            </p>
+                                                        </td>
+                                                        <td>
+                                                            <p><strong>{{item.Capacity|numberToThousand}}</strong>
+                                                            </p>
+                                                        </td>
+                                                        <td>
+                                                            <p>{{item.L_1|numberToThousand}}</p>
+                                                        </td>
+                                                        <td>
+                                                            <p>{{item.L_2| numberToThousand}}</p>
+                                                        </td>
+                                                        <td>
+                                                            <p>{{item.L_3|numberToThousand}}</p>
+                                                        </td>
+                                                        <td>
+                                                            <p>{{item.L_4|numberToThousand}}</p>
+                                                        </td>
+                                                        <td>
+                                                            <p>{{item.L_5|numberToThousand}}</p>
+                                                        </td>
+                                                        <td>
+                                                            <p>-</p>
+                                                        </td>
+                                                        <td>
+                                                            <p>{{item.Total|numberToThousand}}</p>
+                                                        </td>
+                                                    </tr>
+                                                    <tr ng-if="!hrmsData" class="dem-grey-row">
+                                                        <td colspan="8">
+                                                            <i class="fa fa-circle-o-notch fa-spin fa-md"></i>
+                                                            Loading
+                                                        </td>
+                                                    </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                            <div class="table-responsive">
+                                                <table class="table text-center table-sm hidden-md-up">
+                                                    <thead class="table-inverse">
+                                                    <tr>
+                                                        <th rowspan="2">
+                                                            <p><strong>Srno</strong></p>
+                                                        </th>
+                                                        <th rowspan="2">
+                                                            <p><strong># Criteria</strong></p>
+                                                        </th>
+                                                        <th rowspan="2">
+                                                            <p><strong>GSI</strong></p>
+                                                        </th>
+                                                        <th colspan="2">Sale</th>
+                                                        <th class="nodata"></th>
+                                                        <th colspan="2">Efficiency</th>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>
+                                                            <p><strong>Sale</strong></p>
+                                                        </th>
+                                                        <th>
+                                                            <p><strong>Cover</strong></p>
+                                                        </th>
+                                                        <th></th>
+                                                        <th>
+                                                            <p><strong>Sale Staff</strong></p>
+                                                        </th>
+                                                        <th>
+                                                            <p><strong>Cover Staff</strong></p>
+                                                        </th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    <tr ng-repeat="item in hrmsData.HRMS_7"
+                                                        ng-class="{'grey-row':item.Criteria.indexOf('Total')==0}">
+                                                        <td>
+                                                            <p ng-if="item.Criteria.indexOf('Total')==-1">
+                                                                <strong>{{$index+1}}</strong></p>
+                                                        </td>
+                                                        <td>
+                                                            <p class="text-left"><strong>{{item.Criteria}}</strong>
+                                                            </p>
+                                                        </td>
+                                                        <td>
+                                                            <p><strong>{{item.GSI}}</strong>
+                                                            </p>
+                                                        </td>
+                                                        <td>
+                                                            <p>{{item.Sale|numberToThousand}}</p>
+                                                        </td>
+                                                        <td>
+                                                            <p>{{item.Cover|numberToThousand}}</p>
+                                                        </td>
+                                                        <td>&nbsp;</td>
+                                                        <td>
+                                                            <p>{{item.Sale_Staff|numberToThousand}}
+                                                            </p>
+                                                        </td>
+                                                        <td><p>{{item.Cover_Staff.toFixed(1)}}</p>
+                                                        </td>
+                                                    </tr>
+                                                    <tr ng-if="!hrmsData" class="dem-grey-row">
+                                                        <td colspan="9">
+                                                            <i class="fa fa-circle-o-notch fa-spin fa-md"></i>
+                                                            Loading
+                                                        </td>
+                                                    </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                        <div class="" ng-if="!hrmsTable.Percentage"
+                                             style="margin-top: 6px!important;">
+                                            <div class="table-responsive">
+                                                <table class="table text-center hidden-sm-down">
+                                                    <thead class="table-inverse">
+                                                    <tr>
+                                                        <th rowspan="2">
+                                                            <p><strong>Srno</strong></p>
+                                                        </th>
+                                                        <th rowspan="2">
+                                                            <p><strong># Criteria</strong></p>
+                                                        </th>
+                                                        <th rowspan="2">
+                                                            <p><strong>Capacity</strong></p>
+                                                        </th>
+                                                        <th colspan="7">
+                                                            <p><strong>{{selectedHRMSType}} of Employee</strong></p>
+                                                        </th>
+                                                        <th rowspan="2">
+                                                            <p><strong>GSI</strong></p>
+                                                        </th>
+                                                        <th colspan="2">Sale</th>
+                                                        <th class="nodata"></th>
+                                                        <th colspan="2" style="font-size: 14px!important;">
+                                                            Effiency
+                                                        </th>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>
+                                                            <p><strong>L-1</strong></p>
+                                                        </th>
+                                                        <th>
+                                                            <p><strong>L-2</strong></p>
+                                                        </th>
+                                                        <th>
+                                                            <p><strong>L-3</strong></p>
+                                                        </th>
+                                                        <th>
+                                                            <p><strong>L-4</strong></p>
+                                                        </th>
+                                                        <th>
+                                                            <p><strong>L-5</strong></p>
+                                                        </th>
+                                                        <th>
+                                                            <p><strong>>L-5</strong></p>
+                                                        </th>
+                                                        <th>
+                                                            <p><strong>Total</strong></p>
+                                                        </th>
+                                                        <th>
+                                                            <p><strong>Sale</strong></p>
+                                                        </th>
+                                                        <th>
+                                                            <p><strong>Cover</strong></p>
+                                                        </th>
+                                                        <th></th>
+                                                        <th>
+                                                            <p><strong>Sale Staff</strong></p>
+                                                        </th>
+                                                        <th>
+                                                            <p><strong>Cover Staff</strong></p>
+                                                        </th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    <tr ng-repeat="item in hrmsData.HRMS_7"
+                                                        ng-class="{'grey-row':item.Criteria.indexOf('Total')==0}">
+                                                        <td>
+                                                            <p ng-if="item.Criteria.indexOf('Total')==-1">
+                                                                <strong>{{$index+1}}</strong></p>
+                                                        </td>
+                                                        <td>
+                                                            <p class="text-left"><strong>{{item.Criteria}}</strong>
+                                                            </p>
+                                                        </td>
+                                                        <td>
+                                                            <p><strong>{{item.Capacity|numberToThousand}}</strong>
+                                                            </p>
+                                                        </td>
+                                                        <td>
+                                                            <p>{{item.L_1|numberToThousand}}</p>
+                                                        </td>
+                                                        <td>
+                                                            <p>{{item.L_2| numberToThousand}}</p>
+                                                        </td>
+                                                        <td>
+                                                            <p>{{item.L_3|numberToThousand}}</p>
+                                                        </td>
+                                                        <td>
+                                                            <p>{{item.L_4|numberToThousand}}</p>
+                                                        </td>
+                                                        <td>
+                                                            <p>{{item.L_5|numberToThousand}}</p>
+                                                        </td>
+                                                        <td>
+                                                            <p>-</p>
+                                                        </td>
+                                                        <td>
+                                                            <p>{{item.Total|numberToThousand}}</p>
+                                                        </td>
+                                                        <td>
+                                                            <p><strong>{{item.GSI}}</strong></p>
+                                                        </td>
+                                                        <td>
+                                                            <p>{{item.Sale|numberToThousand}}</p>
+                                                        </td>
+                                                        <td>
+                                                            <p>{{item.Cover|numberToThousand}}</p>
+                                                        </td>
+                                                        <td>&nbsp;</td>
+                                                        <td>
+                                                            <p>{{item.Sale_Staff|numberToThousand}}
+                                                            </p>
+                                                        </td>
+                                                        <td><p>{{item.Cover_Staff.toFixed(1)}}</p>
+                                                        </td>
+                                                    </tr>
+                                                    <tr ng-if="!hrmsData" class="dem-grey-row">
+                                                        <td colspan="18">
+                                                            <i class="fa fa-circle-o-notch fa-spin fa-md"></i>
+                                                            Loading...
+                                                        </td>
+                                                    </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                            <div class="table-responsive">
+                                                <table class="table text-center table-sm hidden-md-up">
+                                                    <thead class="table-inverse">
+                                                    <tr>
+                                                        <th rowspan="2">
+                                                            <p><strong>Srno</strong></p>
+                                                        </th>
+                                                        <th rowspan="2">
+                                                            <p><strong># Criteria</strong></p>
+                                                        </th>
+                                                        <th rowspan="2">
+                                                            <p><strong>Capacity</strong></p>
+                                                        </th>
+                                                        <th colspan="7">
+                                                            <p><strong>{{selectedHRMSType}} of Employee</strong></p>
+                                                        </th>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>
+                                                            <p><strong>L-1</strong></p>
+                                                        </th>
+                                                        <th>
+                                                            <p><strong>L-2</strong></p>
+                                                        </th>
+                                                        <th>
+                                                            <p><strong>L-3</strong></p>
+                                                        </th>
+                                                        <th>
+                                                            <p><strong>L-4</strong></p>
+                                                        </th>
+                                                        <th>
+                                                            <p><strong>L-5</strong></p>
+                                                        </th>
+                                                        <th>
+                                                            <p><strong>>L-5</strong></p>
+                                                        </th>
+                                                        <th>
+                                                            <p><strong>>Total</strong></p>
+                                                        </th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    <tr ng-repeat="item in hrmsData.HRMS_7"
+                                                        ng-class="{'grey-row':item.Criteria.indexOf('Total')==0}">
+                                                        <td>
+                                                            <p ng-if="item.Criteria.indexOf('Total')==-1">
+                                                                <strong>{{$index+1}}</strong></p>
+                                                        </td>
+                                                        <td>
+                                                            <p class="text-left"><strong>{{item.Criteria}}</strong>
+                                                            </p>
+                                                        </td>
+                                                        <td>
+                                                            <p><strong>{{item.Capacity|numberToThousand}}</strong>
+                                                            </p>
+                                                        </td>
+                                                        <td>
+                                                            <p>{{item.L_1|numberToThousand}}</p>
+                                                        </td>
+                                                        <td>
+                                                            <p>{{item.L_2| numberToThousand}}</p>
+                                                        </td>
+                                                        <td>
+                                                            <p>{{item.L_3|numberToThousand}}</p>
+                                                        </td>
+                                                        <td>
+                                                            <p>{{item.L_4|numberToThousand}}</p>
+                                                        </td>
+                                                        <td>
+                                                            <p>{{item.L_5|numberToThousand}}</p>
+                                                        </td>
+                                                        <td>
+                                                            <p>-</p>
+                                                        </td>
+                                                        <td>
+                                                            <p>{{item.Total|numberToThousand}}</p>
+                                                        </td>
+                                                    </tr>
+                                                    <tr ng-if="!hrmsData" class="dem-grey-row">
+                                                        <td colspan="8">
+                                                            <i class="fa fa-circle-o-notch fa-spin fa-md"></i>
+                                                            Loading
+                                                        </td>
+                                                    </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                            <div class="table-responsive">
+                                                <table class="table text-center table-sm hidden-md-up">
+                                                    <thead class="table-inverse">
+                                                    <tr>
+                                                        <th rowspan="2">
+                                                            <p><strong>Srno</strong></p>
+                                                        </th>
+                                                        <th rowspan="2">
+                                                            <p><strong># Criteria</strong></p>
+                                                        </th>
+                                                        <th rowspan="2">
+                                                            <p><strong>GSI</strong></p>
+                                                        </th>
+                                                        <th colspan="2">Sale</th>
+                                                        <th class="nodata"></th>
+                                                        <th colspan="2">Efficiency</th>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>
+                                                            <p><strong>Sale</strong></p>
+                                                        </th>
+                                                        <th>
+                                                            <p><strong>Cover</strong></p>
+                                                        </th>
+                                                        <th></th>
+                                                        <th>
+                                                            <p><strong>Sale Staff</strong></p>
+                                                        </th>
+                                                        <th>
+                                                            <p><strong>Cover Staff</strong></p>
+                                                        </th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    <tr ng-repeat="item in hrmsData.HRMS_7"
+                                                        ng-class="{'grey-row':item.Criteria.indexOf('Total')==0}">
+                                                        <td>
+                                                            <p ng-if="item.Criteria.indexOf('Total')==-1">
+                                                                <strong>{{$index+1}}</strong></p>
+                                                        </td>
+                                                        <td>
+                                                            <p class="text-left"><strong>{{item.Criteria}}</strong>
+                                                            </p>
+                                                        </td>
+                                                        <td>
+                                                            <p><strong>{{item.GSI}}</strong>
+                                                            </p>
+                                                        </td>
+                                                        <td>
+                                                            <p>{{item.Sale|numberToThousand}}</p>
+                                                        </td>
+                                                        <td>
+                                                            <p>{{item.Cover|numberToThousand}}</p>
+                                                        </td>
+                                                        <td>&nbsp;</td>
+                                                        <td>
+                                                            <p>{{item.Sale_Staff|numberToThousand}}
+                                                            </p>
+                                                        </td>
+                                                        <td><p>{{item.Cover_Staff.toFixed(1)}}</p>
+                                                        </td>
+                                                    </tr>
+                                                    <tr ng-if="!hrmsData" class="dem-grey-row">
+                                                        <td colspan="9">
+                                                            <i class="fa fa-circle-o-notch fa-spin fa-md"></i>
+                                                            Loading
+                                                        </td>
+                                                    </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- <div class="col-lg-12" ng-if="hrmsData">
+                                         <div class="" style="color: #fa3c04;display: block">
+                                             <h5 class="card-header-text hidden-xs-down">
+                                                 Mandays-Cost
+                                             </h5>
+                                             <h6 style="color: #fa3c04;" class="card-header-text hidden-sm-up">
+                                                 Mandays-Cost
+                                             </h6>
+                                         </div>
+                                         <div class="table-responsive">
+                                             <table class="table kpi-table text-center hidden-sm-down">
+                                                 <thead class="table-inverse">
+                                                 <tr>
+                                                     <th>
+                                                         <p><strong>Srno</strong></p>
+                                                     </th>
+                                                     <th>
+                                                         <p><strong># Criteria</strong></p>
+                                                     </th>
+                                                     <th>
+                                                         <p class="text-right"><strong>L-1</strong></p>
+                                                     </th>
+                                                     <th>
+                                                         <p class="text-right"><strong>L-2</strong></p>
+                                                     </th>
+                                                     <th>
+                                                         <p class="text-right"><strong>L-3</strong></p>
+                                                     </th>
+                                                     <th>
+                                                         <p class="text-right"><strong>L-4</strong></p>
+                                                     </th>
+                                                     <th>
+                                                         <p class="text-right"><strong>L-5</strong></p>
+                                                     </th>
+                                                     <th>
+                                                         <p class="text-right"><strong>>L-5</strong></p>
+                                                     </th>
+                                                     <th>
+                                                         <p class="text-right"><strong>Total</strong></p>
+                                                     </th>
+                                                 </tr>
+                                                 </thead>
+                                                 <tbody>
+                                                 <tr ng-repeat="item in hrmsData.HRMS_9"
+                                                     ng-class="{'hrmsHoverTr':item.ParentRow==='0','hrmsTableActiv':item.isExpanded && item.ParentRow==='0','hrmsTableSubActiv':item.ParentRow!=='0'}"
+                                                     ng-click="item.isExpanded = !item.isExpanded"
+                                                     ng-style="{'background-color':item.BackgroundColor}"
+                                                     ng-if="getPNLRowExpandedStatus(item, hrmsData.HRMS_9)">
+                                                     <td>
+                                                         <p><strong>{{$index+1}}</strong></p>
+                                                     </td>
+                                                     <td ng-init="item.isExpanded=false"
+                                                         style="text-align: left!important;">
+                                                         <i ng-if="getPNLRowHasChild(item, hrmsData.HRMS_9) && item.isExpanded==false"
+                                                            class="fa fa-plus-circle d-inline m-r-5"
+                                                         ></i>
+                                                         <i ng-if="getPNLRowHasChild(item, hrmsData.HRMS_9) && item.isExpanded==true"
+                                                            class="fa fa-minus-circle d-inline m-r-5"
+                                                         ></i>
+                                                         <p style="display:inline;" class="text-left" ng-class="{'mar-left-25':item.ParentRow!=='0'}">
+                                                             <strong>{{item.Criteria}} <span ng-if="item.ParentRow==='0'">- Strength</span></strong></p>
+                                                     </td>
+                                                     <td>
+                                                         <p class="text-right">{{item.L_1|numberToThousand}}</p>
+                                                     </td>
+                                                     <td>
+                                                         <p class="text-right">{{item.L_2| numberToThousand}}</p>
+                                                     </td>
+                                                     <td>
+                                                         <p class="text-right">{{item.L_3|numberToThousand}}</p>
+                                                     </td>
+                                                     <td>
+                                                         <p class="text-right">{{item.L_4|numberToThousand}}</p>
+                                                     </td>
+                                                     <td>
+                                                         <p class="text-right">{{item.L_5|numberToThousand}}</p>
+                                                     </td>
+                                                     <td>
+                                                         <p class="text-right">
+                                                             {{item.L_Above5|numberToThousand}}</p>
+                                                     </td>
+                                                     <td>
+                                                         <p class="text-right">
+                                                             {{item.Total|numberToThousand}}</p>
+                                                     </td>
+                                                 </tr>
+                                                 <tr ng-if="!hrmsData" class="dem-grey-row">
+                                                     <td colspan="9">
+                                                         <i class="fa fa-circle-o-notch fa-spin fa-md"></i>
+                                                         Loading
+                                                     </td>
+                                                 </tr>
+                                                 </tbody>
+                                             </table>
+                                         </div>
+                                         <div class="table-responsive">
+                                             <table class="table kpi-table text-center table-sm hidden-md-up">
+                                                 <thead class="table-inverse">
+                                                 <tr>
+                                                     <th>
+                                                         <p><strong>Srno</strong></p>
+                                                     </th>
+                                                     <th>
+                                                         <p><strong># Criteria</strong></p>
+                                                     </th>
+                                                     <th>
+                                                         <p class="text-right"><strong>L-1</strong></p>
+                                                     </th>
+                                                     <th>
+                                                         <p class="text-right"><strong>L-2</strong></p>
+                                                     </th>
+                                                     <th>
+                                                         <p class="text-right"><strong>L-3</strong></p>
+                                                     </th>
+                                                     <th>
+                                                         <p class="text-right"><strong>L-4</strong></p>
+                                                     </th>
+                                                 </tr>
+                                                 </thead>
+                                                 <tbody>
+                                                 <tr ng-repeat="item in hrmsData.HRMS_9"
+                                                     ng-class="{'hrmsHoverTr':item.ParentRow==='0'}"
+                                                     ng-click="item.isExpanded = !item.isExpanded"
+                                                     ng-style="{'background-color':item.BackgroundColor}"
+                                                     ng-if="getPNLRowExpandedStatus(item, hrmsData.HRMS_9)">
+                                                     <td>
+                                                         <p><strong>{{$index+1}}</strong></p>
+                                                     </td>
+                                                     <td ng-init="item.isExpanded=false"
+                                                         style="text-align: left!important;">
+                                                         <i ng-if="getPNLRowHasChild(item, hrmsData.HRMS_9) && item.isExpanded==false"
+                                                            class="fa fa-plus-circle d-inline m-r-5"
+                                                         ></i>
+                                                         <i ng-if="getPNLRowHasChild(item, hrmsData.HRMS_9) && item.isExpanded==true"
+                                                            class="fa fa-minus-circle d-inline m-r-5"
+                                                         ></i>
+                                                         <p style="display:inline;" class="text-left">
+                                                             <strong>{{item.Criteria}} <span ng-if="item.ParentRow==='0'">- Strength</span></strong></p>
+                                                     </td>
+                                                     <td>
+                                                         <p class="text-right">{{item.L_1|numberToThousand}}</p>
+                                                     </td>
+                                                     <td>
+                                                         <p class="text-right">{{item.L_2| numberToThousand}}</p>
+                                                     </td>
+                                                     <td>
+                                                         <p class="text-right">{{item.L_3|numberToThousand}}</p>
+                                                     </td>
+                                                     <td>
+                                                         <p class="text-right">{{item.L_4|numberToThousand}}</p>
+                                                     </td>
+                                                 </tr>
+                                                 <tr ng-if="!hrmsData" class="dem-grey-row">
+                                                     <td colspan="6">
+                                                         <i class="fa fa-circle-o-notch fa-spin fa-md"></i>
+                                                         Loading
+                                                     </td>
+                                                 </tr>
+                                                 </tbody>
+                                             </table>
+                                         </div>
+                                         <div class="table-responsive">
+                                             <table class="table kpi-table text-center table-sm hidden-md-up">
+                                                 <thead class="table-inverse">
+                                                 <tr>
+                                                     <th>
+                                                         <p><strong>Srno</strong></p>
+                                                     </th>
+                                                     <th>
+                                                         <p><strong># Criteria</strong></p>
+                                                     </th>
+                                                     <th>
+                                                         <p class="text-right"><strong>L-5</strong></p>
+                                                     </th>
+                                                     <th>
+                                                         <p class="text-right"><strong>>L-5</strong></p>
+                                                     </th>
+                                                     <th>
+                                                         <p class="text-right"><strong>>Total</strong></p>
+                                                     </th>
+                                                 </tr>
+                                                 </thead>
+                                                 <tbody>
+                                                 <tr ng-repeat="item in hrmsData.HRMS_9"
+                                                     ng-class="{'hrmsHoverTr':item.ParentRow==='0'}"
+                                                     ng-click="item.isExpanded = !item.isExpanded"
+                                                     ng-style="{'background-color':item.BackgroundColor}"
+                                                     ng-if="getPNLRowExpandedStatus(item, hrmsData.HRMS_9)">
+                                                     <td>
+                                                         <p><strong>{{$index+1}}</strong></p>
+                                                     </td>
+                                                     <td ng-init="item.isExpanded=false"
+                                                         style="text-align: left!important;">
+                                                         <i ng-if="getPNLRowHasChild(item, hrmsData.HRMS_9) && item.isExpanded==false"
+                                                            class="fa fa-plus-circle d-inline m-r-5"
+                                                         ></i>
+                                                         <i ng-if="getPNLRowHasChild(item, hrmsData.HRMS_9) && item.isExpanded==true"
+                                                            class="fa fa-minus-circle d-inline m-r-5"
+                                                         ></i>
+                                                         <p style="display:inline;" class="text-left">
+                                                             <strong>{{item.Criteria}} <span ng-if="item.ParentRow==='0'">- Strength</span></strong></p>
+                                                     </td>
+                                                     <td>
+                                                         <p class="text-right">{{item.L_5|numberToThousand}}</p>
+                                                     </td>
+                                                     <td>
+                                                         <p class="text-right">
+                                                             {{item.L_Above5|numberToThousand}}</p>
+                                                     </td>
+                                                     <td>
+                                                         <p class="text-right">
+                                                             {{item.Total|numberToThousand}}</p>
+                                                     </td>
+                                                 </tr>
+                                                 <tr ng-if="!hrmsData" class="dem-grey-row">
+                                                     <td colspan="5">
+                                                         <i class="fa fa-circle-o-notch fa-spin fa-md"></i>
+                                                         Loading
+                                                     </td>
+                                                 </tr>
+                                                 </tbody>
+                                             </table>
+                                         </div>
+                                     </div>-->
+                                    <div class="col-lg-12 m-b-15" ng-if="hrmsData">
+                                        <div class="col-lg-6" style="padding: 38px 0 0 0;background-color: #f9f9f9">
+                                            <div class="" style="position: absolute; top: 6px;right: 5px;">
+                                                <button style="padding: 5px 8px;-webkit-box-shadow:none!important;"
+                                                        class="btn btn-secondary dropdown-toggle" type="button"
+                                                        id="hrmsPieDropdown" data-toggle="dropdown"
+                                                        aria-haspopup="true" aria-expanded="false">
+                                                    <span ng-if="hrmsGraph.Pie == 'MF'">Male/Female</span>
+                                                    <span ng-if="hrmsGraph.Pie == 'FB'">FOH/BOH</span>
+                                                </button>
+                                                <div class="dropdown-menu dropdown-menu-right dropdown-menu-options"
+                                                     aria-labelledby="hrmsPieDropdown">
+                                                    <div class="btn-group-vertical">
+                                                        <label class="btn btn-primary"
+                                                               ng-model="hrmsGraph.Pie"
+                                                               ng-change="setHrmsPieView('MF')"
+                                                               uib-btn-radio="'MF'">Male/Female</label>
+                                                        <label class="btn btn-primary"
+                                                               ng-model="hrmsGraph.Pie"
+                                                               ng-change="setHrmsPieView('FB')"
+                                                               uib-btn-radio="'FB'">FOH/BOH</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <nvd3 ng-if="hrmsGraph.Pie == 'MF'" options="malefemalePieOptions"
+                                                  data="maleFemalePieData"
+                                                  class="with-3d-shadow with-transitions"></nvd3>
+                                            <nvd3 ng-if="hrmsGraph.Pie == 'FB'" options="fbPieOption"
+                                                  data="fbPieData"
+                                                  class="with-3d-shadow with-transitions"></nvd3>
+                                        </div>
+                                        <div class="col-lg-6" style="padding: 38px 0 0 0;background-color: #f9f9f9">
+                                            <div class="" style="position: absolute; top: 6px;right: 5px;">
+                                                <button style="padding: 5px 8px;-webkit-box-shadow:none!important;"
+                                                        class="btn btn-secondary dropdown-toggle" type="button"
+                                                        id="hrmsBarDropdown" data-toggle="dropdown"
+                                                        aria-haspopup="true" aria-expanded="false">
+                                                    <span ng-if="hrmsGraph.Bar == 'AA'">Avg Age</span>
+                                                    <span ng-if="hrmsGraph.Bar == 'AS'">Avg Service</span>
+                                                </button>
+                                                <div class="dropdown-menu dropdown-menu-right dropdown-menu-options"
+                                                     aria-labelledby="hrmsBarDropdown">
+                                                    <div class="btn-group-vertical">
+                                                        <label class="btn btn-primary"
+                                                               ng-model="hrmsGraph.Bar"
+                                                               ng-change="setHrmsBarView('AA')"
+                                                               uib-btn-radio="'AA'">Avg Age</label>
+                                                        <label class="btn btn-primary"
+                                                               ng-model="hrmsGraph.Bar"
+                                                               ng-change="setHrmsBarView('AS')"
+                                                               uib-btn-radio="'AS'">Avg Service</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <nvd3 ng-if="hrmsGraph.Bar == 'AA'" options="aveAgeGraphOptions"
+                                                  data="avgAgeGraphData"
+                                                  class="with-3d-shadow with-transitions hidden-sm-down"></nvd3>
+                                            <nvd3 ng-if="hrmsGraph.Bar == 'AA'" options="aveAgeXsGraphOptions"
+                                                  data="avgAgeGraphData"
+                                                  class="with-3d-shadow with-transitions hidden-md-up"></nvd3>
+                                            <nvd3 ng-if="hrmsGraph.Bar == 'AS'" options="yearOfSerGraphOptions"
+                                                  data="yearOfSerGraphData"
+                                                  class="with-3d-shadow with-transitions hidden-sm-down"></nvd3>
+                                            <nvd3 ng-if="hrmsGraph.Bar == 'AS'" options="yearOfSerXsGraphOptions"
+                                                  data="avgAgeGraphData"
+                                                  class="with-3d-shadow with-transitions hidden-md-up"></nvd3>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-12" ng-if="hrmsData">
+                                        <div class="col-lg-12" style="padding: 38px 0 0 0;background-color: #f9f9f9">
+                                            <div class="card-context-menu">
+                                                <a class="btn-link" id="hrmsBar2Dropdown" data-toggle="dropdown"
+                                                   aria-haspopup="true"
+                                                   aria-expanded="false"><i style="color: #777777;"
+                                                                            class="fa fa-sliders fa-lg"></i></a>
+                                                <div class="dropdown-menu dropdown-menu-right dropdown-menu-options"
+                                                     aria-labelledby="hrmsBar2Dropdown">
+                                                    <div class="btn-group-vertical">
+                                                        <label class="btn btn-primary"
+                                                               ng-model="hrmsGraph.Bar2"
+                                                               ng-change="setHrmsBar2View('LeftJoined')"
+                                                               uib-btn-radio="'LeftJoined'">Left & Joined Ratio</label>
+                                                        <label class="btn btn-primary"
+                                                               ng-model="hrmsGraph.Bar2"
+                                                               ng-change="setHrmsBar2View('Strength')"
+                                                               uib-btn-radio="'Strength'">Active Strenth</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div ng-if="hrmsGraph.Bar2=='LeftJoined'">
+                                                <div ng-if="itsLeftJoindGridView==false">
+                                                    <nvd3 options="leftJoindGraphOptions"
+                                                          data="leftJoinedGraphData"
+                                                          class="with-3d-shadow with-transitions hidden-sm-down"></nvd3>
+                                                    <nvd3 options="leftJoindXsGraphOptions" data="leftJoinedGraphData"
+                                                          class="with-3d-shadow with-transitions hidden-md-up"></nvd3>
+                                                </div>
+                                                <div class="hidden-sm-down" ng-if="itsLeftJoindGridView==true"
+                                                     style="padding-top: 17px;">
+                                                    <table class="table text-center" ng-if="hrmsData">
+                                                        <thead class="table-inverse">
+                                                        <tr>
+                                                            <th>#</th>
+                                                            <th ng-repeat="item in hrmsData.HRMS_6">
+                                                                <p><strong>{{item.Months}}</strong></p>
+                                                            </th>
+                                                        </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                        <tr>
+                                                            <th><p><strong>Left Count</strong></p></th>
+                                                            <th ng-repeat="item in hrmsData.HRMS_6">
+                                                                <p><strong>{{item.LeftCount}}</strong></p>
+                                                            </th>
+                                                        </tr>
+                                                        <tr>
+                                                            <th><p><strong>Joined Count</strong></th>
+                                                            <th ng-repeat="item in hrmsData.HRMS_6">
+                                                                <p><strong>{{item.JoinedCount}}</strong></p>
+                                                            </th>
+                                                        </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                                <div class="table-responsive hidden-md-up"
+                                                     ng-if="itsLeftJoindGridView==true" style="padding-top: 10px;">
+                                                    <table class="table text-center table-sm" ng-if="hrmsData">
+                                                        <thead class="table-inverse">
+                                                        <tr>
+                                                            <th>#</th>
+                                                            <th ng-repeat="item in hrmsData.HRMS_6">
+                                                                <p><strong>{{item.Months}}</strong></p>
+                                                            </th>
+                                                        </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                        <tr>
+                                                            <th><p><strong>Left Count</strong></p></th>
+                                                            <th ng-repeat="item in hrmsData.HRMS_6">
+                                                                <p><strong>{{item.LeftCount}}</strong></p>
+                                                            </th>
+                                                        </tr>
+                                                        <tr>
+                                                            <th><p><strong>Joined Count</strong></th>
+                                                            <th ng-repeat="item in hrmsData.HRMS_6">
+                                                                <p><strong>{{item.JoinedCount}}</strong></p>
+                                                            </th>
+                                                        </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                            <div ng-if="hrmsGraph.Bar2=='Strength'">
+                                                <nvd3 options="hrmsCriteriaBarOptions"
+                                                      data="hrmsCriteriaBarData"
+                                                      class="with-3d-shadow with-transitions hidden-sm-down"></nvd3>
+                                                <nvd3 options="hrmsCriteriaBarXsOptions"
+                                                      data="hrmsCriteriaBarData"
+                                                      class="with-3d-shadow with-transitions hidden-md-up"></nvd3>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

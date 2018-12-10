@@ -1,9 +1,9 @@
 <div class="modal-content ">
     <div class="modal-header panel-background">
-        <button type="button" class="close" ng-click="closeSummarySaleModal()" aria-label="Close">
+        <button type="button" class="close" ng-click="$close()" aria-label="Close">
             <span aria-hidden="true">&times;</span>
         </button>
-        <h4 class="modal-title"><span class="label label-default">{{ formatDate(selectedFilter.curDate, 'dd MMM yyyy') }}</span>
+        <h4 class="modal-title"><span class="label">{{ formatDate(selectedFilter.curDate, 'dd MMM yyyy') }}</span>
             Sale <span ng-hide="detailedModalTitle=='Sales'">{{detailedModalTitle}}</span>
             Summary</h4>
     </div>
@@ -65,7 +65,7 @@
     <div class="modal-footer">
         <button type="button"
                 class="btn btn-danger no-shadow waves-effect"
-                ng-click="closeSummarySaleModal()">OK
+                ng-click="$close()">OK
         </button>
     </div>
 </div>

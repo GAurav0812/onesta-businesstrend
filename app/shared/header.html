@@ -1,131 +1,363 @@
-<header class="main-header-top hidden-print">
-    <a href="" class="sidebar-toggle hidden-md-up"></a>
-    <a href="" class="logo"><img class="img-fluid able-logo" src="assets/images/logo.png"
-                                 alt="Barbeque Nation Business Insights" > Onesta Insights</a>
-    <nav class="navbar navbar-static-top hidden-sm-down">
-
+<header class="main-header-top hidden-print" data-ng-controller="headerController"
+        ng-class="{'header-h5-text-ink':userSelectedSales=='K'||userSelectedSales=='Actual'||userSelectedSales=='Hundred' || userSelectedCovers=='K'||userSelectedCovers=='Actual'||userSelectedCovers=='Hundred'}">
+    <a class="sidebar-toggle hidden-md-up"></a>
+    <a href="/" class="logo"><img class="img-fluid able-logo hidden-sm-down"
+                                  ng-src="{{globals.selectedCompany.CompanyId == '12' && 'assets/images/onesta-logo.png' || 'assets/images/logo.png'}}"
+                                  alt="Barbeque Nation Business Insights">Business Insights
+        <small class="company-name">{{globals.selectedCompany.CompanyDesc}}</small>
+        <div class="dropdown hidden-md-up f-right user-cur-set">
+            <a href="" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"
+               class="drop icon-circle">
+                <img ng-if="userSelectedCurrency.indexOf('INR')===0" style="vertical-align: text-bottom;"
+                     ng-src="assets/images/INR.png" width="20px">
+                <img ng-if="userSelectedCurrency.indexOf('USD')===0" style="vertical-align: text-bottom;"
+                     ng-src="assets/images/USD.png" width="20px">
+                <img ng-if="userSelectedCurrency.indexOf('MYR')===0" style="vertical-align: text-bottom;"
+                     ng-src="assets/images/MYR.png" width="20px">
+                <img ng-if="userSelectedCurrency.indexOf('AED')===0" style="vertical-align: text-bottom;"
+                     ng-src="assets/images/AED.png" width="20px">
+                <!--  <span class="badge badge-info question-badge"><i class="fas fa-exclamation"></i></span>-->
+            </a>
+            <ul class="dropdown-menu settings-menu" style="border-radius: 5px;">
+                <li><a><i class="fas fa-balance-scale"></i>Sales In :<span style="font-weight: 600;"> {{userSelectedSales}}</span></a>
+                </li>
+                <li><a><i class="fas fa-users"></i> Covers In : <span
+                        style="font-weight: 600;"> {{userSelectedCovers}}</span></a>
+                </li>
+                <li><a><i class="fas fa-hashtag"></i>Currency In : <span style="font-weight: 600;"> {{userSelectedCurrency}}</span></a>
+                </li>
+                <li class="not-footer text-center" style="border-top: 1px solid #ddd;">
+                    <a data-ui-sref="settings"><i class="icon-settings fa-xs"></i>Settings</a>
+                </li>
+            </ul>
+        </div>
+    </a>
+    <nav class="navbar navbar-static-top hidden-sm-down"
+         ng-class="{'head-sale-ink':userSelectedSales=='K'||userSelectedSales=='Actual'||userSelectedSales=='Hundred' || userSelectedCovers=='K'||userSelectedCovers=='Actual'||userSelectedCovers=='Hundred'}">
         <!-- Navbar Right Menu-->
         <div class="navbar-custom-menu">
             <ul class="top-nav">
-                <!--Notification Menu-->
-
-
-                <!-- User Menu-->
-                <li class="dropdown ">
-                    <a href="" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"
+                <li class="dropdown" style="margin-left: 12px;margin-right: -15px">
+                    <a href="" style="opacity: 1!important;" data-toggle="dropdown" role="button" aria-haspopup="true"
+                       aria-expanded="false"
                        class="dropdown-toggle drop icon-circle ">
-                        <span><img class="img-circle " src="assets/images/avatar-1.png" style="width:40px;"
+                        <img ng-if="userSelectedCurrency.indexOf('INR')===0" style="vertical-align: middle;"
+                             ng-src="assets/images/INR.png" width="24px">
+                        <img ng-if="userSelectedCurrency.indexOf('USD')===0" style="vertical-align: middle;"
+                             ng-src="assets/images/USD.png" width="24px">
+                        <img ng-if="userSelectedCurrency.indexOf('MYR')===0" style="vertical-align: middle;"
+                             ng-src="assets/images/MYR.png" width="24px">
+                        <img ng-if="userSelectedCurrency.indexOf('AED')===0" style="vertical-align: middle;"
+                             ng-src="assets/images/AED.png" width="24px">
+                        <!-- <span class="badge badge-info question-badge"><i class="fas fa-exclamation"></i></span>-->
+                    </a>
+                    <ul class="dropdown-menu settings-menu" style="border-radius: 5px;">
+                        <li><a><i class="fas fa-balance-scale"></i>Sales In :<span style="font-weight: 600;"> {{userSelectedSales}}</span></a>
+                        </li>
+                        <li><a><i class="fas fa-users"></i> Covers In : <span style="font-weight: 600;"> {{userSelectedCovers}}</span></a>
+                        </li>
+                        <li><a><i class="fas fa-hashtag"></i>Currency In : <span style="font-weight: 600;"> {{userSelectedCurrency}}</span></a>
+                        </li>
+                        <li class="not-footer text-center" style="border-top: 1px solid #ddd;">
+                            <a data-ui-sref="settings"><i class="icon-settings fa-xs"></i>Settings</a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="dropdown ">
+                    <a style="padding: 15px 10px 15px 10px;" href="" data-toggle="dropdown" role="button"
+                       aria-haspopup="true" aria-expanded="false"
+                       class="dropdown-toggle drop icon-circle ">
+                        <span><img class="img-circle " src="assets/images/avatar.svg" style="width:40px;"
                                    alt="User Image"></span>
-                        <span>{{globals.currentUser.Userinfo.UserName}} <i
-                                class=" icofont icofont-simple-down"></i></span>
-
+                        <!--     <span>{{globals.currentUser.Userinfo.UserName}} <i
+                                     class=" icofont icofont-simple-down"></i></span>-->
                     </a>
                     <ul class="dropdown-menu settings-menu">
+                        <li ng-repeat="c in globals.currentUser.CompanyList"
+                            ng-if="globals.currentUser.CompanyList.length>1"
+                            ng-class="{'selected-company':c.selected==true}">
+                            <a ng-click="changeCompany(c)">
+                                <i><img ng-src="assets/images/{{c.Icon}}" width="18px"></i>
+                                {{c.CompanyDesc}}
+                                <i ng-if="c.selected==true" class="fa fa-check pull-right"
+                                   style="color: #2cd833;padding: inherit;"></i>
+                            </a>
+                        </li>
+                        <li><a href="http://ems.bnhl.in/EMS/EnergyConsumption.aspx?insightUsername={{globals.currentUser.Userinfo.UserName}}&insightuserid={{globals.currentUser.Userinfo.UserId}}&key=itsInsightsUser" target="_blank">
+                            <i class="far fa-lightbulb"></i>Energy Management</a>
+                        </li>
+                        <li class="p-0" ng-if="globals.currentUser.CompanyList.length>1">
+                            <div class="dropdown-divider m-0"></div>
+                        </li>
                         <li><a href="mailto:{{globals.currentUser.Userinfo.Email}}"><i class="icon-envelope"></i>{{globals.currentUser.Userinfo.Email}}</a>
                         </li>
                         <li><a href="tel:{{globals.currentUser.Userinfo.Mobile}}"><i class="icon-phone"></i>{{globals.currentUser.Userinfo.Mobile}}</a>
                         </li>
-
                         <li class="p-0">
                             <div class="dropdown-divider m-0"></div>
                         </li>
                         <li><a data-ui-sref="changePassword"><i class="icon-lock"></i>Change Password</a>
                         </li>
-                        <li><a data-ui-sref="login"><i class="icon-logout"></i> Logout</a>
+                        <li><a data-ui-sref="settings"><i class="icon-settings"></i> Settings</a>
+                        </li>
+                        <li><a data-ui-sref="login" ng-click="logout()"><i class="icon-logout"></i> Logout</a>
                         </li>
                     </ul>
                 </li>
             </ul>
         </div>
-
-        <div class="row head-sale">
-            <div class="col-lg-5 col-md-5" style="padding: 15px 0 0 15px!important;"><i class="icon-clock"></i>
-                {{formatDate(todaySaleData.LastUpdatedOn, 'dd MMM yyyy HH:mm') }}</div>
-            <div class="col-lg-2 col-md-2">
-                <p class="">Sales</p>
-                <h5 class="" count-to="{{todaySaleData.Sale}}"
-                    value="0" duration="1">0</h5>
+        <div class="row head-sale" style="position:relative!important;width: 50%"
+             ng-if="globals.selectedCompany.CompanyId == '8' && todaySaleData">
+            <div ng-if="userSelectedSales!=='K'&&userSelectedSales!=='Actual'&&userSelectedSales!=='Hundred' && userSelectedCovers!=='K' && userSelectedCovers!=='Actual'&& userSelectedCovers!=='Hundred'">
+                <div class="col-lg-2 col-md-2 date"><i class="icon-clock"></i>
+                    <span class="last-updated-on">{{formatDate(todaySaleData.LastUpdatedOn, 'dd MMM yyyy HH:mm') }}</span>
+                </div>
+                <div class="col-lg-2 col-md-3 p-l-5 p-r-5">
+                    <p class="">Sales</p>
+                    <h5 class="" count-to="{{todaySaleData.Sale}}"
+                        value="0" duration="1"></h5>
+                </div>
+                <div class="col-lg-2 col-md-3 p-l-5 p-r-5" style="font-weight: 100!important;color: #fbd5cb;">
+                    <p class="">P-Sales</p>
+                    <em><h5 class="" count-to="{{todaySaleData.ProjSale}}"
+                            value="0" duration="1"></h5></em>
+                </div>
             </div>
-            <div class="col-lg-2 col-md-2">
+            <div ng-if="userSelectedSales=='K'||userSelectedSales=='Actual'||userSelectedSales=='Hundred' || userSelectedCovers=='K'||userSelectedCovers=='Actual'||userSelectedCovers=='Hundred'">
+                <div style="position: absolute;left: 6px;z-index: 1">
+                    <a class="btn-link" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i
+                            class="icon-clock fa-sm"></i></a>
+                    <div class="dropdown-menu dropdown-menu-right dropdown-menu-options top-date-drop"
+                         aria-labelledby="ddMenuTodaySales">
+                        <div class="date-drop-contain">Last Updated On : {{formatDate(todaySaleData.LastUpdatedOn, 'dd MMM yyyy HH:mm') }}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-3 p-l-5 p-r-5">
+                    <p class="">Sales</p>
+                    <h5 class="" count-to="{{todaySaleData.Sale}}"
+                        value="0" duration="1"></h5>
+                </div>
+                <div class="col-lg-3 col-md-3 p-l-5 p-r-5" style="font-weight: 100!important;color: #fbd5cb;">
+                    <p class="">P-Sales</p>
+                    <em><h5 class="" count-to="{{todaySaleData.ProjSale}}"
+                            value="0" duration="1"></h5></em>
+                </div>
+            </div>
+            <div class="col-lg-2 col-md-2 p-l-5 p-r-5">
                 <p class="">Covers</p>
-                <h5 class="" count-to="{{todaySaleData.Cover}}" value="0"
-                    duration="1">0</h5>
+                <h5 class="" count-to-comma="{{todaySaleData.Cover}}" value="0"
+                    duration="1"></h5>
             </div>
-            <div class="col-lg-2 col-md-2">
+            <div class="col-lg-2 col-md-2 p-l-5 p-r-5" style="font-weight: 100!important;color: #fbd5cb;">
+                <p class="">P-Covers</p>
+                <em><h5 class="" count-to-comma="{{todaySaleData.ProjCover}}" value="0"
+                        duration="1"></h5></em>
+            </div>
+            <div class="col-lg-2 col-md-2 p-l-5 p-r-10">
                 <p class="">Outlets</p>
-                <h5 class="" count-to="{{todaySaleData.Outlets}}" value="0"
-                    duration="1">0</h5>
+                <h5 class="" count-to-comma="{{todaySaleData.Outlets}}" value="0"
+                    duration="1"></h5>
             </div>
-            <div class="col-lg-1 col-md-1">
+            <div style="position: absolute;right: 6px;">
                 <a class="btn-link" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i
                         class="fa fa-ellipsis-v"></i></a>
                 <div class="dropdown-menu dropdown-menu-right dropdown-menu-options top-drop"
                      aria-labelledby="ddMenuTodaySales">
-                    <a class="btn btn-default" data-toggle="modal" data-target="#todayRegionSale-Modal"
+                    <a class="btn btn-default"
                        data-angular-ripple="" ng-click="getRegionDaySale()">View Details</a>
                 </div>
             </div>
         </div>
+        <div class="row head-sale" style="position:relative!important;width: 40%"
+             ng-if="globals.selectedCompany.CompanyId !== '8' && todaySaleData">
+            <div class="col-lg-3 col-md-3"
+                 style="padding: 11px 0 0 10px!important; vertical-align: middle;font-weight: 600; font-size: 11px;"><i
+                    class="icon-clock"></i>
+                <span ng-if="todaySaleData.LastUpdatedOn!==''">{{formatDate(todaySaleData.LastUpdatedOn, 'dd MMM yyyy HH:mm') }}</span>
+            </div>
+            <div class="col-lg-3 col-md-3 p-l-5 p-r-5">
+                <p class="">Sales</p>
+                <h5 class="" count-to="{{todaySaleData.Sale}}"
+                    value="0" duration="1">0</h5>
+            </div>
 
-
+            <div class="col-lg-3 col-md-3 p-l-5 p-r-5">
+                <p class="">Covers</p>
+                <h5 class="" count-to-comma="{{todaySaleData.Cover}}" value="0"
+                    duration="1">0</h5>
+            </div>
+            <div class="col-lg-3 col-md-3 p-l-5 p-r-10">
+                <p class="">Outlets</p>
+                <h5 class="" count-to-comma="{{todaySaleData.Outlets}}" value="0"
+                    duration="1">0</h5>
+            </div>
+            <div style="position: absolute;right: 6px;">
+                <a class="btn-link" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i
+                        class="fa fa-ellipsis-v"></i></a>
+                <div class="dropdown-menu dropdown-menu-right dropdown-menu-options top-drop"
+                     aria-labelledby="ddMenuTodaySales">
+                    <a class="btn btn-default"
+                       data-angular-ripple="" ng-click="getRegionDaySale()">View Details</a>
+                </div>
+            </div>
+        </div>
     </nav>
-    <div class="row head-sale-sm hidden-md-up hidden-xs-down">
-        <div class="col-sm-4 text-primary" style="padding: 12px 0px 0px 0px;"><i class="icon-clock"></i>
-            {{formatDate(todaySaleData.LastUpdatedOn, 'dd MMM yyyy HH:mm') }}
+    <div ng-if="globals.selectedCompany.CompanyId == '8' && todaySaleData"
+         ng-class="{'head-sale-ink':userSelectedSales=='K'||userSelectedSales=='Actual'||userSelectedSales=='Hundred' || userSelectedCovers=='K'||userSelectedCovers=='Actual'||userSelectedCovers=='Hundred'}">
+        <div class="row head-sale-sm hidden-md-up hidden-xs-down" style="position: relative;">
+            <div class="col-sm-2 text-primary" style="padding: 7px 0 0 20px;font-size: 12px;font-weight: 600;"><i
+                    class="icon-clock"></i>
+                {{formatDate(todaySaleData.LastUpdatedOn, 'dd MMM yyyy HH:mm') }}
+            </div>
+            <div class="col-sm-2">
+                <p class="text-muted">Sales</p>
+                <h5 class="txt-purple" count-to="{{todaySaleData.Sale}}"
+                    value="0" duration="1">0</h5>
+            </div>
+            <div class="col-sm-2">
+                <p class="text-muted">P-Sales</p>
+                <em><h5 class="txt-purple" style="color: #7662d9!important;" count-to="{{todaySaleData.ProjSale}}"
+                        value="0" duration="1">0</h5></em>
+            </div>
+            <div class="col-sm-2">
+                <p class="text-muted">Covers</p>
+                <h5 class="txt-purple" count-to-comma="{{todaySaleData.Cover}}" value="0"
+                    duration="1">0</h5>
+            </div>
+            <div class="col-sm-2">
+                <p class="text-muted">P-Covers</p>
+                <em><h5 style="color: #7662d9!important;" class="txt-purple"
+                        count-to-comma="{{todaySaleData.ProjCover}}"
+                        value="0"
+                        duration="1">0</h5></em>
+            </div>
+            <div class="col-sm-2 p-l-0">
+                <p class="text-muted">Outlets</p>
+                <h5 class="txt-purple" count-to-comma="{{todaySaleData.Outlets}}" value="0"
+                    duration="1">0</h5>
+            </div>
+            <div style="position:absolute; right: 4%">
+                <a style="color: #3b5998;" class="btn-link" data-toggle="dropdown" aria-haspopup="true"
+                   aria-expanded="false"><i class="fa fa-ellipsis-v"></i></a>
+                <div class="dropdown-menu dropdown-menu-right dropdown-menu-options top-drop"
+                     aria-labelledby="ddMenuTodaySales">
+                    <a class="btn btn-default"
+                       data-angular-ripple="" ng-click="getRegionDaySale()">View Details</a>
+                </div>
+            </div>
         </div>
-        <div class="col-sm-2">
-            <p class="text-muted">Sales</p>
-            <h5 class="txt-purple" count-to="{{todaySaleData.Sale}}"
-                value="0" duration="1">0</h5>
-        </div>
-        <div class="col-sm-3">
-            <p class="text-muted">Covers</p>
-            <h5 class="txt-purple" count-to="{{todaySaleData.Cover}}" value="0"
-                duration="1">0</h5>
-        </div>
-        <div class="col-sm-2">
-            <p class="text-muted">Outlets</p>
-            <h5 class="txt-purple" count-to="{{todaySaleData.Outlets}}" value="0"
-                duration="1">0</h5>
-        </div>
-        <div class="col-sm-1">
-            <a style="color: #3b5998;" class="btn-link" data-toggle="dropdown" aria-haspopup="true"
-               aria-expanded="false"><i class="fa fa-ellipsis-v"></i></a>
-            <div class="dropdown-menu dropdown-menu-right dropdown-menu-options top-drop"
-                 aria-labelledby="ddMenuTodaySales">
-                <a class="btn btn-default" data-toggle="modal" data-target="#todayRegionSale-Modal"
-                   data-angular-ripple="" ng-click="getRegionDaySale()">View Details</a>
+        <div class="row head-sale-xs hidden-sm-up" ng-if="todaySaleData">
+            <div class="col-xs-12" style="font-size: 12px!important;color: darkgrey;">
+                <span ng-show="todaySaleData.LastUpdatedOn!==''">{{formatDate(todaySaleData.LastUpdatedOn, 'dd MMM yyyy HH:mm') }}</span>
+            </div>
+            <div style="position: absolute;right: 10px;">
+                <a style="color: #3b5998;" class="btn-link" data-toggle="dropdown" aria-haspopup="true"
+                   aria-expanded="false"><i class="fa fa-ellipsis-v"></i></a>
+                <div class="dropdown-menu dropdown-menu-right dropdown-menu-options top-drop"
+                     aria-labelledby="ddMenuTodaySales">
+                    <a class="btn btn-default"
+                       data-angular-ripple="" ng-click="getRegionDaySale()">View Details</a>
+                </div>
+            </div>
+            <!--<div class="p-l-30 col-sm-3 col-xs-3 ">
+                Today<p  class="text-muted">So Far</p>
+            </div>-->
+            <div>
+                <div class="col-xs-2 p-l-10 p-r-10">
+                    <p class="text-muted text-xs" style="font-size: 10px;!important;">Sales</p>
+                    <h6 class="txt-purple" count-to="{{todaySaleData.Sale}}"
+                        value="0" duration="1">0</h6>
+                </div>
+                <div class="col-xs-3 p-l-10 p-r-10">
+                    <p class="text-muted text-xs" style="font-size: 10px;!important;">P-Sales</p>
+                    <em><h6 style="color: #7662d9!important;" class="txt-purple"
+                            count-to="{{todaySaleData.ProjSale}}"
+                            value="0" duration="1">0</h6></em>
+                </div>
+                <div class="col-xs-2 p-l-10 p-r-10">
+                    <p class="text-muted text-xs" style="font-size: 10px;!important;">Outlets</p>
+                    <h6 class="txt-purple" count-to-comma="{{todaySaleData.Outlets}}" value="0"
+                        duration="1">0</h6>
+                </div>
+                <div class="col-xs-2 p-l-10 p-r-10">
+                    <p class="text-muted text-xs" style="font-size: 10px;!important;">Covers</p>
+                    <h6 class="txt-purple" count-to-comma="{{todaySaleData.Cover}}" value="0"
+                        duration="1">0</h6>
+                </div>
+                <div class="col-xs-3 p-l-10 p-r-10">
+                    <p class="text-muted text-xs" style="font-size: 10px;!important;">P-Covers</p>
+                    <em><h6 style="color: #7662d9!important;" class="txt-purple"
+                            count-to-comma="{{todaySaleData.ProjCover}}"
+                            value="0"
+                            duration="1">0</h6></em>
+                </div>
             </div>
         </div>
     </div>
-
-    <div class="row head-sale-xs hidden-sm-up">
-        <div class="col-xs-11 text-pink">{{formatDate(todaySaleData.LastUpdatedOn, 'dd MMM yyyy HH:mm') }}
-        </div>
-        <div class="col-xs-1 p-l-0" style="margin-left: -5px;">
-            <a style="color: #3b5998;" class="btn-link" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-ellipsis-v"></i></a>
-            <div class="dropdown-menu dropdown-menu-right dropdown-menu-options top-drop" aria-labelledby="ddMenuTodaySales">
-                <a class="btn btn-default" data-toggle="modal" data-target="#todayRegionSale-Modal" data-angular-ripple="" ng-click="getRegionDaySale()">View Details</a>
+    <div ng-if="globals.selectedCompany.CompanyId !== '8' && todaySaleData"
+         ng-class="{'head-sale-ink':userSelectedSales=='K'||userSelectedSales=='Actual'||userSelectedSales=='Hundred' || userSelectedCovers=='K'||userSelectedCovers=='Actual'||userSelectedCovers=='Hundred'}">
+        <div class="row head-sale-sm hidden-md-up hidden-xs-down" style="position: relative;">
+            <div class="col-sm-3 text-primary" style="padding: 7px 0 0 20px;font-size: 12px;font-weight: 600;"><i
+                    class="icon-clock"></i>
+                {{formatDate(todaySaleData.LastUpdatedOn, 'dd MMM yyyy HH:mm') }}
+            </div>
+            <div class="col-sm-3">
+                <p class="text-muted">Sales</p>
+                <h5 class="txt-purple" count-to="{{todaySaleData.Sale}}"
+                    value="0" duration="1">0</h5>
+            </div>
+            <div class="col-sm-3">
+                <p class="text-muted">Covers</p>
+                <h5 class="txt-purple" count-to-comma="{{todaySaleData.Cover}}" value="0"
+                    duration="1">0</h5>
+            </div>
+            <div class="col-sm-3 p-l-0">
+                <p class="text-muted">Outlets</p>
+                <h5 class="txt-purple" count-to-comma="{{todaySaleData.Outlets}}" value="0"
+                    duration="1">0</h5>
+            </div>
+            <div style="position:absolute; right: 4%">
+                <a style="color: #3b5998;" class="btn-link" data-toggle="dropdown" aria-haspopup="true"
+                   aria-expanded="false"><i class="fa fa-ellipsis-v"></i></a>
+                <div class="dropdown-menu dropdown-menu-right dropdown-menu-options top-drop"
+                     aria-labelledby="ddMenuTodaySales">
+                    <a class="btn btn-default"
+                       data-angular-ripple="" ng-click="getRegionDaySale()">View Details</a>
+                </div>
             </div>
         </div>
-        <!--<div class="p-l-30 col-sm-3 col-xs-3 ">
-            Today<p  class="text-muted">So Far</p>
-        </div>-->
-        <div class="col-xs-4">
-            <p class="text-muted">Sales</p>
-            <h5 class="txt-purple" count-to="{{todaySaleData.Sale}}"
-                value="0" duration="1" >0</h5>
+        <div class="row head-sale-xs hidden-sm-up" ng-if="todaySaleData">
+            <div class="col-xs-12" style="font-size: 12px!important;color: darkgrey;">
+                <span ng-show="todaySaleData.LastUpdatedOn!==''">{{formatDate(todaySaleData.LastUpdatedOn, 'dd MMM yyyy HH:mm') }}</span>
+            </div>
+            <div style="position: absolute;right: 10px;">
+                <a style="color: #3b5998;" class="btn-link" data-toggle="dropdown" aria-haspopup="true"
+                   aria-expanded="false"><i class="fa fa-ellipsis-v"></i></a>
+                <div class="dropdown-menu dropdown-menu-right dropdown-menu-options top-drop"
+                     aria-labelledby="ddMenuTodaySales">
+                    <a class="btn btn-default"
+                       data-angular-ripple="" ng-click="getRegionDaySale()">View Details</a>
+                </div>
+            </div>
+            <!--<div class="p-l-30 col-sm-3 col-xs-3 ">
+                Today<p  class="text-muted">So Far</p>
+            </div>-->
+            <div class="col-xs-4 p-l-10 p-r-10">
+                <p class="text-muted text-xs" style="font-size: 10px;!important;">Sales</p>
+                <h6 class="txt-purple" count-to="{{todaySaleData.Sale}}"
+                    value="0" duration="1">0</h6>
+            </div>
+            <div class="col-xs-4 p-l-10 p-r-10">
+                <p class="text-muted text-xs" style="font-size: 10px;!important;">Covers</p>
+                <h6 class="txt-purple" count-to-comma="{{todaySaleData.Cover}}" value="0"
+                    duration="1">0</h6>
+            </div>
+            <div class="col-xs-4 p-l-10 p-r-10">
+                <p class="text-muted text-xs" style="font-size: 10px;!important;">Outlets</p>
+                <h6 class="txt-purple" count-to-comma="{{todaySaleData.Outlets}}" value="0"
+                    duration="1">0</h6>
+            </div>
         </div>
-        <div class="col-xs-4">
-            <p class="text-muted">Covers</p>
-            <h5 class="txt-purple" count-to="{{todaySaleData.Cover}}" value="0"
-                duration="1" >0</h5>
-        </div>
-        <div class="col-xs-4">
-            <p class="text-muted">Outlets</p>
-            <h5 class="txt-purple" count-to="{{todaySaleData.Outlets}}" value="0"
-                duration="1" >0</h5>
-        </div>
-
     </div>
 </header>

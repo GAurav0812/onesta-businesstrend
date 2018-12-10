@@ -574,8 +574,7 @@ ableApp
                         name: 'lazy_weather_icons',
                         files: [
                              'assets/icon/weather-icons/css/weather-icons.min.css',
-                             'assets/icon/weather-icons/css/weather-icons-wind.min.css',
-                             'assets/css/svg-weather.css'
+                             'assets/icon/weather-icons/css/weather-icons-wind.min.css'
                         ],
                         serie: true
                     },

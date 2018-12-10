@@ -1,20 +1,30 @@
 <aside class="main-sidebar hidden-print " data-ng-controller="menuHorizontalController">
     <section class="sidebar" id="abc">
         <div class="user-panel">
+            <a data-ui-sref="login" style="position: absolute;right: 10px;top: 5px;color: #fff;z-index: 1001;"><i class="icon-power"></i></a>
             <div class="f-left image"><img src="assets/images/avatar-1.png" alt="User Image" class="img-circle">
             </div>
             <div class="f-left info">
                 <p>{{globals.currentUser.Userinfo.UserName}}</p>
-                <p class="designation" data-ng-click="designation()">{{globals.currentUser.Userinfo.Email}}</i>
-                </p>
+                <p class="designation" data-ng-click="designation()">{{globals.currentUser.Userinfo.Email}}</p>
+                <select ng-if="globals.currentUser.CompanyList.length>1" class="form-control comp-select" ng-model="globals.selectedCompany" ng-change="changeCompany(globals.selectedCompany)"
+                        ng-options="item as item.CompanyDesc for item in globals.currentUser.CompanyList" required>
+                </select>
             </div>
         </div>
         <!-- Sidebar Menu-->
         <ul class="sidebar-menu">
-
-            <li ng-repeat="menuItem in globals.currentUser.MenuList"><a ui-sref-active="selectedMenu" data-ui-sref="{{menuItem.NavigateUrl}}"><i class="{{menuItem.MenuIcon}}"></i><span> {{menuItem.MenuDesc}}</span></a> </li>
-            <li class="hidden-md-up"><a data-ui-sref="changePassword"><i class="icon-lock"></i> <span>Change Password</span></a> </li>
-            <li class="hidden-md-up"><a data-ui-sref="login"><i class="icon-power"></i> <span>Logout</span></a> </li>
+            <li ng-repeat="menuItem in MenuList"><a ui-sref-active="selectedMenu"
+                                                                        data-ui-sref="{{menuItem.Test_Col}}"><i
+                    class="{{menuItem.MenuIcon}}"></i><span> {{menuItem.MenuDesc}}</span></a></li>
+            <li class="hidden-md-up"><a href="http://ems.bnhl.in/EMS/EnergyConsumption.aspx?insightUsername={{globals.currentUser.Userinfo.UserName}}&insightuserid={{globals.currentUser.Userinfo.UserId}}&key=itsInsightsUser" target="_blank">
+                <i class="far fa-lightbulb"></i>
+                <span>Energy Management</span></a></li>
+            <li class="hidden-md-up"><a data-ui-sref="changePassword"><i class="icon-lock"></i>
+                <span>Change Password</span></a></li>
+            <li class="hidden-md-up"><a data-ui-sref="settings"><i class="icon-settings"></i>
+                <span>Settings</span></a></li>
+            <span class="hidden-sm-down hide-lg-md" style="font-size: 11px; position: absolute;right: 0;padding: 3px 10px 2px 2px;color:  darkgrey;font-style: italic;">Sales in - <span style="color:grey">'{{userSelectedSales}}' </span>& Covers in- <span style="color:grey">'{{userSelectedCovers}}'</span></span>
         </ul>
     </section>
 </aside>

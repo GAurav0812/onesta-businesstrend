@@ -12,7 +12,7 @@ body{
     @include pt(10px);
     h6 {
         @include mb(0);
-        @include c(#1b8bf9);
+        @include c(#d43505);
         @include f-w(700);
     }
 }
@@ -23,7 +23,7 @@ ul.mega-list li {
         @include c(#666);
         @include f-s(13px);
         &:hover{
-            @include c(#1b8bf9);
+            @include c(#d43505);
         }
         > i{
             @include f-s(10px);
@@ -64,7 +64,7 @@ ul.mega-list li {
             }
             &:hover{
                 cursor: pointer;
-                @include c(#1b8bf9);
+                @include c(#d43505);
             }
         }
         .sub-menu{
@@ -103,7 +103,7 @@ ul.mega-list li {
     width: 50px;
     @include t-a(center);
     height: 100%;
-    @include bg(#1b8bf9);
+    @include bg(#d43505);
     @include pt(14px);
     @include b(50%,radius);
     &.radius{
@@ -114,7 +114,7 @@ ul.mega-list li {
 .b-menu-left{
     @include flt(right);
     @include disp(none);
-    @include bg(#1b8bf9);
+    @include bg(#d43505);
     @include p(0 25px);
     @include b(25px 0 0 25px,radius);
     li.dropup-mega ul.dropdown-menu{
@@ -124,7 +124,7 @@ ul.mega-list li {
 .b-menu-right{
     @include flt(left);
     @include disp(none);
-    @include bg(#1b8bf9);
+    @include bg(#d43505);
     @include b(0 25px 25px 0,radius);
     @include p(0 25px);
 }

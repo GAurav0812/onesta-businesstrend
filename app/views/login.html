@@ -5,45 +5,64 @@
 		<div class="row">
 
 			<div class="col-sm-12 animated fadeInDownBig" style="animation-duration:1.5s!important;">
-				<div class="login-card card-block" style="background: rgba(255,255, 255, 0.85)!important;">
+				<div class="login-card" style="background: rgba(255,255, 255, 0.85)!important;">
 					<form class="md-float-material" ng-submit="login()">
 						<div class="text-center">
-							<img src="assets/images/logo-blue.png" style="width: 150px;">
-
+							<img src="assets/images/logo-blue.png" width="150px">
 						</div>
 						<h2 class="text-center display-4 text-purple"><small>Business Insights</small></h2>
 						<h3 class="text-center txt-primary">
 							Sign In to your account
 						</h3>
-						<div class="bg-danger well well-sm" ng-if="loginErrorMsg">{{loginErrorMsg}}</div>
-						<div class="md-input-wrapper">
-							<input type="text" class="md-form-control" ng-disabled="loginProcessing" ng-model="userLoginInfo.userName"/>
-							<label>Username</label>
-						</div>
-						<div class="md-input-wrapper">
-							<input type="password" class="md-form-control"  ng-disabled="loginProcessing" ng-model="userLoginInfo.userPassword"/>
-							<label>Password</label>
-						</div>
-						<div class="row">
-							<div class="col-sm-6 col-xs-12">
-								<div class="rkmd-checkbox checkbox-rotate checkbox-ripple m-b-25">
-									<label class="input-checkbox checkbox-primary">
-										<input type="checkbox" id="checkboxRememberMe" ng-model="rememberMe">
-										<span class="checkbox"></span>
-									</label>
-									<div class="captions">Remember Me</div>
+
+						<div ng-show="isApiLoading" class="text-center"><i class="fa fa-spin fa-spinner fa-lg" ></i></div>
+						<div ng-show="!isApiLoading">
+							<div class="bg-danger well well-sm" ng-if="loginErrorMsg">{{loginErrorMsg}}</div>
+							<div class="md-input-wrapper">
+								<input type="text" class="md-form-control" ng-disabled="loginProcessing" ng-model="userLoginInfo.userName"/>
+								<label>Username</label>
+							</div>
+							<div class="md-input-wrapper">
+								<input type="password" class="md-form-control"  ng-disabled="loginProcessing" ng-model="userLoginInfo.userPassword"/>
+								<label>Password</label>
+							</div>
+							<div class="row">
+								<div class="col-sm-6 col-xs-12">
+									<div class="rkmd-checkbox checkbox-rotate checkbox-ripple m-b-25">
+										<label class="input-checkbox checkbox-primary">
+											<input type="checkbox" id="checkboxRememberMe" ng-model="rememberMe">
+											<span class="checkbox"></span>
+										</label>
+										<div class="captions">Remember Me</div>
+									</div>
+								</div>
+								<!--<div class="col-sm-6 col-xs-12 forgot-phone text-right hidden" style="display: none">
+									<a data-ui-sref="pages.forgotPassword" class="text-right f-w-600"> Forget Password?</a>
+								</div>-->
+							</div>
+
+							<div class="row">
+								<div class="col-xs-10 offset-xs-1">
+									<button type="submit"  ng-disabled="loginProcessing" class="btn btn-primary btn-block waves-effect text-center m-b-20" data-angular-ripple style="line-height: 18px!important;">
+										<span ng-if="!loginProcessing">LOGIN</span>
+										<span ng-if="loginProcessing" class="text-center"><i  style="color: #ffffff;" class="fa fa-circle-o-notch fa-spin fa-lg"></i></span>
+									</button>
 
 								</div>
 							</div>
-						</div>
-						<div class="row">
-							<div class="col-xs-10 offset-xs-1">
-								<button type="submit" ng-hide="loginProcessing"  class="btn btn-primary btn-md btn-block waves-effect text-center m-b-20" data-angular-ripple >LOGIN</button>
-								<div ng-show="loginProcessing" class="text-center"><i class="fa fa-circle-o-notch fa-spin fa-lg"></i></div>
+
+							<div class="row">
+								<div class="col-xs-10 offset-xs-1 text-center">
+									<div class="txt-muted p-b-10"> OR </div>
+									<div class="txt-primary" ng-show="googleSignIn.isLoggedIn">Signed In as: {{googleSignIn.userEmail}}</div>
+									<span ng-if="loginGProcessing" class="text-center"><i  style="color: #ffffff;" class="fa fa-circle-o-notch fa-spin fa-lg"></i></span>
+									<google-sign-in-button ng-disabled="loginGProcessing" ng-show="!googleSignIn.isLoggedIn"
+														   pre-loading="isApiLoading" class="login-button"
+														   button-id="loginWithGoogle"
+														   options="googleOptions"></google-sign-in-button>
+								</div>
 							</div>
 						</div>
-
-
 						<!-- </div> -->
 					</form>
 					<!-- end of form -->

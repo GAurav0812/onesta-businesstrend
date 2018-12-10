@@ -5,17 +5,26 @@ var bs = require('browser-sync').create(); // create a browser sync instance.
 var proxyMiddleware = require('http-proxy-middleware');
 var sass = require('gulp-sass');
 var inject = require('gulp-inject');
+var rev = require('gulp-rev');
+var filter = require('gulp-filter');
+var revReplace = require('gulp-rev-replace');
+var del = require("del");
+var extend = require("gulp-extend");
+var uglify = require("gulp-uglify-es").default;
+var htmlmin = require("gulp-minify-html");
+var concat = require("gulp-concat");
+var angularTemplatecache = require("gulp-angular-templatecache");
 
 var apiserver = proxyMiddleware('/BusinessTrendAPI/Service1.svc', {
     //target: 'http://10.10.0.18:80/',
     target: 'http://hrms.onestalove.com/',
-    //target: 'http://insights.bnhl.in/',
+    //target:  'http://10.10.1.21:8080',
     changeOrigin: true,             // for vhosted sites, changes host header to match to target's host
     logLevel: 'debug'
 });
 
 
-gulp.task('serve', function() {
+gulp.task('serve', ['combine'], function () {
     bs.init({
         server: {
             baseDir: "./app"
@@ -24,11 +33,12 @@ gulp.task('serve', function() {
         browser: 'default',
         ghostMode: false
     });
+    gulp.watch('app/pages/**/*.js',['combine']);
     gulp.watch("app/*/*.html").on('change', bs.reload);
-    gulp.watch('app/*.js', function(){
+    gulp.watch('app/*.js', function () {
         return gulp.src('app/*.js').pipe(bs.stream());
     });
-    gulp.watch("app/assets/scss/*.scss", function(){
+    gulp.watch("app/assets/scss/*.scss", function () {
         return gulp.src('app/assets/scss/*.scss')
             .pipe(sass())
             .pipe(gulp.dest('app/assets/css'))
@@ -36,17 +46,99 @@ gulp.task('serve', function() {
     });
 
 });
-
-gulp.task('release', function () {
-    var target = gulp.src('app/index.html');
-    // It's not necessary to read the files (will speed up things), we're only after their paths:
-    var sources = gulp.src(['app/app.js', 'app/app.controller.js', 'app/app.oc_lazy_load.js',
-    "app/assets/css/main.css", "app/assets/css/responsive.css"], {read: false});
-
-
-    return target.pipe(inject(sources, {
-        relative : true,
-        addSuffix: "?v=" + Math.random()
-    })).pipe(gulp.dest('app'));
+gulp.task('clean', function(){
+    return del(['dist','.tmp'], {force:true});
 });
+
+gulp.task('combine',function(){
+    return gulp.src([
+        'app/pages/**/*.js'
+    ])
+        .pipe(concat('app.main.js'))
+        .pipe(gulp.dest('app'));
+});
+gulp.task('partials', ['combine'], function ()
+{
+    return gulp.src([
+            'app/sh*/*.html',
+            'app/vi*/**/*.html',
+            'app/pag**/**/*.html'
+        ])
+        .pipe(htmlmin({
+            collapseWhitespace: false,
+            empty: true,
+            removeEmptyAttributes:false,
+            removeAttributeQuotes:false,
+            maxLineLength     : 120,
+            quoteCharacter:"",
+            removeComments    : false
+        }))
+        .pipe(angularTemplatecache('templateCacheHtml.js', {
+            module: 'able'
+        }))
+        .pipe(gulp.dest('.tmp/partials/'));
+});
+
+gulp.task('inject', ['partials'], function () {
+
+	var partialsInjectFile = gulp.src('.tmp/partials/templateCacheHtml.js', {read: false});
+    var partialsInjectOptions = {
+        starttag    : '<!-- inject:partials -->',
+        ignorePath  : '.tmp/partials',
+        addRootSlash: false
+    };
+	 
+	return gulp.src("app/index.html")
+	.pipe(inject(partialsInjectFile, partialsInjectOptions))
+	.pipe(gulp.dest('app'));
+});
+
+
+
+
+gulp.task('dist:css',  function () {
+		var cssSrc = ["app/assets/css/main.css", "app/assets/css/responsive.css", "app/assets/css/menu.css"];
+    return gulp.src(cssSrc,{base:'app/assets/css/'})
+    .pipe(rev())
+	.pipe(gulp.dest("dist/assets/css"))
+	.pipe(rev.manifest({path: 'manifestCSS.json'}))
+		.pipe(gulp.dest('.tmp'));
+    
+});
+
+
+gulp.task('build', ['inject', 'dist:css'], function () {
+	
+	var jsSrc = ['app/*.js', '.tmp/partials/*.js'];
+    return gulp.src(jsSrc)
+	/*.pipe(uglify().on('error', function(uglify) {
+        console.error(uglify.message);
+        this.emit('end');
+    }))*/
+    .pipe(rev())
+	.pipe(gulp.dest("dist"))
+	.pipe(rev.manifest({path: 'manifestJS.json'}))
+	.pipe(gulp.dest(".tmp"));
+    
+    
+});
+
+gulp.task('dist', ['build'],   function () {
+	return  gulp.src(['.tmp/*.json'])
+    .pipe(extend('rev-manifest.json')) // gulp-extend
+    .pipe(gulp.dest('.tmp'));
+    
+});
+
+gulp.task('release', ['dist' ], function () {
+
+	return gulp.src('app/index.html')
+       .pipe(revReplace({manifest: gulp.src(".tmp/rev-manifest.json")}))
+        .pipe(gulp.dest("dist"));
+
+});
+
+
+
+
 

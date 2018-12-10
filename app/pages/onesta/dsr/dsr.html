@@ -1,0 +1,1305 @@
+<div class="horizontal-fixed fixed">
+    <div class="wrapper">
+        <div ng-include="'shared/header.html'"></div>
+        <div ng-include="'shared/sidebar.html'"></div>
+        <div class="content-wrapper">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-12 xs-no-padding">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5 class="card-header-text">
+                                    <span class="hidden-sm-down">Daily Sales Reports &nbsp;</span>
+                                    <span class="hidden-md-up">DSR &nbsp;</span>
+                                </h5>
+                                <label class="label bg-facebook label-md">
+                                    {{ formatDate(selectedFilter.fromDate, 'dd MMM yyyy') }} - {{
+                                    formatDate(selectedFilter.curDate, 'dd MMM yyyy') }}</label>
+                                <div class="f-right">
+                                    <span class="hidden-sm-down">
+                                    <label class="label label-inverse-success" ng-if="!selectedFilter.Region">All
+                                        Region</label>
+                                    <span ng-if="selectedFilter.Region">
+                                        <label class="label label-inverse-success">{{filteredText("Region")}}</label>
+                                        <label class="label label-inverse-success" ng-if="selectedFilter.Cluster">{{filteredText("Cluster")}}</label>
+                                        <label class="label label-inverse-success" ng-if="selectedFilter.City">{{filteredText("City")}}</label>
+                                    </span>
+                                    <label class="label label-inverse-success">{{filteredText('Outlet')}}</label>
+                                    <label class="label label-inverse-success">Selection-{{selection.type.value}}</label>
+                                        </span>
+
+                                    <a href="javascript:;" class="filter-button p-r-15"><i
+                                            class="icofont icofont-filter"></i>
+                                        <span class="hidden-sm-down">Filters</span></a>
+                                </div>
+                                <div class="hidden-xs-up text-center text-muted p-t-10 small">
+                                    <strong>Filtered on: </strong>
+                                    <span class="label label-inverse-info" ng-if="!selectedFilter.Region">All
+                                        Region</span>
+                                    <span ng-if="selectedFilter.Region">
+                                        <span class="label label-inverse-info">{{filteredText("Region")}}</span>
+                                        <span class="label label-inverse-info" ng-if="selectedFilter.Cluster">{{filteredText("Cluster")}}</span>
+                                        <span class="label label-inverse-info" ng-if="selectedFilter.City">{{filteredText("City")}}</span>
+                                    </span>
+                                    <span class="label label-inverse-info">{{filteredText('Outlet')}}</span>
+                                    <span class="label label-inverse-info">Selection-{{selection.type.value}}</span>
+                                </div>
+                            </div>
+                            <div class="card-block p-5">
+                                <div class="row salesFilter row m-b-10 m-t-15" style="display: none;">
+                                    <form class="form-floating-labels">
+                                        <!--<div class="col-lg-2 col-md-4 col-sm-6 col-xs-6">-->
+                                            <!--<div class="md-group-add-on">-->
+                                                <!--<span class="md-add-on"><i-->
+                                                        <!--class="icofont icofont-ui-calendar"></i></span>-->
+                                                <!--<div class="md-input-wrapper">-->
+                                                    <!--<input type="text" id="fromDate" class="md-form-control md-static"-->
+                                                           <!--placeholder="From Date"-->
+                                                           <!--ng-change="onFilterChange('fromDate')"-->
+                                                           <!--ng-model="selectedFilter.fromDate">-->
+                                                    <!--<label>From Date</label>-->
+                                                    <!--<span class="md-line"></span></div>-->
+                                            <!--</div>-->
+                                        <!--</div>-->
+                                        <div class="offset-lg-1">&nbsp;</div>
+                                        <div class="col-lg-2 col-md-4 col-sm-6 col-xs-6">
+                                            <div class="md-group-add-on">
+                                                <span class="md-add-on"><i
+                                                        class="icofont icofont-ui-calendar"></i></span>
+                                                <div class="md-input-wrapper">
+                                                    <input type="text" id="toDate" class="md-form-control md-static"
+                                                           placeholder="Till Date"
+                                                           ng-change="onFilterChange('tillDate')"
+                                                           ng-model="selectedFilter.curDate">
+                                                    <label>Till Date</label>
+                                                    <span class="md-line"></span></div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-2 col-md-6 col-sm-6 col-xs-12">
+                                            <div class="md-input-wrapper">
+                                                <select class="md-form-control" ng-change="onFilterChange('Region')"
+                                                        ng-model="selectedFilter.Region"
+                                                        ng-options="item.RegionName as item.RegionName for item in hierarchyMaster.Region">
+                                                    <option value=""></option>
+                                                </select>
+                                                <label>Select Region</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-2 col-md-6 col-sm-6 col-xs-12">
+                                            <div class="md-input-wrapper">
+                                                <select class="md-form-control"
+                                                        ng-change="onFilterChange('Cluster')"
+                                                        ng-disabled="!selectedFilter.Region"
+                                                        ng-model="selectedFilter.Cluster"
+                                                        ng-options="item.ClusterName as item.ClusterName for item in hierarchyMaster.Cluster | filter:{RegionName:(selectedFilter.Region? selectedFilter.Region : '')}">
+                                                    <option value=""></option>
+                                                </select>
+                                                <label>Select Cluster</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-2 col-md-6 col-sm-6 col-xs-12">
+                                            <div class="md-input-wrapper">
+                                                <select class="md-form-control" ng-change="onFilterChange('City')"
+                                                        ng-disabled="!selectedFilter.Region"
+                                                        ng-model="selectedFilter.City"
+                                                        ng-options="item.CityName as item.CityName for item in hierarchyMaster.City | filter:{RegionName:(selectedFilter.Region? selectedFilter.Region : '')}">
+                                                    <option value=""></option>
+                                                </select>
+                                                <label>Select City</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-2 col-md-6 col-sm-6 col-xs-12">
+                                            <div class="md-input-wrapper">
+                                                <select class="md-form-control" ng-change="onFilterChange('Outlet')"
+                                                        ng-model="selectedFilter.Outlet"
+                                                        ng-options="item.OutletCode as item.OutletName for item in filteredOutlets">
+                                                    <option value=""></option>
+                                                </select>
+                                                <label>Select Outlet</label>
+                                            </div>
+                                        </div>
+                                        <div class="offset-lg-1">&nbsp;</div>
+                                        <!--<div class="col-lg-2 col-md-6 col-sm-6 col-xs-6" style="margin-bottom: 20px">
+                                            <label style="margin-left: 5px;color: #40c4ff;font-size: 13px;">Selection
+                                                Type</label><br>
+                                            <div class="radio" style="display:inline;">
+                                                <input id="radio-1" name="SelectionType"
+                                                       ng-model="selection.type"
+                                                       ng-change="filterDSRReports()" value="DATE"
+                                                       type="radio">
+                                                <label for="radio-1" class="radio-label m-b-0">Date</label>
+                                            </div>
+                                            <div class="radio" style="display:inline;">
+                                                <input id="radio-2" ng-model="selection.type"
+                                                       name="SelectionType" ng-disabled="ifItsLastDate"
+                                                       ng-change="filterDSRReports()" value="DAY"
+                                                       type="radio">
+                                                <label for="radio-2" class="radio-label m-b-0">Day</label>
+                                            </div>
+                                        </div>-->
+                                    </form>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-12 p-b-5">
+                                       <!-- <div class="f-left">
+                                            <div class="btn-group d-inline-block">
+                                                <label class="btn btn-primary btn-mini m-b-0"
+                                                       ng-model="viewType" ng-click="dsrReport()"
+                                                       uib-btn-radio="'D'"> <i class="icon-speedometer"></i>
+                                                    <span class="hidden-sm-down">DSR SUMMARY</span>
+                                                </label>
+                                                <label class="btn btn-primary btn-mini m-b-0"
+                                                       ng-model="viewType" ng-click="dsrReport()"
+                                                       uib-btn-radio="'DD'"><i class="fas fa-globe fa-md"></i>
+                                                    <span class="hidden-sm-down">DETAILED DSR</span>
+                                                </label>
+                                            </div>
+                                        </div>-->
+                                        <div class="f-right">
+                                            <div class="dropdown">
+                                                <btn-dropdown class="d-inline-block  btn-dropdown-mini"
+                                                              options="selectedFilterOptions"
+                                                              select-model="selectedFilter.RType"
+                                                              select-change="dsrReport()"></btn-dropdown>
+                                                <btn-dropdown ng-if="viewType==='DD'"
+                                                              class="d-inline-block m-l-5 btn-dropdown-mini"
+                                                              options="dayMtdOptions"
+                                                              select-model="selectedFilter.SType"
+                                                              select-change="setFilterDsrData()">
+                                                </btn-dropdown>
+                                               <!-- <btn-dropdown ng-if="viewType==='DD'"
+                                                              class="d-inline-block m-l-5 btn-dropdown-mini"
+                                                              options="categoryOption"
+                                                              select-model="selectedFilter.Category"
+                                                              select-change="setFilterDsrData()">
+
+                                                </btn-dropdown>
+                                                <btn-dropdown ng-if="viewType==='D'"
+                                                              class="d-inline-block m-l-5 btn-dropdown-mini"
+                                                              options="fYearOption"
+                                                              select-model="selectedFilter.FYear"
+                                                              select-change="filterDSRReports('FYear')">
+
+                                                </btn-dropdown>-->
+                                                <btn-dropdown ng-if="viewType==='D'"
+                                                              class="d-inline-block m-l-5 btn-dropdown-mini"
+                                                              options="sessionOptions"
+                                                              select-model="selection.type"
+                                                              select-change="filterDSRReports()"></btn-dropdown>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <br class="hidden-md-up">
+                                    <div class="col-lg-12 col-xs-12" ng-if="viewType==='D'">
+                                        <div class="text-center p-15" ng-if="!dsrData"><i
+                                                class="fa fa-circle-o-notch fa-spin fa-lg"></i> Loading...
+                                        </div>
+                                        <div class="table-responsive" ng-if="dsrData">
+                                            <table class="table kpi-table text-center hidden-sm-down">
+                                                <thead class="table-inverse">
+                                                <tr>
+                                                    <th>
+                                                        <p><strong>Criteria</strong></p>
+                                                    </th>
+                                                    <th style="border-bottom: none!important;"
+                                                        ng-if="selectedFilter.value==='ST'">
+                                                        <p><strong></strong></p>
+                                                    </th>
+                                                    <th style="border-bottom: none!important;"
+                                                        ng-if="selectedFilter.value==='ST'">
+                                                        <p><strong></strong></p>
+                                                    </th>
+                                                    <td class="nodata"></td>
+                                                    <th colspan="4">
+                                                        <p><strong>All Store Sales</strong></p>
+                                                    </th>
+                                                    <th class="nodata"></th>
+                                                    <th colspan="3">
+                                                        <p><strong>Cover</strong></p>
+                                                    </th>
+                                                    <th class="nodata"></th>
+                                                    <th colspan="3">
+                                                        <p><strong>APC</strong></p>
+                                                    </th>
+                                                </tr>
+                                                <tr>
+                                                    <th>
+                                                        <p><strong>Period</strong></p>
+                                                    </th>
+                                                    <th ng-if="selectedFilter.value==='ST'">
+                                                        <p class="text-right"><strong>Vintage</strong></p>
+                                                    </th>
+                                                    <th ng-if="selectedFilter.value==='ST'">
+                                                        <p class="text-right"><strong>Model</strong></p>
+                                                    </th>
+                                                    <th></th>
+                                                    <th><p class="text-right"><strong>ADS</strong></th>
+                                                    <th>
+                                                        <p class="text-right"><strong>{{
+                                                            formatDate(selectedFilter.curDate, 'dd MMM
+                                                            yyyy') }}</strong></p>
+                                                    </th>
+                                                    <th>
+                                                        <p class="text-right"><strong>
+                                                            MTD</strong></p>
+                                                    </th>
+                                                    <th>
+                                                        <p class="text-right"><strong>YTD</strong></p>
+                                                    </th>
+                                                    <th></th>
+                                                    <th>
+                                                        <p class="text-right"><strong>{{
+                                                            formatDate(selectedFilter.curDate, 'dd MMM
+                                                            yyyy') }}</strong></p>
+                                                    </th>
+                                                    <th>
+                                                        <p class="text-right"><strong>
+                                                            MTD</strong></p>
+                                                    </th>
+                                                    <th>
+                                                        <p class="text-right"><strong>YTD</strong></p>
+                                                    </th>
+                                                    <th></th>
+                                                    <th>
+                                                        <p class="text-right"><strong>{{
+                                                            formatDate(selectedFilter.curDate, 'dd MMM
+                                                            yyyy') }}</strong></p>
+                                                    </th>
+                                                    <th>
+                                                        <p class="text-right"><strong>
+                                                            MTD</strong></p>
+                                                    </th>
+                                                    <th>
+                                                        <p class="text-right"><strong>YTD</strong></p>
+                                                    </th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                <tr ng-repeat="item in dsrData.Sales_Crs.SalesList"
+                                                    ng-class="{'bg-facebook':$index==0,'dsr-trend-td':$index>0,'dem-grey-row':item.Period.Value.indexOf('TOTAL')>=0}">
+                                                    <td>
+                                                        <p ng-if="$index==0" style="text-align: center">
+                                                            <strong>{{item.Period.Value}}</strong></p>
+                                                        <p ng-if="$index>0"
+                                                           style="cursor: pointer;text-align: left">
+                                                            <strong>{{item.Period.Value}}</strong></p>
+                                                    </td>
+                                                    <td ng-if="selectedFilter.value==='ST'"
+                                                        ng-click="dsrTrendModal()">
+                                                        <p style="cursor: pointer;text-align: left"><strong>{{item.Vintage.Value}}</strong>
+                                                        </p>
+                                                    </td>
+                                                    <td ng-if="selectedFilter.value==='ST'">
+                                                        <p style="cursor: pointer;text-align: left"><strong>{{item.Model.Value}}</strong>
+                                                        </p>
+                                                    </td>
+                                                    <td>&nbsp;</td>
+                                                    <td>
+                                                        <p class="text-right">
+                                                            <strong>{{item.ADS.Value}}</strong>
+                                                        </p>
+                                                    </td>
+                                                    <td>
+                                                        <p class="text-right">
+                                                            <strong>{{item.CurrentDate.Value}}</strong></p>
+                                                    </td>
+                                                    <td>
+                                                        <p class="text-right">
+                                                            <strong>{{item.JanMTD.Value}}</strong>
+                                                        </p>
+                                                    </td>
+                                                    <td>
+                                                        <p class="text-right">
+                                                            <strong>{{item.YTD.Value}}</strong>
+                                                        </p>
+                                                    </td>
+                                                    <td>&nbsp;</td>
+                                                    <td>
+                                                        <p class="text-right"><strong>{{dsrData.DSR_Covers.DSR_Covers_List[$index].CurrentDate.Value}}</strong>
+                                                        </p>
+                                                    </td>
+                                                    <td>
+                                                        <p class="text-right"><strong>{{dsrData.DSR_Covers.DSR_Covers_List[$index].JanMTD.Value}}</strong>
+                                                        </p>
+                                                    </td>
+                                                    <td>
+                                                        <p class="text-right"><strong>{{dsrData.DSR_Covers.DSR_Covers_List[$index].YTD.Value}}</strong>
+                                                        </p>
+                                                    </td>
+                                                    <td>&nbsp;</td>
+                                                    <td>
+                                                        <p class="text-right">
+                                                            <strong>{{item.CurrentDate.Value}}</strong></p>
+                                                    </td>
+                                                    <td>
+                                                        <p class="text-right">
+                                                            <strong>{{item.JanMTD.Value}}</strong>
+                                                        </p>
+                                                    </td>
+                                                    <td>
+                                                        <p class="text-right">
+                                                            <strong>{{item.YTD.Value}}</strong>
+                                                        </p>
+                                                    </td>
+                                                </tr>
+                                                </tbody>
+                                            </table>
+                                            <table class="table kpi-table text-center table-sm hidden-md-up">
+                                                <thead class="table-inverse">
+                                                <tr>
+                                                    <th>
+                                                        <p><strong>Criteria</strong></p>
+                                                    </th>
+                                                    <th style="border-bottom: none!important;"
+                                                        ng-if="selectedFilter.value==='ST'">
+                                                        <p><strong></strong></p>
+                                                    </th>
+                                                    <th class="nodata"></th>
+                                                    <th colspan="4">
+                                                        <p><strong>All Store Sales</strong></p>
+                                                    </th>
+                                                    <th class="nodata"></th>
+                                                    <th colspan="2">
+                                                        <p><strong>SSSG Actual</strong></p>
+                                                    </th>
+
+                                                </tr>
+                                                <tr>
+                                                    <th>
+                                                        <p><strong>Period</strong></p>
+                                                    </th>
+                                                    <th ng-if="selectedFilter.value==='ST'">
+                                                        <p class="text-right"><strong>Vintage</strong></p>
+                                                    </th>
+                                                    <th></th>
+                                                    <th><p class="text-right"><strong>ADS</strong></th>
+                                                    <th>
+                                                        <p class="text-right"><strong>{{
+                                                            formatDate(selectedFilter.curDate, 'dd MMM
+                                                            yyyy') }}</strong></p>
+                                                    </th>
+                                                    <th>
+                                                        <p class="text-right"><strong>
+                                                            MTD</strong></p>
+                                                    </th>
+                                                    <th>
+                                                        <p class="text-right"><strong>YTD</strong></p>
+                                                    </th>
+                                                    <th></th>
+                                                    <th>
+                                                        <p class="text-right"><strong>
+                                                            MTD</strong></p>
+                                                    </th>
+                                                    <th>
+                                                        <p class="text-right"><strong>YTD</strong></p>
+                                                    </th>
+
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                <tr ng-repeat="item in dsrData.Sales_Crs.SalesList"
+                                                    ng-class="{'bg-facebook':$index==0,'dsr-trend-td':$index>0,'dem-grey-row':item.Period.Value.indexOf('TOTAL')>=0}">
+                                                    <td>
+                                                        <p ng-if="$index==0" style="text-align: center">
+                                                            <strong>{{item.Period.Value}}</strong></p>
+                                                        <p ng-if="$index>0"
+                                                           style="cursor: pointer;text-align: left">
+                                                            <strong>{{item.Period.Value}}</strong></p>
+                                                    </td>
+                                                    <td ng-if="selectedFilter.value==='ST'">
+                                                        <p style="cursor: pointer;text-align: left"><strong>{{item.Vintage.Value}}</strong>
+                                                        </p>
+                                                    </td>
+                                                    <td>&nbsp;</td>
+                                                    <td>
+                                                        <p class="text-right">
+                                                            <strong>{{item.ADS.Value}}</strong>
+                                                        </p>
+                                                    </td>
+                                                    <td>
+                                                        <p class="text-right">
+                                                            <strong>{{item.CurrentDate.Value}}</strong></p>
+                                                    </td>
+                                                    <td>
+                                                        <p class="text-right">
+                                                            <strong>{{item.JanMTD.Value}}</strong>
+                                                        </p>
+                                                    </td>
+                                                    <td>
+                                                        <p class="text-right">
+                                                            <strong>{{item.YTD.Value}}</strong>
+                                                        </p>
+                                                    </td>
+                                                    <td>&nbsp;</td>
+                                                    <td>
+                                                        <p class="text-right"
+                                                           ng-class="{'text-success':$index>0 && dsrData.SSSG.SSSGList[$index].JanMTD.Value>0,'text-danger':$index>0 && dsrData.SSSG.SSSGList[$index].JanMTD.Value<0}">
+                                                            <strong>{{dsrData.SSSG.SSSGList[$index].JanMTD.Value}}<span
+                                                                    ng-hide="$index==0">%</span></strong></p>
+                                                    </td>
+                                                    <td ng-click="dsrTrendModal(item,'SY')">
+                                                        <p class="text-right"
+                                                           ng-class="{'text-success':$index>0 && dsrData.SSSG.SSSGList[$index].YTD.Value>0,'text-danger':$index>0 && dsrData.SSSG.SSSGList[$index].YTD.Value<0}">
+                                                            <strong>{{dsrData.SSSG.SSSGList[$index].YTD.Value}}<span
+                                                                    ng-hide="$index==0">%</span></strong></p>
+                                                    </td>
+                                                </tr>
+
+                                                </tbody>
+                                            </table>
+                                            <table class="table kpi-table text-center table-sm hidden-md-up">
+                                                <thead class="table-inverse">
+                                                <tr>
+                                                    <th>
+                                                        <p><strong>Criteria</strong></p>
+                                                    </th>
+                                                    <th style="border-bottom: none!important;"
+                                                        ng-if="selectedFilter.value==='ST'">
+                                                        <p><strong></strong></p>
+                                                    </th>
+                                                    <th class="nodata" ng-if="showSSCG.checked"></th>
+                                                    <th colspan="2" ng-if="showSSCG.checked">
+                                                        <p><strong>SSCG Actual</strong></p>
+                                                    </th>
+                                                    <th class="nodata"></th>
+                                                    <th colspan="2">
+                                                        <p><strong>Total Sales Growth</strong></p>
+                                                    </th>
+                                                </tr>
+                                                <tr>
+                                                    <th>
+                                                        <p><strong>Period</strong></p>
+                                                    </th>
+                                                    <th ng-if="selectedFilter.value==='ST'">
+                                                        <p class="text-right"><strong>Model</strong></p>
+                                                    </th>
+                                                    <th ng-if="showSSCG.checked"></th>
+                                                    <th ng-if="showSSCG.checked">
+                                                        <p class="text-right"><strong>
+                                                            MTD</strong></p>
+                                                    </th>
+                                                    <th ng-if="showSSCG.checked">
+                                                        <p class="text-right"><strong>YTD</strong></p>
+                                                    </th>
+                                                    <th></th>
+                                                    <th>
+                                                        <p class="text-right"><strong>
+                                                            MTD</strong></p>
+                                                    </th>
+                                                    <th>
+                                                        <p class="text-right"><strong>YTD</strong></p>
+                                                    </th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                <tr ng-repeat="item in dsrData.Sales_Crs.SalesList"
+                                                    ng-class="{'bg-facebook':$index==0,'dsr-trend-td':$index>0,'dem-grey-row':item.Period.Value.indexOf('TOTAL')>=0}">
+                                                    <td>
+                                                        <p ng-class="item.Period.Value=='# Stores'?'text-center':'text-left'">
+                                                            <strong>{{item.Period.Value}}</strong></p>
+                                                    </td>
+                                                    <td ng-if="selectedFilter.value==='ST'">
+                                                        <p class="text-right" style="cursor: pointer;"><strong>{{item.Model.Value}}</strong>
+                                                        </p>
+                                                    </td>
+                                                    <td ng-if="showSSCG.checked">&nbsp;</td>
+                                                    <td ng-if="showSSCG.checked">
+                                                        <p class="text-right"
+                                                           ng-class="{'text-success':$index>0 && dsrData.SSCG.SSCGList[$index].JanMTD.Value>0,'text-danger':$index>0 && dsrData.SSCG.SSCGList[$index].JanMTD.Value<0}">
+                                                            <strong>{{dsrData.SSCG.SSCGList[$index].JanMTD.Value}}<span
+                                                                    ng-hide="$index==0">%</span></strong></p>
+                                                    </td>
+                                                    <td ng-if="showSSCG.checked">
+                                                        <p class="text-right"
+                                                           ng-class="{'text-success':$index>0 && dsrData.SSCG.SSCGList[$index].YTD.Value>0,'text-danger':$index>0 && dsrData.SSCG.SSCGList[$index].YTD.Value<0}">
+                                                            <strong>{{dsrData.SSCG.SSCGList[$index].YTD.Value}}<span
+                                                                    ng-hide="$index==0">%</span></strong></p>
+                                                    </td>
+                                                    <td>&nbsp;</td>
+                                                    <td>
+                                                        <p class="text-right"
+                                                           ng-class="{'text-success':$index>0 && dsrData.Sales_Growth.Sales_GrowthList[$index].JanMTD.Value>0,'text-danger':$index>0 && dsrData.Sales_Growth.Sales_GrowthList[$index].JanMTD.Value<0}">
+                                                            <strong>{{dsrData.Sales_Growth.Sales_GrowthList[$index].JanMTD.Value}}<span
+                                                                    ng-hide="$index==0">%</span></strong></p>
+                                                    </td>
+                                                    <td>
+                                                        <p class="text-right"
+                                                           ng-class="{'text-success':$index>0 && dsrData.Sales_Growth.Sales_GrowthList[$index].YTD.Value>0,'text-danger':$index>0 && dsrData.Sales_Growth.Sales_GrowthList[$index].YTD.Value<0}">
+                                                            <strong>{{dsrData.Sales_Growth.Sales_GrowthList[$index].YTD.Value}}<span
+                                                                    ng-hide="$index==0">%</span></strong></p>
+                                                    </td>
+                                                </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <div class="table-responsive" ng-if="dsrData">
+                                            <table class="table kpi-table text-center hidden-sm-down">
+                                                <thead class="table-inverse">
+                                                <tr>
+                                                    <th>
+                                                        <p><strong>Criteria</strong></p>
+                                                    </th>
+                                                    <th colspan="2">
+                                                        <p><strong>SSSG Actual</strong></p>
+                                                    </th>
+                                                    <th class="nodata" ng-if="showSSCG.checked"></th>
+                                                    <th colspan="2" ng-if="showSSCG.checked">
+                                                        <p><strong>SSCG Actual</strong></p>
+                                                    </th>
+                                                    <th class="nodata"></th>
+                                                    <th colspan="2">
+                                                        <p><strong>Total Sales Growth</strong></p>
+                                                    </th>
+                                                    <th class="nodata"></th>
+                                                    <th colspan="2">
+                                                        <p><strong>Bgt vs Act (Running Stores)</strong></p>
+                                                    </th>
+                                                    <th class="nodata"></th>
+                                                    <th colspan="2">
+                                                        <p><strong>Turn (Actuals)</strong></p>
+                                                    </th>
+                                                    <th class="nodata"></th>
+                                                    <th colspan="2">
+                                                        <p><strong>Beverage Sale %</strong></p>
+                                                    </th>
+                                                </tr>
+                                                <tr>
+                                                    <th>
+                                                        <p><strong>Period</strong></p>
+                                                    </th>
+                                                    <th>
+                                                        <p class="text-right"><strong>
+                                                            MTD</strong></p>
+                                                    </th>
+                                                    <th>
+                                                        <p class="text-right"><strong>YTD</strong></p>
+                                                    </th>
+                                                    <th ng-if="showSSCG.checked"></th>
+                                                    <th ng-if="showSSCG.checked">
+                                                        <p class="text-right"><strong>
+                                                            MTD</strong></p>
+                                                    </th>
+                                                    <th ng-if="showSSCG.checked">
+                                                        <p class="text-right"><strong>YTD</strong></p>
+                                                    </th>
+                                                    <th></th>
+                                                    <th>
+                                                        <p class="text-right"><strong>
+                                                            MTD</strong></p>
+                                                    </th>
+                                                    <th>
+                                                        <p class="text-right"><strong>YTD</strong></p>
+                                                    </th>
+                                                    <th></th>
+                                                    <th>
+                                                        <p class="text-right"><strong>
+                                                            MTD</strong></p>
+                                                    </th>
+                                                    <th>
+                                                        <p class="text-right"><strong>YTD</strong></p>
+                                                    </th>
+                                                    <th></th>
+                                                    <th>
+                                                        <p class="text-right"><strong>Lunch</strong></p>
+                                                    </th>
+                                                    <th>
+                                                        <p class="text-right"><strong>Dinner</strong></p>
+                                                    </th>
+                                                    <th></th>
+                                                    <th>
+                                                        <p class="text-right"><strong>
+                                                            MTD</strong></p>
+                                                    </th>
+                                                    <th>
+                                                        <p class="text-right"><strong>YTD</strong></p>
+                                                    </th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                <tr ng-repeat="item in dsrData.APC.APCList"
+                                                    ng-class="{'bg-facebook':$index==0,'dsr-trend-td':$index>0,'dem-grey-row':item.Period.Value.indexOf('TOTAL')>=0}">
+                                                    <td>
+                                                        <p ng-class="item.Period.Value=='# Stores'?'text-center':'text-left'">
+                                                            <strong>{{item.Period.Value}}</strong></p>
+                                                    </td>
+                                                    <td>
+                                                        <p class="text-right"
+                                                           ng-class="{'text-success':$index>0 && dsrData.SSSG.SSSGList[$index].JanMTD.Value>0,'text-danger':$index>0 && dsrData.SSSG.SSSGList[$index].JanMTD.Value<0}">
+                                                            <strong>{{dsrData.SSSG.SSSGList[$index].JanMTD.Value}}<span
+                                                                    ng-hide="$index==0">%</span></strong></p>
+                                                    </td>
+                                                    <td>
+                                                        <p class="text-right"
+                                                           ng-class="{'text-success':$index>0 && dsrData.SSSG.SSSGList[$index].YTD.Value>0,'text-danger':$index>0 && dsrData.SSSG.SSSGList[$index].YTD.Value<0}">
+                                                            <strong>{{dsrData.SSSG.SSSGList[$index].YTD.Value}}<span
+                                                                    ng-hide="$index==0">%</span></strong></p>
+                                                    </td>
+                                                    <td ng-if="showSSCG.checked">&nbsp;</td>
+                                                    <td ng-if="showSSCG.checked"
+                                                      >
+                                                        <p class="text-right"
+                                                           ng-class="{'text-success':$index>0 && dsrData.SSCG.SSCGList[$index].JanMTD.Value>0,'text-danger':$index>0 && dsrData.SSCG.SSCGList[$index].JanMTD.Value<0}">
+                                                            <strong>{{dsrData.SSCG.SSCGList[$index].JanMTD.Value}}<span
+                                                                    ng-hide="$index==0">%</span></strong></p>
+                                                    </td>
+                                                    <td ng-if="showSSCG.checked"
+                                                      >
+                                                        <p class="text-right"
+                                                           ng-class="{'text-success':$index>0 && dsrData.SSCG.SSCGList[$index].YTD.Value>0,'text-danger':$index>0 && dsrData.SSCG.SSCGList[$index].YTD.Value<0}">
+                                                            <strong>{{dsrData.SSCG.SSCGList[$index].YTD.Value}}<span
+                                                                    ng-hide="$index==0">%</span></strong></p>
+                                                    </td>
+                                                    <td>&nbsp;</td>
+                                                    <td>
+                                                        <p class="text-right"
+                                                           ng-class="{'text-success':$index>0 && dsrData.Sales_Growth.Sales_GrowthList[$index].JanMTD.Value>0,'text-danger':$index>0 && dsrData.Sales_Growth.Sales_GrowthList[$index].JanMTD.Value<0}">
+                                                            <strong>{{dsrData.Sales_Growth.Sales_GrowthList[$index].JanMTD.Value}}<span
+                                                                    ng-hide="$index==0">%</span></strong></p>
+                                                    </td>
+                                                    <td>
+                                                        <p class="text-right"
+                                                           ng-class="{'text-success':$index>0 && dsrData.Sales_Growth.Sales_GrowthList[$index].YTD.Value>0,'text-danger':$index>0 && dsrData.Sales_Growth.Sales_GrowthList[$index].YTD.Value<0}">
+                                                            <strong>{{dsrData.Sales_Growth.Sales_GrowthList[$index].YTD.Value}}<span
+                                                                    ng-hide="$index==0">%</span></strong></p>
+                                                    </td>
+                                                    <td>&nbsp;</td>
+                                                    <td>
+                                                        <p class="text-right"
+                                                           ng-class="{'text-success':$index>0 && dsrData.BgtVsAct.BgtVsActList[$index].JanMTD.Value>0,'text-danger':$index>0 && dsrData.BgtVsAct.BgtVsActList[$index].JanMTD.Value<0}">
+                                                            <strong>{{dsrData.BgtVsAct.BgtVsActList[$index].JanMTD.Value}}<span
+                                                                    ng-hide="$index==0">%</span></strong></p>
+                                                    </td>
+                                                    <td>
+                                                        <p class="text-right"
+                                                           ng-class="{'text-success':$index>0 && dsrData.BgtVsAct.BgtVsActList[$index].YTD.Value>0,'text-danger':$index>0 && dsrData.BgtVsAct.BgtVsActList[$index].YTD.Value<0}">
+                                                            <strong>{{dsrData.BgtVsAct.BgtVsActList[$index].YTD.Value}}<span
+                                                                    ng-hide="$index==0">%</span></strong></p>
+                                                    </td>
+                                                    <td>&nbsp;</td>
+                                                    <td>
+                                                        <p class="text-right"
+                                                           ng-class="{'text-success':$index>0 && dsrData.Turn.TurnList[$index].Lunch.Value>=0.5,'text-danger':$index>0 && dsrData.Turn.TurnList[$index].Lunch.Value<=0.4}">
+                                                            <strong>{{dsrData.Turn.TurnList[$index].Lunch.Value}}</strong>
+                                                        </p>
+                                                    </td>
+                                                    <td>
+                                                        <p class="text-right"
+                                                           ng-class="{'text-success':$index>0 && dsrData.Turn.TurnList[$index].DInner.Value>=0.5,'text-danger':$index>0 && dsrData.Turn.TurnList[$index].DInner.Value<=0.4}">
+                                                            <strong>{{dsrData.Turn.TurnList[$index].DInner.Value}}</strong>
+                                                        </p>
+                                                    </td>
+                                                    <td>&nbsp;</td>
+                                                    <td>
+                                                        <p class="text-right"
+                                                           ng-class="{'text-success':$index>0 && dsrData.Beverage.BeverageList[$index].JanMTD.Value>0,'text-danger':$index>0 && dsrData.Beverage.BeverageList[$index].JanMTD.Value<0}">
+                                                            <strong>{{dsrData.Beverage.BeverageList[$index].JanMTD.Value}}<span
+                                                                    ng-hide="$index==0">%</span></strong></p>
+                                                    </td>
+                                                    <td>
+                                                        <p class="text-right"
+                                                           ng-class="{'text-success':$index>0 && dsrData.Beverage.BeverageList[$index].YTD.Value>0,'text-danger':$index>0 && dsrData.Beverage.BeverageList[$index].YTD.Value<0}">
+                                                            <strong>{{dsrData.Beverage.BeverageList[$index].YTD.Value}}<span
+                                                                    ng-hide="$index==0">%</span></strong></p>
+                                                    </td>
+                                                </tr>
+
+                                                </tbody>
+                                            </table>
+                                            <table class="table kpi-table text-center  table-sm hidden-md-up">
+                                                <thead class="table-inverse">
+                                                <tr>
+                                                    <th>
+                                                        <p><strong>Criteria</strong></p>
+                                                    </th>
+                                                    <th colspan="3">
+                                                        <p><strong>Cover</strong></p>
+                                                    </th>
+                                                    <th class="nodata"></th>
+                                                    <th colspan="3">
+                                                        <p><strong>APC</strong></p>
+                                                    </th>
+                                                    <th class="nodata"></th>
+                                                    <th colspan="2">
+                                                        <p><strong>Bgt vs Act (Running Stores)</strong></p>
+                                                    </th>
+
+                                                </tr>
+                                                <tr>
+                                                    <th>
+                                                        <p><strong>Period</strong></p>
+                                                    </th>
+                                                    <th>
+                                                        <p class="text-right"><strong>{{
+                                                            formatDate(selectedFilter.curDate, 'dd MMM
+                                                            yyyy') }}</strong></p>
+                                                    </th>
+                                                    <th>
+                                                        <p class="text-right"><strong>
+                                                            MTD</strong></p>
+                                                    </th>
+                                                    <th>
+                                                        <p class="text-right"><strong>YTD</strong></p>
+                                                    </th>
+                                                    <th></th>
+                                                    <th>
+                                                        <p class="text-right"><strong>{{
+                                                            formatDate(selectedFilter.curDate, 'dd MMM
+                                                            yyyy') }}</strong></p>
+                                                    </th>
+                                                    <th>
+                                                        <p class="text-right"><strong>
+                                                            MTD</strong></p>
+                                                    </th>
+                                                    <th>
+                                                        <p class="text-right"><strong>YTD</strong></p>
+                                                    </th>
+                                                    <th></th>
+                                                    <th>
+                                                        <p class="text-right"><strong>
+                                                            MTD</strong></p>
+                                                    </th>
+                                                    <th>
+                                                        <p class="text-right"><strong>YTD</strong></p>
+                                                    </th>
+
+                                                </tr>
+
+
+                                                </thead>
+                                                <tbody>
+                                                <tr ng-repeat="item in dsrData.APC.APCList"
+                                                    ng-class="{'bg-facebook':$index==0,'dsr-trend-td':$index>0,'dem-grey-row':item.Period.Value.indexOf('TOTAL')>=0}">
+                                                    <td>
+                                                        <p ng-class="item.Period.Value=='# Stores'?'text-center':'text-left'">
+                                                            <strong>{{item.Period.Value}}</strong></p>
+                                                    </td>
+                                                    <td >
+                                                        <p class="text-right"><strong>{{dsrData.DSR_Covers.DSR_Covers_List[$index].CurrentDate.Value}}</strong>
+                                                        </p>
+                                                    </td>
+                                                    <td>
+                                                        <p class="text-right"><strong>{{dsrData.DSR_Covers.DSR_Covers_List[$index].JanMTD.Value}}</strong>
+                                                        </p>
+                                                    </td>
+                                                    <td>
+                                                        <p class="text-right"><strong>{{dsrData.DSR_Covers.DSR_Covers_List[$index].YTD.Value}}</strong>
+                                                        </p>
+                                                    </td>
+                                                    <td>&nbsp;</td>
+                                                    <td>
+                                                        <p class="text-right">
+                                                            <strong>{{item.CurrentDate.Value}}</strong></p>
+                                                    </td>
+                                                    <td>
+                                                        <p class="text-right">
+                                                            <strong>{{item.JanMTD.Value}}</strong>
+                                                        </p>
+                                                    </td>
+                                                    <td>
+                                                        <p class="text-right">
+                                                            <strong>{{item.YTD.Value}}</strong>
+                                                        </p>
+                                                    </td>
+                                                    <td>&nbsp;</td>
+                                                    <td>
+                                                        <p class="text-right"
+                                                           ng-class="{'text-success':$index>0 && dsrData.BgtVsAct.BgtVsActList[$index].JanMTD.Value>0,'text-danger':$index>0 && dsrData.BgtVsAct.BgtVsActList[$index].JanMTD.Value<0}">
+                                                            <strong>{{dsrData.BgtVsAct.BgtVsActList[$index].JanMTD.Value}}<span
+                                                                    ng-hide="$index==0">%</span></strong></p>
+                                                    </td>
+                                                    <td>
+                                                        <p class="text-right"
+                                                           ng-class="{'text-success':$index>0 && dsrData.BgtVsAct.BgtVsActList[$index].YTD.Value>0,'text-danger':$index>0 && dsrData.BgtVsAct.BgtVsActList[$index].YTD.Value<0}">
+                                                            <strong>{{dsrData.BgtVsAct.BgtVsActList[$index].YTD.Value}}<span
+                                                                    ng-hide="$index==0">%</span></strong></p>
+                                                    </td>
+                                                </tr>
+                                                </tbody>
+                                            </table>
+                                            <table class="table kpi-table text-center table-sm hidden-md-up">
+                                                <thead class="table-inverse">
+                                                <tr>
+                                                    <th>
+                                                        <p><strong>Criteria</strong></p>
+                                                    </th>
+                                                    <th class="nodata"></th>
+                                                    <th colspan="2">
+                                                        <p><strong>Turn (Actuals)</strong></p>
+                                                    </th>
+                                                    <th class="nodata"></th>
+                                                    <th colspan="2">
+                                                        <p><strong>Beverage Sale %</strong></p>
+                                                    </th>
+                                                </tr>
+                                                <tr>
+                                                    <th>
+                                                        <p><strong>Period</strong></p>
+                                                    </th>
+
+                                                    <th></th>
+                                                    <th>
+                                                        <p class="text-right"><strong>Lunch</strong></p>
+                                                    </th>
+                                                    <th>
+                                                        <p class="text-right"><strong>Dinner</strong></p>
+                                                    </th>
+                                                    <th></th>
+                                                    <th>
+                                                        <p class="text-right"><strong>
+                                                            MTD</strong></p>
+                                                    </th>
+                                                    <th>
+                                                        <p class="text-right"><strong>YTD</strong></p>
+                                                    </th>
+                                                </tr>
+
+                                                </thead>
+                                                <tbody>
+                                                <tr ng-repeat="item in dsrData.APC.APCList"
+                                                    ng-class="{'bg-facebook':$index==0,'dsr-trend-td':$index>0,'dem-grey-row':item.Period.Value.indexOf('TOTAL')>=0}">
+                                                    <td>
+                                                        <p ng-class="item.Period.Value=='# Stores'?'text-center':'text-left'">
+                                                            <strong>{{item.Period.Value}}</strong></p>
+                                                    </td>
+
+                                                    <td>&nbsp;</td>
+                                                    <td>
+                                                        <p class="text-right"
+                                                           ng-class="{'text-success':$index>0 && dsrData.Turn.TurnList[$index].Lunch.Value>=0.5,'text-danger':$index>0 && dsrData.Turn.TurnList[$index].Lunch.Value<=0.4}">
+                                                            <strong>{{dsrData.Turn.TurnList[$index].Lunch.Value}}</strong>
+                                                        </p>
+                                                    </td>
+                                                    <td>
+                                                        <p class="text-right"
+                                                           ng-class="{'text-success':$index>0 && dsrData.Turn.TurnList[$index].DInner.Value>=0.5,'text-danger':$index>0 && dsrData.Turn.TurnList[$index].DInner.Value<=0.4}">
+                                                            <strong>{{dsrData.Turn.TurnList[$index].DInner.Value}}</strong>
+                                                        </p>
+                                                    </td>
+                                                    <td>&nbsp;</td>
+                                                    <td>
+                                                        <p class="text-right"
+                                                           ng-class="{'text-success':$index>0 && dsrData.Beverage.BeverageList[$index].JanMTD.Value>0,'text-danger':$index>0 && dsrData.Beverage.BeverageList[$index].JanMTD.Value<0}">
+                                                            <strong>{{dsrData.Beverage.BeverageList[$index].JanMTD.Value}}<span
+                                                                    ng-hide="$index==0">%</span></strong></p>
+                                                    </td>
+                                                    <td>
+                                                        <p class="text-right"
+                                                           ng-class="{'text-success':$index>0 && dsrData.Beverage.BeverageList[$index].YTD.Value>0,'text-danger':$index>0 && dsrData.Beverage.BeverageList[$index].YTD.Value<0}">
+                                                            <strong>{{dsrData.Beverage.BeverageList[$index].YTD.Value}}<span
+                                                                    ng-hide="$index==0">%</span></strong></p>
+                                                    </td>
+                                                </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                    <!--<div class="col-lg-12 col-xs-12" ng-if="viewType==='DD'">-->
+                                        <!--<div class="text-center p-15" ng-if="!detailedDsrData"><i-->
+                                                <!--class="fa fa-circle-o-notch fa-spin fa-lg"></i> Loading...-->
+                                        <!--</div>-->
+                                        <!--<div ng-if="detailedDsrData">-->
+                                            <!--<div class="table-responsive hidden-sm-down">-->
+                                                <!--<table class="table kpi-table table-sm" id="TheadFloat">-->
+                                                    <!--<thead class="table-inverse">-->
+                                                    <!--<tr class="bg-facebook">-->
+                                                        <!--<th>-->
+                                                            <!--<p>-->
+                                                                <!--<strong>-->
+                                                                    <!--{{selectedCriteria}}-->
+                                                                    <!--<i style="vertical-align: middle!important;"-->
+                                                                       <!--class="fas fa-angle-right"></i>-->
+                                                                <!--</strong>-->
+                                                            <!--</p>-->
+                                                        <!--</th>-->
+                                                        <!--<th class="nodata"></th>-->
+                                                        <!--<th colspan="3">-->
+                                                            <!--<p>-->
+                                                                <!--<strong ng-if="selectedFilter.SType.value==='D'">-->
+                                                                    <!--{{ detailedDsrData.Beverage.DayHeader }}-->
+                                                                <!--</strong>-->
+                                                                <!--<strong ng-if="selectedFilter.SType.value==='M'">-->
+                                                                    <!--{{ detailedDsrData.Beverage.MTDHeader }}-->
+                                                                <!--</strong>-->
+                                                            <!--</p>-->
+                                                        <!--</th>-->
+                                                        <!--<th class="nodata"></th>-->
+                                                        <!--<th colspan="3">-->
+                                                            <!--<p>-->
+                                                                <!--<strong ng-if="selectedFilter.SType.value==='D'">-->
+                                                                    <!--{{detailedDsrData.Beverage.PrevDayHeader}}-->
+                                                                <!--</strong>-->
+                                                                <!--<strong ng-if="selectedFilter.SType.value==='M'">-->
+                                                                    <!--{{ detailedDsrData.Beverage.PrevMTDHeader }}-->
+                                                                <!--</strong>-->
+                                                            <!--</p>-->
+                                                        <!--</th>-->
+                                                        <!--<th class="nodata"></th>-->
+                                                        <!--<th colspan="3">-->
+                                                            <!--<p>-->
+                                                                <!--<strong>-->
+                                                                    <!--Growth Percentage (%)-->
+                                                                <!--</strong>-->
+                                                            <!--</p>-->
+                                                        <!--</th>-->
+                                                    <!--</tr>-->
+                                                    <!--<tr>-->
+                                                        <!--<th>-->
+                                                            <!--<p><strong># Criteria</strong></p>-->
+                                                        <!--</th>-->
+                                                        <!--<th></th>-->
+                                                        <!--<th>-->
+                                                            <!--<p class=" text-right">-->
+                                                                <!--<strong>Lunch</strong>-->
+                                                            <!--</p>-->
+                                                        <!--</th>-->
+                                                        <!--<th>-->
+                                                            <!--<p class="text-right">-->
+                                                                <!--<strong>Dinner</strong>-->
+                                                            <!--</p>-->
+                                                        <!--</th>-->
+                                                        <!--<th>-->
+                                                            <!--<p class="text-right">-->
+                                                                <!--<strong>Total</strong>-->
+                                                            <!--</p>-->
+                                                        <!--</th>-->
+                                                        <!--<th></th>-->
+                                                        <!--<th>-->
+                                                            <!--<p class="text-right">-->
+                                                                <!--<strong>Lunch</strong>-->
+                                                            <!--</p>-->
+                                                        <!--</th>-->
+                                                        <!--<th>-->
+                                                            <!--<p class="text-right">-->
+                                                                <!--<strong>Dinner</strong>-->
+                                                            <!--</p>-->
+                                                        <!--</th>-->
+                                                        <!--<th>-->
+                                                            <!--<p class="text-right">-->
+                                                                <!--<strong>Total</strong>-->
+                                                            <!--</p>-->
+                                                        <!--</th>-->
+                                                        <!--<th></th>-->
+                                                        <!--<th>-->
+                                                            <!--<p class="text-right">-->
+                                                                <!--<strong>Lunch</strong>-->
+                                                            <!--</p>-->
+                                                        <!--</th>-->
+                                                        <!--<th>-->
+                                                            <!--<p class="text-right">-->
+                                                                <!--<strong>Dinner</strong>-->
+                                                            <!--</p>-->
+                                                        <!--</th>-->
+                                                        <!--<th>-->
+                                                            <!--<p class="text-right">-->
+                                                                <!--<strong>Total</strong>-->
+                                                            <!--</p>-->
+                                                        <!--</th>-->
+                                                    <!--</tr>-->
+                                                    <!--</thead>-->
+                                                    <!--<tbody>-->
+                                                    <!--<tr ng-repeat="item in dsrFilteredData"-->
+                                                        <!--ng-class="{'reservationTr':$index>=0,'dem-grey-row':item.RegionDesc.indexOf('Total')>=0}">-->
+                                                        <!--<td>-->
+                                                            <!--<p class="text-left">-->
+                                                                <!--<strong>{{item.RegionDesc}}</strong>-->
+                                                            <!--</p>-->
+                                                        <!--</td>-->
+                                                        <!--<td>&nbsp;</td>-->
+                                                        <!--<td>-->
+                                                            <!--<p class="text-right">-->
+                                                                <!--<strong>{{item.Lunch}}</strong>-->
+                                                            <!--</p>-->
+                                                        <!--</td>-->
+                                                        <!--<td>-->
+                                                            <!--<p class="text-right">-->
+                                                                <!--<strong>{{item.Dinner}}</strong>-->
+                                                            <!--</p>-->
+                                                        <!--</td>-->
+                                                        <!--<td>-->
+                                                            <!--<p class="text-right">-->
+                                                                <!--<strong>{{item.Total}}</strong>-->
+                                                            <!--</p>-->
+                                                        <!--</td>-->
+                                                        <!--<td>&nbsp;</td>-->
+                                                        <!--<td>-->
+                                                            <!--<p class="text-right">-->
+                                                                <!--<strong>{{item.PreLunch}}</strong>-->
+                                                            <!--</p>-->
+                                                        <!--</td>-->
+                                                        <!--<td>-->
+                                                            <!--<p class="text-right">-->
+                                                                <!--<strong>{{item.PreDinner}}</strong>-->
+                                                            <!--</p>-->
+                                                        <!--</td>-->
+                                                        <!--<td>-->
+                                                            <!--<p class="text-right">-->
+                                                                <!--<strong>{{item.PreTotal}}</strong>-->
+                                                            <!--</p>-->
+                                                        <!--</td>-->
+                                                        <!--<td>&nbsp;</td>-->
+                                                        <!--<td>-->
+                                                            <!--<p class="text-right"-->
+                                                               <!--ng-class="{'text-success':item.LunchGrowth.indexOf('-')==-1 && item.LunchGrowth!='0.00','text-danger': item.LunchGrowth.indexOf('-')>=0}">-->
+                                                                <!--<strong>{{item.LunchGrowth}}% </strong>-->
+                                                                <!--<i ng-if="item.LunchGrowth.indexOf('-')==-1 && item.LunchGrowth!='0.00'"-->
+                                                                   <!--class="fas fa-caret-up fa-lg color-success"></i>-->
+                                                                <!--<i ng-if="item.LunchGrowth.indexOf('-')>=0"-->
+                                                                   <!--class="fas fa-caret-down fa-lg color-danger"></i>-->
+                                                            <!--</p>-->
+                                                        <!--</td>-->
+                                                        <!--<td>-->
+                                                            <!--<p class="text-right"-->
+                                                               <!--ng-class="{'text-success':item.DinnerGrowth.indexOf('-')==-1 && item.DinnerGrowth!='0.00','text-danger': item.DinnerGrowth.indexOf('-')>=0}">-->
+                                                                <!--<strong>{{item.DinnerGrowth}}% </strong>-->
+                                                                <!--<i ng-if="item.DinnerGrowth.indexOf('-')==-1 && item.DinnerGrowth!='0.00'"-->
+                                                                   <!--class="fas fa-caret-up fa-lg color-success"></i>-->
+                                                                <!--<i ng-if="item.DinnerGrowth.indexOf('-')>=0"-->
+                                                                   <!--class="fas fa-caret-down fa-lg color-danger"></i>-->
+                                                            <!--</p>-->
+                                                        <!--</td>-->
+                                                        <!--<td>-->
+                                                            <!--<p class="text-right"-->
+                                                               <!--ng-class="{'text-success':item.TotalGrowth.indexOf('-')==-1 && item.TotalGrowth!='0.00','text-danger': item.TotalGrowth.indexOf('-')>=0}">-->
+                                                                <!--<strong>{{item.TotalGrowth}}% </strong>-->
+                                                                <!--<i ng-if="item.TotalGrowth.indexOf('-')==-1 && item.TotalGrowth!='0.00'"-->
+                                                                   <!--class="fas fa-caret-up fa-lg color-success"></i>-->
+                                                                <!--<i ng-if="item.TotalGrowth.indexOf('-')>=0"-->
+                                                                   <!--class="fas fa-caret-down fa-lg color-danger"></i>-->
+                                                            <!--</p>-->
+                                                        <!--</td>-->
+                                                    <!--</tr>-->
+                                                    <!--</tbody>-->
+                                                <!--</table>-->
+                                            <!--</div>-->
+                                            <!--<div class="table-responsive hidden-md-up">-->
+                                                <!--<table class="table kpi-table text-center  table-sm">-->
+                                                    <!--<thead class="table-inverse">-->
+                                                    <!--<tr class="bg-facebook">-->
+                                                        <!--<th>-->
+                                                            <!--<p>-->
+                                                                <!--<strong>-->
+                                                                    <!--{{selectedCriteria}}-->
+                                                                    <!--<i style="vertical-align: middle!important;"-->
+                                                                       <!--class="fas fa-angle-right"></i>-->
+                                                                <!--</strong>-->
+                                                            <!--</p>-->
+                                                        <!--</th>-->
+                                                        <!--<th colspan="3">-->
+                                                            <!--<p>-->
+                                                                <!--<strong ng-if="selectedFilter.SType.value==='D'">-->
+                                                                    <!--{{ detailedDsrData.Beverage.DayHeader }}-->
+                                                                <!--</strong>-->
+                                                                <!--<strong ng-if="selectedFilter.SType.value==='M'">-->
+                                                                    <!--{{ detailedDsrData.Beverage.MTDHeader }}-->
+                                                                <!--</strong>-->
+                                                            <!--</p>-->
+                                                        <!--</th>-->
+                                                    <!--</tr>-->
+                                                    <!--<tr>-->
+                                                        <!--<th>-->
+                                                            <!--<p><strong># Criteria</strong></p>-->
+                                                        <!--</th>-->
+                                                        <!--<th>-->
+                                                            <!--<p class=" text-right">-->
+                                                                <!--<strong>Lunch</strong>-->
+                                                            <!--</p>-->
+                                                        <!--</th>-->
+                                                        <!--<th>-->
+                                                            <!--<p class="text-right">-->
+                                                                <!--<strong>Dinner</strong>-->
+                                                            <!--</p>-->
+                                                        <!--</th>-->
+                                                        <!--<th>-->
+                                                            <!--<p class="text-right">-->
+                                                                <!--<strong>Total</strong>-->
+                                                            <!--</p>-->
+                                                        <!--</th>-->
+                                                    <!--</tr>-->
+                                                    <!--</thead>-->
+                                                    <!--<tbody>-->
+                                                    <!--<tr ng-repeat="item in dsrFilteredData"-->
+                                                        <!--ng-class="{'reservationTr':$index>=0,'dem-grey-row':item.RegionDesc.indexOf('Total')>=0}">-->
+                                                        <!--<td>-->
+                                                            <!--<p class="text-left">-->
+                                                                <!--<strong>{{item.RegionDesc}}</strong>-->
+                                                            <!--</p>-->
+                                                        <!--</td>-->
+                                                        <!--<td>-->
+                                                            <!--<p class="text-right">-->
+                                                                <!--<strong>{{item.Lunch}}</strong>-->
+                                                            <!--</p>-->
+                                                        <!--</td>-->
+                                                        <!--<td>-->
+                                                            <!--<p class="text-right">-->
+                                                                <!--<strong>{{item.Dinner}}</strong>-->
+                                                            <!--</p>-->
+                                                        <!--</td>-->
+                                                        <!--<td>-->
+                                                            <!--<p class="text-right">-->
+                                                                <!--<strong>{{item.Total}}</strong>-->
+                                                            <!--</p>-->
+                                                        <!--</td>-->
+                                                    <!--</tr>-->
+                                                    <!--</tbody>-->
+                                                    <!--<thead class="table-inverse">-->
+                                                    <!--<tr class="bg-facebook">-->
+                                                        <!--<th>-->
+                                                            <!--<p>-->
+                                                                <!--<strong>-->
+                                                                    <!--{{selectedCriteria}}-->
+                                                                    <!--<i style="vertical-align: middle!important;"-->
+                                                                       <!--class="fas fa-angle-right"></i>-->
+                                                                <!--</strong>-->
+                                                            <!--</p>-->
+                                                        <!--</th>-->
+                                                        <!--<th colspan="3">-->
+                                                            <!--<p>-->
+                                                                <!--<strong ng-if="selectedFilter.SType.value==='D'">-->
+                                                                    <!--{{detailedDsrData.Beverage.PrevDayHeader}}-->
+                                                                <!--</strong>-->
+                                                                <!--<strong ng-if="selectedFilter.SType.value==='M'">-->
+                                                                    <!--{{ detailedDsrData.Beverage.PrevMTDHeader }}-->
+                                                                <!--</strong>-->
+                                                            <!--</p>-->
+                                                        <!--</th>-->
+                                                    <!--</tr>-->
+                                                    <!--<tr>-->
+                                                        <!--<th>-->
+                                                            <!--<p><strong># Criteria</strong></p>-->
+                                                        <!--</th>-->
+                                                        <!--<th>-->
+                                                            <!--<p class=" text-right">-->
+                                                                <!--<strong>Lunch</strong>-->
+                                                            <!--</p>-->
+                                                        <!--</th>-->
+                                                        <!--<th>-->
+                                                            <!--<p class="text-right">-->
+                                                                <!--<strong>Dinner</strong>-->
+                                                            <!--</p>-->
+                                                        <!--</th>-->
+                                                        <!--<th>-->
+                                                            <!--<p class="text-right">-->
+                                                                <!--<strong>Total</strong>-->
+                                                            <!--</p>-->
+                                                        <!--</th>-->
+                                                    <!--</tr>-->
+                                                    <!--</thead>-->
+                                                    <!--<tbody>-->
+                                                    <!--<tr ng-repeat="item in dsrFilteredData"-->
+                                                        <!--ng-class="{'reservationTr':$index>=0,'dem-grey-row':item.RegionDesc.indexOf('Total')>=0}">-->
+                                                        <!--<td>-->
+                                                            <!--<p class="text-left">-->
+                                                                <!--<strong>{{item.RegionDesc}}</strong>-->
+                                                            <!--</p>-->
+                                                        <!--</td>-->
+                                                        <!--<td>-->
+                                                            <!--<p class="text-right">-->
+                                                                <!--<strong>{{item.PreLunch}}</strong>-->
+                                                            <!--</p>-->
+                                                        <!--</td>-->
+                                                        <!--<td>-->
+                                                            <!--<p class="text-right">-->
+                                                                <!--<strong>{{item.PreDinner}}</strong>-->
+                                                            <!--</p>-->
+                                                        <!--</td>-->
+                                                        <!--<td>-->
+                                                            <!--<p class="text-right">-->
+                                                                <!--<strong>{{item.PreTotal}}</strong>-->
+                                                            <!--</p>-->
+                                                        <!--</td>-->
+                                                    <!--</tr>-->
+                                                    <!--</tbody>-->
+                                                    <!--<thead class="table-inverse">-->
+                                                    <!--<tr class="bg-facebook">-->
+                                                        <!--<th>-->
+                                                            <!--<p>-->
+                                                                <!--<strong>-->
+                                                                    <!--{{selectedCriteria}}-->
+                                                                    <!--<i style="vertical-align: middle!important;"-->
+                                                                       <!--class="fas fa-angle-right"></i>-->
+                                                                <!--</strong>-->
+                                                            <!--</p>-->
+                                                        <!--</th>-->
+                                                        <!--<th colspan="3">-->
+                                                            <!--<p>-->
+                                                                <!--<strong>-->
+                                                                    <!--Growth Percentage (%)-->
+                                                                <!--</strong>-->
+                                                            <!--</p>-->
+                                                        <!--</th>-->
+                                                    <!--</tr>-->
+                                                    <!--<tr>-->
+                                                        <!--<th>-->
+                                                            <!--<p><strong># Criteria</strong></p>-->
+                                                        <!--</th>-->
+                                                        <!--<th>-->
+                                                            <!--<p class=" text-right">-->
+                                                                <!--<strong>Lunch</strong>-->
+                                                            <!--</p>-->
+                                                        <!--</th>-->
+                                                        <!--<th>-->
+                                                            <!--<p class="text-right">-->
+                                                                <!--<strong>Dinner</strong>-->
+                                                            <!--</p>-->
+                                                        <!--</th>-->
+                                                        <!--<th>-->
+                                                            <!--<p class="text-right">-->
+                                                                <!--<strong>Total</strong>-->
+                                                            <!--</p>-->
+                                                        <!--</th>-->
+                                                    <!--</tr>-->
+                                                    <!--</thead>-->
+                                                    <!--<tbody>-->
+                                                    <!--<tr ng-repeat="item in dsrFilteredData"-->
+                                                        <!--ng-class="{'reservationTr':$index>=0,'dem-grey-row':item.RegionDesc.indexOf('Total')>=0}">-->
+                                                        <!--<td>-->
+                                                            <!--<p class="text-left">-->
+                                                                <!--<strong>{{item.RegionDesc}}</strong>-->
+                                                            <!--</p>-->
+                                                        <!--</td>-->
+                                                        <!--<td>-->
+                                                            <!--<p class="text-right"-->
+                                                               <!--ng-class="{'text-success':item.LunchGrowth.indexOf('-')==-1 && item.LunchGrowth!='0.00','text-danger': item.LunchGrowth.indexOf('-')>=0}">-->
+                                                                <!--<strong>{{item.LunchGrowth}}% </strong>-->
+                                                                <!--<i ng-if="item.LunchGrowth.indexOf('-')==-1 && item.LunchGrowth!='0.00'"-->
+                                                                   <!--class="fas fa-caret-up fa-lg color-success"></i>-->
+                                                                <!--<i ng-if="item.LunchGrowth.indexOf('-')>=0"-->
+                                                                   <!--class="fas fa-caret-down fa-lg color-danger"></i>-->
+                                                            <!--</p>-->
+                                                        <!--</td>-->
+                                                        <!--<td>-->
+                                                            <!--<p class="text-right"-->
+                                                               <!--ng-class="{'text-success':item.DinnerGrowth.indexOf('-')==-1 && item.DinnerGrowth!='0.00','text-danger': item.DinnerGrowth.indexOf('-')>=0}">-->
+                                                                <!--<strong>{{item.DinnerGrowth}}% </strong>-->
+                                                                <!--<i ng-if="item.DinnerGrowth.indexOf('-')==-1 && item.DinnerGrowth!='0.00'"-->
+                                                                   <!--class="fas fa-caret-up fa-lg color-success"></i>-->
+                                                                <!--<i ng-if="item.DinnerGrowth.indexOf('-')>=0"-->
+                                                                   <!--class="fas fa-caret-down fa-lg color-danger"></i>-->
+                                                            <!--</p>-->
+                                                        <!--</td>-->
+                                                        <!--<td>-->
+                                                            <!--<p class="text-right"-->
+                                                               <!--ng-class="{'text-success':item.TotalGrowth.indexOf('-')==-1 && item.TotalGrowth!='0.00','text-danger': item.TotalGrowth.indexOf('-')>=0}">-->
+                                                                <!--<strong>{{item.TotalGrowth}}% </strong>-->
+                                                                <!--<i ng-if="item.TotalGrowth.indexOf('-')==-1 && item.TotalGrowth!='0.00'"-->
+                                                                   <!--class="fas fa-caret-up fa-lg color-success"></i>-->
+                                                                <!--<i ng-if="item.TotalGrowth.indexOf('-')>=0"-->
+                                                                   <!--class="fas fa-caret-down fa-lg color-danger"></i>-->
+                                                            <!--</p>-->
+                                                        <!--</td>-->
+                                                    <!--</tr>-->
+                                                    <!--</tbody>-->
+                                                <!--</table>-->
+                                            <!--</div>-->
+                                        <!--</div>-->
+                                    <!--</div>-->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

@@ -1,0 +1,88 @@
+<div class="horizontal-fixed fixed">
+    <div class="wrapper">
+        <div ng-include="'shared/header.html'"></div>         <div ng-include="'shared/sidebar.html'"></div>
+        <div class="content-wrapper">
+            <div class="container-fluid setting-div">
+                <div class="row">
+                    <div class="col-md-12 xs-no-padding">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5 class="card-header-text">User Settings &nbsp;</h5>
+                            </div>
+                            <div class="card-block p-5 xs-no-padding">
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <uib-tabset active="menuPreferenceTab" style="border: 1px solid #f7f7f7;">
+                                            <uib-tab ng-repeat="item in userSettings " index="$index"
+                                                     heading="{{item.MenuDesc}}">
+                                                <form name="userPreference.form" class="md-float-material"
+                                                      ng-submit="updateUserSettings()">
+                                                    <div class="bg-success well well-sm" ng-if="userSettngSuccessMsg">
+                                                        {{userSettngSuccessMsg}}
+                                                    </div>
+                                                    <div class="bg-danger well well-sm" ng-if="settingChangedErrorMsg">
+                                                        {{settingChangedErrorMsg}}
+                                                    </div>
+                                                    <div class="animated fadeIn">
+                                                        <div ng-class="item.MenuDesc=='Option'?'col-lg-4 col-xs-12 m-b-15':'col-lg-6 col-xs-12 m-b-15'"
+                                                             ng-repeat="menuItem in item.ReportList">
+                                                            <label>{{menuItem.Report}}</label>
+                                                            <div class="md-input-wrapper">
+                                                                <div class="checkbox-primary"
+                                                                     ng-repeat="box in menuItem.Boxes">
+                                                                    <div class="rkmd-checkbox checkbox-rotate"
+                                                                         ng-if="item.MenuDesc!=='Option'">
+                                                                        <label class="input-checkbox checkbox-primary">
+                                                                            <input type="checkbox"
+                                                                                   id="{{box.BoxDesc}}{{$index+1}}"
+                                                                                   name="{{box.BoxDesc}}{{$index+1}}"
+                                                                                   value="{{box.Value}}"
+                                                                                   data-ng-model="box.Value">
+                                                                            <span class="checkbox"></span>
+                                                                        </label>
+                                                                        <div class="captions">{{box.BoxDesc}}</div>
+                                                                    </div>
+                                                                    <div class="radio d-inline"
+                                                                         ng-if="item.MenuDesc==='Option'">
+                                                                        <input id="R-{{menuItem.Report}}{{$index+1}}"
+                                                                               name="{{box.Section}}"
+                                                                               ng-click="setRadioButtonValue(menuItem, box)"
+                                                                               data-ng-model="box.Value" ng-value="true"
+                                                                               type="radio">
+                                                                        <label for="R-{{menuItem.Report}}{{$index+1}}"
+                                                                               class="radio-label m-b-0">{{box.BoxDesc}}</label>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-lg-12 col-sm-12 col-md-4 col-xs-12">
+                                                            <div class="col-lg-2">
+                                                                <button type="submit"
+                                                                        ng-disabled="changeSettingsProcessing"
+                                                                        class="btn pull-left btn-primary btn-block waves-effect text-center"
+                                                                        data-angular-ripple
+                                                                        style="line-height: 18px!important;">
+                                                                    <span ng-if="!changeSettingsProcessing">Save</span>
+                                                                    <span ng-if="changeSettingsProcessing"
+                                                                          class="text-center"><i style="color: #ffffff;"
+                                                                                                 class="fa fa-circle-o-notch fa-spin fa-lg"></i></span>
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                            </uib-tab>
+                                        </uib-tabset>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

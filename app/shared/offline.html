@@ -1,0 +1,216 @@
+<div class="error-img">
+    <img src="assets/images/offline.svg">
+</div>
+
+
+<div class="main-box">
+    <table cellpadding="0" cellspacing="0">
+        <tr class="top">
+            <td colspan="2">
+                <table>
+                    <tr>
+                        <td class="title">
+                        <span style="font-size: 30px;color: #ec5707;vertical-align: top;">
+                           Employee Details
+                        </span>
+                        </td>
+                        <td>
+
+                            <span style="font-size: 20px;color: #616060;"><span
+                                    class="glyphicon glyphicon-user user-icon"></span> Sachin D Joglekar</span> <br>
+                            <small style="font-size: 15px;color: #11ab97;font-weight: 500;">CODE#306667</small>
+                            <br>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+    <div class="row">
+        <!--<div class="pb-div">
+        <span class="pb-statement">Problem Statement</span>
+        <label>Create a single page application that accepts a numerical input and returns whether or not it is a prime number.</label>
+            </div>-->
+        <div class="panel panel-default height">
+            <div class="panel-heading">
+                <span style="font-size: 18px;">Outlet Visit Details</span>
+            </div>
+            <div class="panel-body">
+                <!-- <form name="one.form" class="form" ng-submit="checkPrime(one.form.$valid)"
+                     novalidate ng-if="!showOutput">
+                      <div class="form-group" ng-class="{ 'has-error': one.form.number.$touched && one.form.number.$invalid }">
+                          <div class="row">
+                          <div class="col-sm-6" style="margin-bottom: 15px!important;">
+                             <label>Date of Visit</label>
+                               <p class="input-group">
+           <input type="text" class="form-control" uib-datepicker-popup="{{format}}" ng-model="dt" is-open="popup1.opened" datepicker-options="dateOptions" ng-required="true" close-text="Close" alt-input-formats="altInputFormats" required/>
+           <span class="input-group-btn">
+             <button type="button" class="btn btn-default" ng-click="open1()"><i class="glyphicon glyphicon-calendar"></i></button>
+           </span>
+         </p>
+                              <div class="help-block" ng-messages="one.form.number.$error" ng-if="one.form.number.$touched">
+                                 <p ng-message="required">Required field.</p>
+                             </div>
+                         </div>
+                         <div class="col-sm-6" style="margin-bottom: 15px!important;">
+                             <label>Unit</label>
+                           <select class="form-control" ng-model="newQuestion.info.answerSymbol"
+                                     id="answerSymbol" name="answerSymbol"
+                                     ng-options="g.id as g.value for g in SymbolTypeOptions" required>
+                                 <option value="">Select Unit</option>
+                             </select>
+
+                              <div class="help-block" ng-messages="one.form.number.$error" ng-if="one.form.number.$touched">
+                                 <p ng-message="minlength">Number is too short.</p>
+                                 <p ng-message="maxlength">Number is too long.</p>
+                                 <p ng-message="required">Required field.</p>
+                                 <p ng-message="pattern">Its must be numerical value.</p>
+                             </div>
+                         </div>
+                          </div>
+                          <div class="row">
+                          <div class="col-sm-6" style="margin-bottom: 15px!important;">
+                             <label>Slot</label>
+                                 <input type="text" name="number" class="form-control" placeholder="Enter Number"
+                                        ng-model="one.info.number" ng-minlength="1" pattern="^[1-9][0-9]*$" ng-maxlength="10" required>
+
+                              <div class="help-block" ng-messages="one.form.number.$error" ng-if="one.form.number.$touched">
+                                 <p ng-message="minlength">Number is too short.</p>
+                                 <p ng-message="maxlength">Number is too long.</p>
+                                 <p ng-message="required">Required field.</p>
+                                 <p ng-message="pattern">Its must be numerical value.</p>
+                             </div>
+                         </div>
+
+                         <div class="col-sm-3" style="margin-bottom: 15px!important;">
+                             <label>Adult</label>
+                                 <input type="text" name="number" class="form-control" placeholder="Enter Number"
+                                        ng-model="one.info.number" ng-minlength="1" pattern="^[1-9][0-9]*$" ng-maxlength="10" required>
+
+                              <div class="help-block" ng-messages="one.form.number.$error" ng-if="one.form.number.$touched">
+                                 <p ng-message="minlength">Number is too short.</p>
+                                 <p ng-message="maxlength">Number is too long.</p>
+                                 <p ng-message="required">Required field.</p>
+                                 <p ng-message="pattern">Its must be numerical value.</p>
+                             </div>
+                         </div>
+                         <div class="col-sm-3" style="margin-bottom: 15px!important;">
+                             <label>Child</label>
+                                 <input type="text" name="number" class="form-control" placeholder="Enter Number"
+                                        ng-model="one.info.number" ng-minlength="1" pattern="^[1-9][0-9]*$" ng-maxlength="10" required>
+
+                              <div class="help-block" ng-messages="one.form.number.$error" ng-if="one.form.number.$touched">
+                                 <p ng-message="minlength">Number is too short.</p>
+                                 <p ng-message="maxlength">Number is too long.</p>
+                                 <p ng-message="required">Required field.</p>
+                                 <p ng-message="pattern">Its must be numerical value.</p>
+                             </div>
+                         </div>
+                              </div>
+
+                     </div>
+                      <div class="row">
+                    <div class="form-group col-sm-12">
+                         <button type="submit" ng-disabled="one.form.$invalid" ng-hide="processing" class="btn btn-danger">Submit</button>
+                         <i class="fa fa-spinner fa-spin" ng-show="processing"></i>
+                     </div>
+                     </div>
+                 </form>-->
+
+                <div layout="column" ng-cloak="" class="md-inline-form inputdemoBasicUsage">
+                    <form name="userForm">
+
+                        <div layout-gt-xs="row" style="    margin: auto;
+    width: 50%;
+    margin-bottom: 0">
+                            <md-input-container style="width: 100%!important;margin-bottom: 0">
+                                <label style="font-weight: 400!important;">Date of Visit</label>
+                                <md-datepicker ng-model="user.submissionDate"></md-datepicker>
+                            </md-input-container>
+                        </div>
+                        <div layout-gt-xs="row">
+                            <md-input-container class="md-block" flex-gt-sm="" style="height: 58px!important;">
+                                <label style="font-weight: 400!important;">Select Slot</label>
+                                <md-icon md-svg-src="images/ic_location.svg" style="display:inline-block;"></md-icon>
+                                <md-select ng-model="user.unit" placeholder="Select Unit">
+                                    <md-option ng-repeat="unit in unitsList" value="{{unit.value}}">
+                                        {{unit.value}}
+                                    </md-option>
+                                </md-select>
+                            </md-input-container>
+
+                            <md-input-container class="md-block" flex-gt-xs="" style="height: 58px!important;">
+                                <label style="font-weight: 400!important;">Select Unit</label>
+                                <md-icon md-svg-src="images/ic_slot.svg" style="display:inline-block;"></md-icon>
+                                <md-select ng-model="user.slot" placeholder="Select Slot">
+                                    <md-option ng-repeat="slot in slotsList" value="{{slot.value}}">
+                                        {{slot.value}}
+                                    </md-option>
+                                </md-select>
+                            </md-input-container>
+                        </div>
+
+                        <div layout-gt-sm="row">
+
+                            <md-input-container class="md-block" flex-gt-sm="">
+                                <label style="font-weight: 400!important;">No of Adults</label>
+                                <md-icon md-svg-src="images/ic_adult.svg" style="display:inline-block;"></md-icon>
+                                <input name="postalCode" ng-model="user.postalCode" placeholder="No of Adults"
+                                       required="" ng-pattern="/^[0-9]{2}$/" md-maxlength="2">
+
+                                <div ng-messages="userForm.postalCode.$error" role="alert" multiple="">
+                                    <div ng-message="required" class="my-message">Its required field.
+                                    </div>
+                                    <div ng-message="pattern" class="my-message">That doesn't look like a valid value.
+                                    </div>
+                                    <div ng-message="md-maxlength" class="my-message">
+                                        Don't use the long version silly...we don't need to be that specific...
+                                    </div>
+                                </div>
+                            </md-input-container>
+                            <md-input-container class="md-block" flex-gt-sm="">
+                                <label style="font-weight: 400!important;">No of Childs</label>
+                                <md-icon md-svg-src="images/ic_child.svg" style="display:inline-block;"></md-icon>
+                                <input name="postalCode" ng-model="user.postalCode" placeholder="No of Childs"
+                                       required="" ng-pattern="/^[0-9]{2}$/" md-maxlength="2">
+
+                                <div ng-messages="userForm.postalCode.$error" role="alert" multiple="">
+                                    <div ng-message="required" class="my-message">Its required field.
+                                    </div>
+                                    <div ng-message="pattern" class="my-message">That doesn't look like a valid value.
+                                    </div>
+                                    <div ng-message="md-maxlength" class="my-message">
+                                        Don't use the long version silly...we don't need to be that specific...
+                                    </div>
+                                </div>
+                            </md-input-container>
+                        </div>
+                        <md-button class="md-raised md-primary" ng-hide="registerSubmit"
+                                   style="width:100%; margin: 0px 0px;" type="submit" ng-disabled="userForm.$invalid"
+                                   name="submit">Sumbit
+                        </md-button>
+                    </form>
+                </div>
+                <div class="col-sm-12 text-center" ng-if="showOutput">
+                    <div ng-if="itsPrime" style="margin-bottom: 25px;">
+                        <h3 class="text-success">True</h3>
+                        <strong>{{one.info.number}} is Prime number</strong>
+                    </div>
+                    <div ng-if="!itsPrime" style="margin-bottom: 25px;">
+                        <h3 class="text-danger">False</h3>
+                        <strong>{{one.info.number}} is Not a Prime number</strong>
+                    </div>
+                    <button type="button" ng-click="checkAgain()" class="btn btn-default">Back</button>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+
+
+
+
