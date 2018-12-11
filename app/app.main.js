@@ -405,19 +405,6 @@
 
 (function () {
     'use strict';
-    angular.module('able.pages.onesta', [
-        'able.pages.onesta.dashboard',
-        'able.pages.onesta.correlation',
-        'able.pages.onesta.dsr',
-        'able.pages.onesta.foodCost',
-        'able.pages.onesta.hrms',
-        'able.pages.onesta.crm',
-        'able.pages.onesta.gsi'
-    ]);
-})();
-
-(function () {
-    'use strict';
     angular.module('able.pages.constant', [])
         .constant("monthMasterArr", [
             {text: "Jan", value: 1, ticked: false},
@@ -524,6 +511,19 @@
             danger: '#fd2020',
             zomatoRating: "#7cb5ec"
         });
+})();
+
+(function () {
+    'use strict';
+    angular.module('able.pages.onesta', [
+        'able.pages.onesta.dashboard',
+        'able.pages.onesta.correlation',
+        'able.pages.onesta.dsr',
+        'able.pages.onesta.foodCost',
+        'able.pages.onesta.hrms',
+        'able.pages.onesta.crm',
+        'able.pages.onesta.gsi'
+    ]);
 })();
 
 (function () {
